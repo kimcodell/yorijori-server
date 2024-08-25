@@ -13,6 +13,7 @@ export interface LikeOptionAttributes {
 }
 
 class LikeOption extends Model<LikeOptionAttributes> {
+  id: number;
   likeId: number;
   selectedIngredients: string[];
   salinityLevel: SalinityLevel;

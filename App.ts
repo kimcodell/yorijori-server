@@ -31,7 +31,7 @@ export default class App {
         origin: ["http://localhost:8080", "http://localhost:3000"],
         optionsSuccessStatus: HttpStatus.OK,
         credentials: true,
-      })
+      }),
     );
     app.use(this._allowCookie);
     this._setCryptoHelper();
@@ -40,13 +40,18 @@ export default class App {
 
     const commentRepository = new CommentRepository();
     const certiPostRepository = new CertiPostRepository();
-    const postRepository = new PostRepository(db.sequelize, commentRepository, certiPostRepository);
+    const postRepository = new PostRepository(
+      db.sequelize,
+      commentRepository,
+      certiPostRepository,
+    );
     const transactionService = new TransactionService(postRepository);
-    interval(MillisecondsToHourOffset).subscribe(async () => {  //TODO / 600 제거
+    interval(MillisecondsToHourOffset).subscribe(async () => {
+      //TODO / 600 제거
       const now = new Date().getHours();
-      console.log('현재 시간', now);
+      console.log("현재 시간", now);
       const result = await transactionService.checkCertification(now);
-      console.log('next - result :', JSON.stringify(result)); //TODO 제거
+      console.log("next - result :", JSON.stringify(result)); //TODO 제거
       if (!result) return;
       await transactionService.rewardAchievement(result.success);
       await transactionService.distributeToken(result.fail);
@@ -65,11 +70,14 @@ export default class App {
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Origin", req.headers.origin);
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept",
+    );
     next();
   }
 
   private _setCryptoHelper() {
-    cryptoHelper.setup({ jwtSecret: "achieve-goal-contract", bcryptRound: 10 });
+    cryptoHelper.setup({ jwtSecret: "yori-jori", bcryptRound: 10 });
   }
 }

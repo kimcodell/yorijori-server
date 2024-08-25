@@ -10,6 +10,7 @@ export interface LikeAttributes {
 }
 
 class Like extends Model<LikeAttributes> {
+  id: number;
   userId: number;
   recipeId: number;
   createdAt: string;

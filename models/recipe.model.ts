@@ -4,7 +4,7 @@ import { Difficulty } from "../types";
 
 export interface RecipeAttributes {
   id: number;
-  userId?: number;
+  userId: number;
   title: string;
   category: string;
   tags: string[];
@@ -17,6 +17,7 @@ export interface RecipeAttributes {
 }
 
 class Recipe extends Model<RecipeAttributes> {
+  id: number;
   userId: number;
   title: string;
   category: string;
@@ -37,10 +38,10 @@ class Recipe extends Model<RecipeAttributes> {
           allowNull: false,
           primaryKey: true,
         },
-        // userId: {
-        //   type: DataTypes.INTEGER,
-        //   allowNull: false,
-        // },
+        userId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
         title: {
           type: DataTypes.STRING,
           allowNull: false,

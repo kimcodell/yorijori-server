@@ -1,60 +1,78 @@
 import { ErrorWithCode } from "./../interfaces/ErrorWithCode";
 import User from "../models/user.model";
 import _ from "lodash";
-import PostRepository from "../repositories/post.repository";
+import RecipeRepository from "../repositories/recipe.repository";
 
 export default class UserService {
-  constructor(private postRepository: PostRepository) {}
+  constructor(private recipeRepository: RecipeRepository) {}
 
   public async getUserById(params: { userId: number }) {
     const { userId } = params;
 
     const user = await User.findOne({
       where: { id: userId, deletedAt: null },
-      attributes: ["id", "nickname", "walletAddress", "createdAt"],
+      attributes: ["id", "nickname", "name", "createdAt"],
     });
     if (!user) {
-      throw new ErrorWithCode("INVALID USER", "해당 유저는 존재하지 않거나 이미 탈퇴하였습니다.");
+      throw new ErrorWithCode(
+        "INVALID USER",
+        "해당 유저는 존재하지 않거나 이미 탈퇴하였습니다.",
+      );
     }
 
-    const userPosts = await this.postRepository.getAllPosts(userId);
-    const userComments = await this.postRepository.getAllCommentingPosts(userId);
+    //TODO 추가 개발 필요
+    const userRecipes =
+      await this.recipeRepository.getAllRecipesByUserId(userId);
+    // const userReviews = await this.postRepository.getAllCommentingPosts(userId);
+    // const userLikes = await this.postRepository.getAllCommentingPosts(userId);
 
     return {
       userId: user.id,
+      name: user.name,
       nickname: user.nickname,
-      walletAddress: user.walletAddress,
       createdAt: user.createdAt,
-      posts: userPosts,
-      comments: userComments,
+      recipes: userRecipes,
+      // likes: userLikes,
+      // reviews: userReviews,
     };
   }
 
-  public async update(params: { userId: number; nickname: string; walletAddress: string }) {
-    const { userId } = params;
+  public async updateNickname(params: { userId: number; nickname: string }) {
+    const { userId, nickname } = params;
 
-    const isValidUser = await this.existUser({ userId });
+    const isValidUser = await this._existUser({ userId });
     if (!isValidUser) {
-      throw new ErrorWithCode("INVALID USER", "해당 유저는 존재하지 않거나 이미 탈퇴하였습니다.");
+      throw new ErrorWithCode(
+        "INVALID USER",
+        "해당 유저는 존재하지 않거나 이미 탈퇴하였습니다.",
+      );
     }
 
-    const updatedValue = _.omitBy(_.omit(params, "userId"), _.isNil);
-    await User.update(updatedValue, { where: { id: userId, deletedAt: null } });
+    await User.update({ nickname }, { where: { id: userId, deletedAt: null } });
   }
 
   public async delete(params: { userId: number }) {
     const { userId } = params;
 
-    const isValidUser = await this.existUser({ userId });
+    const isValidUser = await this._existUser({ userId });
     if (!isValidUser) {
-      throw new ErrorWithCode("INVALID USER", "해당 유저는 존재하지 않거나 이미 탈퇴하였습니다.");
+      throw new ErrorWithCode(
+        "INVALID USER",
+        "해당 유저는 존재하지 않거나 이미 탈퇴하였습니다.",
+      );
     }
-    await User.update({ deletedAt: new Date().toISOString() }, { where: { id: userId } });
+    await User.update(
+      { deletedAt: new Date().toISOString() },
+      { where: { id: userId } },
+    );
   }
 
-  public async existUser(params: { userId: number }) {
+  private async _existUser(params: { userId: number }) {
     const { userId: id } = params;
-    const user = await User.findOne({ where: { id, deletedAt: null }, attributes: ["id"] });
+    const user = await User.findOne({
+      where: { id, deletedAt: null },
+      attributes: ["id"],
+    });
     if (user) {
       return true;
     } else {

@@ -7,6 +7,7 @@ export interface KeywordAttributes {
 }
 
 class Keyword extends Model<KeywordAttributes> {
+  id: number;
   keyword: string;
 
   static initModel(sequelize: Sequelize) {

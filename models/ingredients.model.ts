@@ -11,6 +11,7 @@ export interface IngredientsAttributes {
 }
 
 class Ingredients extends Model<IngredientsAttributes> {
+  id: number;
   recipeId: number;
   name: string;
   amount: number;

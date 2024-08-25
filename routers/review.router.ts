@@ -18,7 +18,7 @@ class RouteHandler {
     try {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
-        content: Joi.string().max(100).required(),
+        content: Joi.string().required(),
       }).validate(req.body);
       if (error) throw error;
       const newReview = await this.reviewService.create({
@@ -41,7 +41,7 @@ class RouteHandler {
     try {
       const { error, value } = Joi.object({
         reviewId: Joi.number().required(),
-        content: Joi.string().max(100).required(),
+        content: Joi.string().required(),
       }).validate(req.body);
       if (error) throw error;
       await this.reviewService.update({ ...value, userId: data.id });

@@ -10,6 +10,7 @@ export interface CookingStepAttributes {
 }
 
 class CookingStep extends Model<CookingStepAttributes> {
+  id: number;
   recipeId: number;
   stepNumber: number;
   image: string;

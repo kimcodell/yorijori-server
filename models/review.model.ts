@@ -12,6 +12,7 @@ export interface ReviewAttributes {
 }
 
 class Review extends Model<ReviewAttributes> {
+  id: number;
   recipeId!: number;
   userId!: number;
   content!: string;

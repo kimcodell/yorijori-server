@@ -1,9 +1,6 @@
-import { RegisterType } from "./../index";
-
 export default interface SignUpDto {
-  email: string;
+  identifier: string;
   name: string;
   password?: string;
   nickname: string;
-  registerType: RegisterType;
 }

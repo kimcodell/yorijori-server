@@ -13,6 +13,7 @@ export interface UserAttributes {
 }
 
 class User extends Model<UserAttributes> {
+  id: number;
   identifier: string;
   name: string;
   passwordHash?: string;

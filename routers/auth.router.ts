@@ -9,11 +9,10 @@ class RouteHandler {
   public async create(req: Request, res: Response, next: NextFunction) {
     try {
       const { error, value } = Joi.object({
-        email: Joi.string().email().required(),
+        identifier: Joi.string().email().required(),
         name: Joi.string().required(),
         password: Joi.string().required(),
         nickname: Joi.string().required(),
-        registerType: Joi.number().allow(1, 2).required(),
       }).validate(req.body);
       if (error) throw error;
 
@@ -24,31 +23,16 @@ class RouteHandler {
     }
   }
 
-  public async loginByEmail(req: Request, res: Response, next: NextFunction) {
+  public async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { error, value } = Joi.object({
-        email: Joi.string().email().required(),
+        identifier: Joi.string().email().required(),
         password: Joi.string().required(),
       }).validate(req.body);
       if (error) throw error;
 
-      const jwt = await this.authService.loginByEmail(value);
+      const jwt = await this.authService.login(value);
       successResponse(res, { jwt });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  public async loginByNaver(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { error, value } = Joi.object({
-        accessToken: Joi.string().required(),
-      }).validate(req.body);
-      if (error) throw error;
-
-      const result = await this.authService.loginByNaver(value);
-
-      successResponse(res, result);
     } catch (error) {
       next(error);
     }
@@ -62,7 +46,11 @@ class RouteHandler {
     }
   }
 
-  public async checkNicknameDuplication(req: Request, res: Response, next: NextFunction) {
+  public async checkNicknameDuplication(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       const { error, value } = Joi.object({
         nickname: Joi.string().required(),
@@ -83,18 +71,22 @@ class RouteHandler {
     }
   }
 
-  public async checkEmailDuplication(req: Request, res: Response, next: NextFunction) {
+  public async checkIdentifierDuplication(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       const { error, value } = Joi.object({
-        email: Joi.string().email().required(),
+        identifier: Joi.string().email().required(),
       }).validate(req.body);
       if (error) throw error;
       this.authService
-        .checkEmailDuplication(value.email)
+        .checkIdentifierDuplication(value.identifier)
         .then(() => successResponse(res, {}))
         .catch((error) => {
-          if (error?.code === "DUPLICATED EMAIL") {
-            successResponse(res, { message: "이미 사용 중인 이메일 입니다." });
+          if (error?.code === "DUPLICATED IDENTIFIER") {
+            successResponse(res, { message: "이미 사용 중인 아이디 입니다." });
           } else {
             throw error;
           }
@@ -110,12 +102,17 @@ function authRouter(...params: [AuthService]) {
   const handler = new RouteHandler(...params);
 
   router.post("/signup", wrap(handler.create.bind(handler)));
-  router.post("/email", wrap(handler.loginByEmail.bind(handler)));
-  router.post("/naver", wrap(handler.loginByNaver.bind(handler)));
+  router.post("/email", wrap(handler.login.bind(handler)));
   router.put("/", wrap(handler.update.bind(handler)));
 
-  router.post("/check/nickname", wrap(handler.checkNicknameDuplication.bind(handler)));
-  router.post("/check/email", wrap(handler.checkEmailDuplication.bind(handler)));
+  router.post(
+    "/check/nickname",
+    wrap(handler.checkNicknameDuplication.bind(handler)),
+  );
+  router.post(
+    "/check/identifier",
+    wrap(handler.checkIdentifierDuplication.bind(handler)),
+  );
 
   return router;
 }
