@@ -1,32 +1,29 @@
 import { Sequelize } from "sequelize";
 import { Request, Response, Router } from "express";
+
 import authRouter from "./auth.router";
 import userRouter from "./user.router";
-import postRouter from "./post.router";
-import commentRouter from "./comment.router";
-import transactionRouter from "./transaction.router";
-import UserService from "../services/user.service";
-import PostService from "../services/post.service";
-import PostRepository from "../repositories/post.repository";
-import CertiPostRepository from "../repositories/certiPost.repository";
-import CommentRepository from "../repositories/comment.repository";
-import UserRepository from "../repositories/user.repository";
-import certiPostRouter from "./certiPost.router";
-import CertiPostService from "../services/certiPost.service";
-import CommentService from "../services/comment.service";
+import recipeRouter from "./recipe.router";
+import reviewRouter from "./review.router";
+
 import AuthService from "../services/auth.service";
+import UserService from "../services/user.service";
+import ReviewService from "../services/review.service";
+import RecipeService from "../services/recipe.service";
+
+import UserRepository from "../repositories/user.repository";
+import RecipeRepository from "../repositories/recipe.repository";
+import ReviewRepository from "../repositories/review.repository";
 
 const createRootRouter = (sequelize: Sequelize) => {
   const userRepository = new UserRepository();
-  const commentRepository = new CommentRepository();
-  const certiPostRepository = new CertiPostRepository();
-  const postRepository = new PostRepository(sequelize, commentRepository, certiPostRepository);
+  const reviewRepository = new ReviewRepository();
+  const recipeRepository = new RecipeRepository(sequelize, reviewRepository);
 
   const authService = new AuthService(userRepository);
-  const userService = new UserService(postRepository);
-  const postService = new PostService(postRepository, userRepository);
-  const commentService = new CommentService();
-  const certiPostService = new CertiPostService(certiPostRepository);
+  const userService = new UserService(recipeRepository);
+  const recipeService = new RecipeService(recipeRepository);
+  const reviewService = new ReviewService();
 
   const router = Router();
 
@@ -36,10 +33,8 @@ const createRootRouter = (sequelize: Sequelize) => {
 
   router.use("/v1/auth", authRouter(authService));
   router.use("/v1/user", userRouter(userService));
-  router.use("/v1/post", postRouter(postService));
-  router.use("/v1/comment", commentRouter(commentService));
-  router.use("/v1/certi", certiPostRouter(certiPostService));
-  router.use("/v1/transaction", transactionRouter());
+  router.use("/v1/review", reviewRouter(reviewService));
+  router.use("/v1/recipe", recipeRouter());
 
   return router;
 };

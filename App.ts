@@ -11,10 +11,6 @@ import NotFoundErrorHandler from "./middlewares/notFoundErrorHandler";
 import db from "./models";
 import { cryptoHelper } from "./utils/CryptoHelper";
 import { interval } from "rxjs";
-import PostRepository from "./repositories/post.repository";
-import TransactionService from "./services/transaction.service";
-import CommentRepository from "./repositories/comment.repository";
-import CertiPostRepository from "./repositories/certiPost.repository";
 
 const swaggerDocument = load(fs.readFileSync("./swagger/swagger.yaml", "utf8"));
 
@@ -38,14 +34,15 @@ export default class App {
 
     app.use("/v1/api-docs", serve, setup(swaggerDocument));
 
+    /*
     const commentRepository = new CommentRepository();
     const certiPostRepository = new CertiPostRepository();
     const postRepository = new PostRepository(
       db.sequelize,
       commentRepository,
       certiPostRepository,
-    );
-    const transactionService = new TransactionService(postRepository);
+    );*/
+    /*
     interval(MillisecondsToHourOffset).subscribe(async () => {
       //TODO / 600 제거
       const now = new Date().getHours();
@@ -56,7 +53,7 @@ export default class App {
       await transactionService.rewardAchievement(result.success);
       await transactionService.distributeToken(result.fail);
     });
-
+    */
     const router = createRootRouter(db.sequelize);
     app.use("/", router);
 
