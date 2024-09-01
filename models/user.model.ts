@@ -3,7 +3,7 @@ import { Database } from ".";
 
 export interface UserAttributes {
   id: number;
-  identifier: string;
+  email: string;
   name: string;
   passwordHash?: string;
   nickname: string;
@@ -14,7 +14,7 @@ export interface UserAttributes {
 
 class User extends Model<UserAttributes> {
   id: number;
-  identifier: string;
+  email: string;
   name: string;
   passwordHash?: string;
   nickname: string;
@@ -31,7 +31,7 @@ class User extends Model<UserAttributes> {
           allowNull: false,
           primaryKey: true,
         },
-        identifier: {
+        email: {
           type: DataTypes.STRING,
           allowNull: false,
         },

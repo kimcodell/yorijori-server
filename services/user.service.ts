@@ -2,17 +2,19 @@ import { ErrorWithCode } from "./../interfaces/ErrorWithCode";
 import User from "../models/user.model";
 import _ from "lodash";
 import RecipeRepository from "../repositories/recipe.repository";
+import UserRepository from "../repositories/user.repository";
+import { cryptoHelper } from "../utils/CryptoHelper";
 
 export default class UserService {
-  constructor(private recipeRepository: RecipeRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private recipeRepository: RecipeRepository,
+  ) {}
 
   public async getUserById(params: { userId: number }) {
     const { userId } = params;
 
-    const user = await User.findOne({
-      where: { id: userId, deletedAt: null },
-      attributes: ["id", "nickname", "name", "createdAt"],
-    });
+    const user = await this.userRepository.getUserByUserId({ userId });
     if (!user) {
       throw new ErrorWithCode(
         "INVALID USER",
@@ -37,46 +39,49 @@ export default class UserService {
     };
   }
 
+  public async delete({ userId }: { userId: number }) {
+    await this._checkIsUserExist({ userId });
+
+    await this.userRepository.delete({ userId });
+  }
+
   public async updateNickname(params: { userId: number; nickname: string }) {
     const { userId, nickname } = params;
 
-    const isValidUser = await this._existUser({ userId });
-    if (!isValidUser) {
-      throw new ErrorWithCode(
-        "INVALID USER",
-        "해당 유저는 존재하지 않거나 이미 탈퇴하였습니다.",
-      );
-    }
+    await this._checkIsUserExist({ userId });
 
-    await User.update({ nickname }, { where: { id: userId, deletedAt: null } });
+    await this.userRepository.update({ userId, nickname });
   }
 
-  public async delete(params: { userId: number }) {
+  public async updatePassword(params: {
+    userId: number;
+    password: string;
+    newPassword: string;
+  }) {
+    const { userId, password, newPassword } = params;
+
+    const originPasswordHash =
+      await this.userRepository.getPasswordHashByUserId({ userId });
+
+    const passwordHash = cryptoHelper.bcryptHash(password);
+
+    if (originPasswordHash !== passwordHash) {
+      throw new ErrorWithCode("INVALID PASSWORD", "잘못된 비밀번호입니다.");
+    }
+
+    const newPasswordHash = cryptoHelper.bcryptHash(newPassword);
+
+    await this.userRepository.update({ userId, passwordHash: newPasswordHash });
+  }
+
+  private async _checkIsUserExist(params: { userId: number }) {
     const { userId } = params;
-
-    const isValidUser = await this._existUser({ userId });
-    if (!isValidUser) {
+    const user = await this.userRepository.getUserByUserId({ userId });
+    if (!user) {
       throw new ErrorWithCode(
         "INVALID USER",
         "해당 유저는 존재하지 않거나 이미 탈퇴하였습니다.",
       );
-    }
-    await User.update(
-      { deletedAt: new Date().toISOString() },
-      { where: { id: userId } },
-    );
-  }
-
-  private async _existUser(params: { userId: number }) {
-    const { userId: id } = params;
-    const user = await User.findOne({
-      where: { id, deletedAt: null },
-      attributes: ["id"],
-    });
-    if (user) {
-      return true;
-    } else {
-      return false;
     }
   }
 }

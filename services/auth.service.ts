@@ -9,10 +9,10 @@ export default class AuthService {
   public async create(params: SignUpDto) {
     const { name, identifier, password, nickname } = params;
     await this.checkNicknameDuplication(nickname);
-    await this.checkIdentifierDuplication(identifier);
+    await this.checkEmailDuplication(identifier);
     
     const passwordHash = cryptoHelper.bcryptHash(password);
-    const newUser = await this.userRepository.createUser({
+    const newUser = await this.userRepository.create({
       name,
       nickname,
       identifier,
@@ -22,9 +22,9 @@ export default class AuthService {
     return jwt;
   }
 
-  public async login(params: { identifier: string; password: string }) {
-    const { identifier, password } = params;
-    const user = await this.userRepository.findUserByIdentifier(identifier);
+  public async login(params: { email: string; password: string }) {
+    const { email, password } = params;
+    const user = await this.userRepository.getUserByEmail({email});
     if (!user) throw new ErrorWithCode("NOT REGISTERED EMAIL", "회원정보를 바르게 입력해주세요.");
     if (cryptoHelper.compareBcryptHash(password, user.passwordHash)) {
       return cryptoHelper.encodeJwt({ id: user.id });
@@ -34,16 +34,16 @@ export default class AuthService {
   }
 
   public async checkNicknameDuplication(nickname: string) {
-    const hasNickname = await this.userRepository.findUserByNickname(nickname);
-    if (!!hasNickname) {
+    const user = await this.userRepository.getUserByNickname({nickname});
+    if (!!user) {
       throw new ErrorWithCode("DUPLICATED NICKNAME", "이미 사용 중인 닉네임입니다.");
     }
   }
 
-  public async checkIdentifierDuplication(identifier: string) {
-    const hasEmail = await this.userRepository.findUserByIdentifier(identifier);
-    if (!!hasEmail) {
-      throw new ErrorWithCode("DUPLICATED EMAIL", "이미 사용 중인 이메일입니다.");
+  public async checkEmailDuplication(email: string) {
+    const user = await this.userRepository.getUserByEmail({email});
+    if (!!user) {
+      throw new ErrorWithCode("DUPLICATED IDENTIFIER", "이미 사용 중인 아이디입니다.");
     }
   }
 }

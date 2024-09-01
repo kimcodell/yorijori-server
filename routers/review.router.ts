@@ -1,9 +1,8 @@
-import { successResponse } from "./../utils/ExpressUtils";
 import { NextFunction, Request, Response, Router } from "express";
 import Joi from "joi";
 import { authGuard } from "../guards/auth.guard";
 import ReviewService from "../services/review.service";
-import { wrap } from "../utils/ExpressUtils";
+import { successResponse, wrap } from "../utils/ExpressUtils";
 
 class RouteHandler {
   constructor(private reviewService: ReviewService) {}

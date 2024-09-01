@@ -9,7 +9,7 @@ class RouteHandler {
   public async create(req: Request, res: Response, next: NextFunction) {
     try {
       const { error, value } = Joi.object({
-        identifier: Joi.string().email().required(),
+        email: Joi.string().email().required(),
         name: Joi.string().required(),
         password: Joi.string().required(),
         nickname: Joi.string().required(),
@@ -26,7 +26,7 @@ class RouteHandler {
   public async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { error, value } = Joi.object({
-        identifier: Joi.string().email().required(),
+        email: Joi.string().email().required(),
         password: Joi.string().required(),
       }).validate(req.body);
       if (error) throw error;
@@ -38,9 +38,26 @@ class RouteHandler {
     }
   }
 
-  // TODO
+  public async getIsUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { error, value } = Joi.object({
+        email: Joi.string().email().required(),
+      }).validate(req.body);
+      if (error) throw error;
+      
+    } catch(error) {
+      next(error);
+    }
+  }
+
   public async update(req: Request, res: Response, next: NextFunction) {
     try {
+      const { error, value } = Joi.object({
+        email: Joi.string().required(),
+      }).validate(req.body);
+      if (error) throw error;
+
+      // await this.authService.update(value);
     } catch (error) {
       next(error);
     }
@@ -56,12 +73,13 @@ class RouteHandler {
         nickname: Joi.string().required(),
       }).validate(req.body);
       if (error) throw error;
+      
       this.authService
         .checkNicknameDuplication(value.nickname)
-        .then(() => successResponse(res, {}))
+        .then(() => successResponse(res, { isValid: true, message: "사용 가능한 닉네임입니다." }))
         .catch((error) => {
           if (error?.code === "DUPLICATED NICKNAME") {
-            successResponse(res, { message: "이미 존재하는 닉네임 입니다." });
+            successResponse(res, { isValid: false, message: "이미 존재하는 닉네임 입니다." });
           } else {
             throw error;
           }
@@ -71,22 +89,23 @@ class RouteHandler {
     }
   }
 
-  public async checkIdentifierDuplication(
+  public async checkEmailDuplication(
     req: Request,
     res: Response,
     next: NextFunction,
   ) {
     try {
       const { error, value } = Joi.object({
-        identifier: Joi.string().email().required(),
+        email: Joi.string().email().required(),
       }).validate(req.body);
       if (error) throw error;
+      
       this.authService
-        .checkIdentifierDuplication(value.identifier)
-        .then(() => successResponse(res, {}))
+        .checkEmailDuplication(value.email)
+        .then(() => successResponse(res, { isValid: true, message: "사용 가능한 아이디입니다." }))
         .catch((error) => {
-          if (error?.code === "DUPLICATED IDENTIFIER") {
-            successResponse(res, { message: "이미 사용 중인 아이디 입니다." });
+          if (error?.code === "DUPLICATED EMAIL") {
+            successResponse(res, { isValid: false, message: "이미 사용 중인 아이디 입니다." });
           } else {
             throw error;
           }
@@ -102,16 +121,16 @@ function authRouter(...params: [AuthService]) {
   const handler = new RouteHandler(...params);
 
   router.post("/signup", wrap(handler.create.bind(handler)));
-  router.post("/email", wrap(handler.login.bind(handler)));
-  router.put("/", wrap(handler.update.bind(handler)));
+  router.post("/login", wrap(handler.login.bind(handler)));
+  router.put("/password", wrap(handler.update.bind(handler)));
 
   router.post(
     "/check/nickname",
     wrap(handler.checkNicknameDuplication.bind(handler)),
   );
   router.post(
-    "/check/identifier",
-    wrap(handler.checkIdentifierDuplication.bind(handler)),
+    "/check/email",
+    wrap(handler.checkEmailDuplication.bind(handler)),
   );
 
   return router;
