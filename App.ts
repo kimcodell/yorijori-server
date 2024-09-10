@@ -1,5 +1,5 @@
 import fs from "fs";
-import { HttpStatus, MillisecondsToHourOffset } from "./utils/Constants";
+import { HttpStatus } from "./utils/Constants";
 import cookieParser from "cookie-parser";
 import express, { Express, NextFunction, Request, Response } from "express";
 import cors from "cors";
@@ -10,7 +10,6 @@ import errorHandler from "./middlewares/errorHandler";
 import NotFoundErrorHandler from "./middlewares/notFoundErrorHandler";
 import db from "./models";
 import { cryptoHelper } from "./utils/CryptoHelper";
-import { interval } from "rxjs";
 
 const swaggerDocument = load(fs.readFileSync("./swagger/swagger.yaml", "utf8"));
 

@@ -29,7 +29,7 @@ const createRootRouter = (sequelize: Sequelize) => {
   const router = Router();
 
   router.get("", (req: Request, res: Response) => {
-    res.send("api server");
+    res.send("api server. 혀니 안녕??");
   });
 
   router.use("/v1/auth", authRouter(authService));
