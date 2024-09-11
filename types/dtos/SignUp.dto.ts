@@ -1,5 +1,5 @@
 export default interface SignUpDto {
-  identifier: string;
+  email: string;
   name: string;
   password?: string;
   nickname: string;
