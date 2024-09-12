@@ -35,7 +35,7 @@ class LikeOption extends Model<LikeOptionAttributes> {
           allowNull: false,
         },
         selectedIngredients: {
-          type: DataTypes.ARRAY(DataTypes.STRING),
+          type: DataTypes.TEXT,
           allowNull: false,
         },
         salinityLevel: {

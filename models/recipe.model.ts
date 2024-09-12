@@ -51,15 +51,15 @@ class Recipe extends Model<RecipeAttributes> {
           allowNull: false,
         },
         tags: {
-          type: DataTypes.ARRAY(DataTypes.STRING),
+          type: DataTypes.TEXT,
           allowNull: true,
         },
         tips: {
-          type: DataTypes.ARRAY(DataTypes.TEXT),
+          type: DataTypes.TEXT,
           allowNull: true,
         },
         cookingTime: {
-          type: DataTypes.NUMBER,
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
         difficulty: {
