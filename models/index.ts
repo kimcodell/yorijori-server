@@ -32,7 +32,7 @@ const sequelize = new Sequelize(database, username, password, {
   define: {
     timestamps: true,
   },
-  timezone: "Asia/seoul",
+  timezone: "+09:00",
   pool: {
     max: 50,
     min: 10,
