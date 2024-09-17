@@ -11,7 +11,7 @@ class RouteHandler {
       const { error, value } = Joi.object({
         email: Joi.string().email().required(),
         name: Joi.string().required(),
-        password: Joi.string().required(),
+        password: Joi.string().min(8).max(30).required(),
         nickname: Joi.string().required(),
       }).validate(req.body);
       if (error) throw error;
@@ -27,7 +27,7 @@ class RouteHandler {
     try {
       const { error, value } = Joi.object({
         email: Joi.string().email().required(),
-        password: Joi.string().required(),
+        password: Joi.string().min(8).max(30).required(),
       }).validate(req.body);
       if (error) throw error;
 
@@ -42,7 +42,7 @@ class RouteHandler {
     try {
       const { error, value } = Joi.object({
         email: Joi.string().email().required(),
-		name: Joi.string().required(),
+		    name: Joi.string().required(),
       }).validate(req.query);
       if (error) throw error;
       
@@ -57,11 +57,13 @@ class RouteHandler {
   public async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { error, value } = Joi.object({
-        email: Joi.string().required(),
+		userId: Joi.number().required(),
+		password: Joi.string().min(8).max(30).required(),
       }).validate(req.body);
       if (error) throw error;
 
-      // await this.authService.update(value);
+      await this.authService.update(value);
+	  successResponse(res, {});
     } catch (error) {
       next(error);
     }
@@ -128,15 +130,8 @@ function authRouter(...params: [AuthService]) {
   router.post("/login", wrap(handler.login.bind(handler)));
   router.put("/password", wrap(handler.update.bind(handler)));
   router.get("/", wrap(handler.checkIsUser.bind(handler)));
-
-  router.post(
-    "/check/nickname",
-    wrap(handler.checkNicknameDuplication.bind(handler)),
-  );
-  router.post(
-    "/check/email",
-    wrap(handler.checkEmailDuplication.bind(handler)),
-  );
+  router.post("/check/nickname", wrap(handler.checkNicknameDuplication.bind(handler)));
+  router.post("/check/email", wrap(handler.checkEmailDuplication.bind(handler)));
 
   return router;
 }

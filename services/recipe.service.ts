@@ -9,6 +9,10 @@ export default class RecipeService {
 
   public async create(params: {}) {}
 
+  public async getAllRecipes(params: {}) {
+    return await this.recipeRepository.getAllRecipesByUserId(1);
+  }
+  
   public async update(params: {}) {}
 
   public async delete(params: {}) {}

@@ -1,6 +1,7 @@
 import { ErrorWithCode } from "../interfaces/ErrorWithCode";
 import User from "../models/user.model";
 import SignUpDto from "../types/dtos/SignUp.dto";
+import { UserAttributes } from "../models/user.model";
 
 export default class UserRepository {
   public async create(
@@ -9,7 +10,7 @@ export default class UserRepository {
     const newUser = await User.create(data);
     return newUser;
   }
-
+	
   public async delete({ userId }: { userId: number }) {
     await User.update(
       { deletedAt: new Date().toISOString() },
@@ -17,26 +18,29 @@ export default class UserRepository {
     );
   }
 
-  public async getUserByUserId({ userId }: { userId: number }) {
+  public async getUserByUserId({ userId, includePasswordHash = false }: { userId: number; includePasswordHash?: boolean }) {
+	const attributes = ["id", "nickname", "name", "createdAt", ...(includePasswordHash ? ["passwordHash"] : [])];
     const user = await User.findOne({
       where: { id: userId, deletedAt: null },
-      attributes: ["id", "nickname", "name", "createdAt"],
+      attributes,
     });
     return user;
   }
 
-  public async getUserByEmail({ email }: { email: string }) {
+  public async getUserByEmail({ email, includePasswordHash = false }: { email: string; includePasswordHash?: boolean }) {
+	const attributes = ["id", "nickname", "name", "createdAt", ...(includePasswordHash ? ["passwordHash"] : [])];
     const user = await User.findOne({
       where: { email, deletedAt: null },
-      attributes: ["id", "nickname", "name", "createdAt"],
+      attributes,
     });
     return user;
   }
 
-  public async getUserByNickname({ nickname }: { nickname: string }) {
-    const user = await User.findOne({
+  public async getUserByNickname({ nickname, includePasswordHash = false }: { nickname: string; includePasswordHash?: boolean }) {
+	const attributes = ["id", "nickname", "name", "createdAt", ...(includePasswordHash ? ["passwordHash"] : [])];
+	const user = await User.findOne({
       where: { nickname, deletedAt: null },
-      attributes: ["id", "nickname", "name", "createdAt"],
+      attributes,
     });
     return user;
   }

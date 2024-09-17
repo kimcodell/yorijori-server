@@ -35,7 +35,7 @@ const createRootRouter = (sequelize: Sequelize) => {
   router.use("/v1/auth", authRouter(authService));
   router.use("/v1/user", userRouter(userService));
   router.use("/v1/review", reviewRouter(reviewService));
-  router.use("/v1/recipe", recipeRouter());
+  router.use("/v1/recipe", recipeRouter(recipeService));
   router.use("/v1/keyword", keywordRouter());
 
   return router;

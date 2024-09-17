@@ -7,7 +7,7 @@ import ReviewRepository from "./review.repository";
 import CookingStep from "../models/cookingStep.model";
 import Ingredients from "../models/ingredients.model";
 
-export default class PostRepository {
+export default class RecipeRepository {
   constructor(
     private sequelize: Sequelize,
     private reviewRepository: ReviewRepository,
@@ -27,10 +27,7 @@ export default class PostRepository {
         "createdAt",
       ],
       include: [
-        {
-          model: Like,
-          attributes: ["id"],
-        },
+       
         {
           model: Review,
           attributes: ["id"],

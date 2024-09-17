@@ -23,7 +23,7 @@ export default class App {
     app.use(cookieParser());
     app.use(
       cors({
-        origin: ["http://localhost:8080", "http://localhost:3000", "http://yorijori-server-higwi.run.goorm.site"],
+        origin: ["http://localhost:8080", "http://localhost:3000", "https://yorijori-server-higwi.run.goorm.site"],
         optionsSuccessStatus: HttpStatus.OK,
         credentials: true,
       }),

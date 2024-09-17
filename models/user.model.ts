@@ -5,7 +5,7 @@ export interface UserAttributes {
   id: number;
   email: string;
   name: string;
-  passwordHash?: string;
+  passwordHash: string;
   nickname: string;
   createdAt: string;
   updatedAt: string;
@@ -16,7 +16,7 @@ class User extends Model<UserAttributes> {
   id: number;
   email: string;
   name: string;
-  passwordHash?: string;
+  passwordHash: string;
   nickname: string;
   createdAt!: string;
   updatedAt!: string;
@@ -41,7 +41,7 @@ class User extends Model<UserAttributes> {
         },
         passwordHash: {
           type: DataTypes.STRING(255),
-          allowNull: true,
+          allowNull: false,
         },
         nickname: {
           type: DataTypes.STRING(100),
