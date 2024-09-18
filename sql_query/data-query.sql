@@ -30,3 +30,6 @@ INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isN
 INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('1', '상추', '3', '장', '1');
 
 -- 요리법
+INSERT INTO `yorijori`.`like` (`userId`, `recipeId`) VALUES ('2', '1');
+INSERT INTO `yorijori`.`like` (`userId`, `recipeId`) VALUES ('3', '1');
+INSERT INTO `yorijori`.`like` (`userId`, `recipeId`) VALUES ('4', '1');
