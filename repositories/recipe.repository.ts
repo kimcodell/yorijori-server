@@ -1,11 +1,12 @@
 import { Op, Sequelize } from "sequelize";
-import Review from "../models/review.model";
 import Recipe from "../models/recipe.model";
-import User from "../models/user.model";
-import Like from "../models/like.model";
-import ReviewRepository from "./review.repository";
 import CookingStep from "../models/cookingStep.model";
 import Ingredients from "../models/ingredients.model";
+import Review from "../models/review.model";
+import Like from "../models/like.model";
+import LikeOption from "../models/likeOption.model";
+import User from "../models/user.model";
+import ReviewRepository from "./review.repository";
 
 export default class RecipeRepository {
   constructor(
@@ -13,26 +14,61 @@ export default class RecipeRepository {
     private reviewRepository: ReviewRepository,
   ) {}
 
+  public async create() {}
+  
+  public async update() {}
+  
+  public async delete(recipeId: number) {
+    await Recipe.update(
+      { deletedAt: new Date().toISOString() },
+      { where: { recipeId } },
+    );
+    //TODO DB에서 모든 데이터 아예 삭제할지 남겨둘지 정하기
+  }
+  
+  public async getSimpleRecipeByRecipeId(recipeId: number) {
+    const recipe = await Recipe.findOne({
+      where: { recipeId, deletedAt: null },
+      attributes: {
+        include: [
+          ["id", "recipeId"],
+          "title",
+          "userId",
+          "category",
+          "tags",
+          "difficulty",
+          "cookingTime",
+          "createdAt",
+        ],
+      }
+    });
+    return recipe;
+  }
+  
   public async getAllRecipesByUserId(userId: number) {
     //TODO 수정
     const recipes = await Recipe.findAll({
       where: { userId, deletedAt: null },
-      attributes: [
-        ["id", "recipeId"],
-        "title",
-        "category",
-        "tags",
-        "difficulty",
-        "cookingTime",
-        "createdAt",
-      ],
-      include: [
-       
-        {
-          model: Review,
-          attributes: ["id"],
-        },
-      ],
+      attributes: {
+        include: [
+          ["id", "recipeId"],
+          "title",
+          "category",
+          "tags",
+          "difficulty",
+          "cookingTime",
+          "createdAt",
+          [
+            this.sequelize.literal(`(
+              SELECT COUNT(*)  
+              FROM review
+              WHERE
+                review.recipeId = recipe.id
+            )`),
+            'reviewCount',
+          ],
+        ]
+      },
       raw: true,
     });
 
@@ -40,36 +76,36 @@ export default class RecipeRepository {
   }
 
   public async getAllLikeRecipesByUserId(userId: number) {
-    const likeRecipes = await Like.findAll({
-      where: { userId },
-      attributes: ["id", "recipeId"],
-    });
-    //TODO 수정
-    const recipes = await Recipe.findAll({
-      where: { id: likeRecipes.map((recipe) => recipe.recipeId) },
-      attributes: [
-        ["id", "recipeId"],
-        "title",
-        "category",
-        "tags",
-        "difficulty",
-        "cookingTime",
-        "createdAt",
-      ],
-      include: [
-        {
-          model: Like,
-          attributes: ["id"],
-        },
-        {
-          model: Review,
-          attributes: ["id"],
-        },
-      ],
-      raw: true,
-    });
-
-    return recipes;
+    // const likeRecipes = await Like.findAll({
+    //   where: { userId },
+    //   attributes: ["id", "recipeId"],
+    // });
+    // //TODO 수정
+    // const recipes = await Recipe.findAll({
+    //   where: { id: likeRecipes.map((recipe) => recipe.recipeId) },
+    //   attributes: [
+    //     ["id", "recipeId"],
+    //     "title",
+    //     "category",
+    //     "tags",
+    //     "difficulty",
+    //     "cookingTime",
+    //     "createdAt",
+    //   ],
+    //   include: [
+    //     {
+    //       model: Like,
+    //       attributes: ["id"],
+    //     },
+    //     {
+    //       model: Review,
+    //       attributes: ["id"],
+    //     },
+    //   ],
+    //   raw: true,
+    // });
+    //
+    // return recipes;
   }
 
   /*

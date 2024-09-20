@@ -10,7 +10,8 @@ export interface RecipeAttributes {
   tags: string[];
   tips: string[]; //수정 가능
   cookingTime: number; //unit: 분
-  difficulty: Difficulty; //1: 하, 2: 중, 3: 상
+  difficulty: Difficulty; //0: 하, 1: 중, 2: 상
+  views: number;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -24,7 +25,8 @@ class Recipe extends Model<RecipeAttributes> {
   tags: string[];
   tips: string[]; //?
   cookingTime: number; //unit: 분
-  difficulty: Difficulty; //1: 하, 2: 중, 3: 상
+  difficulty: Difficulty; //0: 하, 1: 중, 2: 상
+  views: number;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -65,6 +67,11 @@ class Recipe extends Model<RecipeAttributes> {
         difficulty: {
           type: DataTypes.INTEGER,
           allowNull: false,
+        },
+        views: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          defaultValue: 0,
         },
         createdAt: {
           type: DataTypes.DATE,

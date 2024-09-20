@@ -16,9 +16,9 @@ export enum TransactionJobStatus {
 }
 
 export enum Difficulty {
-  EASY = 1,
-  COMMON = 2,
-  HARD = 3,
+  EASY = 0,
+  COMMON = 1,
+  HARD = 2,
 }
 
 export enum SalinityLevel {
