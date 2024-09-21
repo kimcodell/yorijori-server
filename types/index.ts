@@ -28,3 +28,20 @@ export enum SalinityLevel {
   HIGH = 4,
   VERY_HIGH = 5,
 }
+
+export interface Review {
+  reviewId: number;
+  recipeId: number;
+  userId: number;
+  nickname: string;
+  content: string;
+  createdAt: string;
+}
+
+export interface CookingStep {
+  stepNumber: number;
+  imageUrl: string;
+  content: string;
+}
+
+export type DifficultyType = '상' | '중' | '하';

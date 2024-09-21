@@ -1,5 +1,5 @@
-import { Op, Sequelize } from "sequelize";
-import Recipe from "../models/recipe.model";
+import { Op, Sequelize, WhereOptions } from "sequelize";
+import Recipe, {RecipeAttributes} from "../models/recipe.model";
 import CookingStep from "../models/cookingStep.model";
 import Ingredients from "../models/ingredients.model";
 import Review from "../models/review.model";
@@ -7,6 +7,7 @@ import Like from "../models/like.model";
 import LikeOption from "../models/likeOption.model";
 import User from "../models/user.model";
 import ReviewRepository from "./review.repository";
+import CreateRecipeDto from '../types/dtos/CreateRecipe.dto';
 
 export default class RecipeRepository {
   constructor(
@@ -14,30 +15,38 @@ export default class RecipeRepository {
     private reviewRepository: ReviewRepository,
   ) {}
 
-  public async create() {}
+  public async create(params: CreateRecipeDto) {}
   
   public async update() {}
   
   public async delete(recipeId: number) {
-    await Recipe.update(
-      { deletedAt: new Date().toISOString() },
-      { where: { recipeId } },
-    );
-    //TODO DB에서 모든 데이터 아예 삭제할지 남겨둘지 정하기
+    const transaction = await this.sequelize.transaction();
+    
+    try {
+      await CookingStep.destroy({ where: { recipeId },  transaction });
+      await Ingredients.destroy({ where: { recipeId },  transaction });
+      await Recipe.destroy({ where: { id: recipeId}, transaction });
+      
+      await transaction.commit();
+    } catch(error) {
+      await transaction.rollback();
+    }
   }
   
   public async getSimpleRecipeByRecipeId(recipeId: number) {
     const recipe = await Recipe.findOne({
-      where: { recipeId, deletedAt: null },
+      where: { id: recipeId },
       attributes: {
         include: [
           ["id", "recipeId"],
+          "imageUrl",
           "title",
           "userId",
           "category",
           "tags",
           "difficulty",
           "cookingTime",
+          "views",
           "createdAt",
         ],
       }
@@ -45,181 +54,57 @@ export default class RecipeRepository {
     return recipe;
   }
   
-  public async getAllRecipesByUserId(userId: number) {
-    //TODO 수정
-    const recipes = await Recipe.findAll({
-      where: { userId, deletedAt: null },
+  private async _getAllRecipes({condition, userId}: {condition: WhereOptions<RecipeAttributes>, userId: number}) {
+    const recipe = await Recipe.findAll({
+      where: condition,
       attributes: {
         include: [
           ["id", "recipeId"],
+          "userId",
+          "imageUrl",
           "title",
           "category",
           "tags",
           "difficulty",
-          "cookingTime",
+          "views",
           "createdAt",
           [
             this.sequelize.literal(`(
-              SELECT COUNT(*)  
-              FROM review
+              SELECT COUNT(*)
+              FROM likes l
               WHERE
-                review.recipeId = recipe.id
+                l.recipeId = recipe.id
+                AND
+                l.userId = ${userId}
+            )`), 
+            'isLiked',
+          ],
+          [
+            this.sequelize.literal(`(
+              SELECT COUNT(*)  
+              FROM review r
+              WHERE
+                r.recipeId = recipe.id
             )`),
             'reviewCount',
           ],
-        ]
+          [
+            this.sequelize.literal(`(
+              SELECT COUNT(*)  
+              FROM likes l
+              WHERE
+                l.recipeId = recipe.id
+            )`),
+            'likeCount',
+          ],
+        ],
       },
-      raw: true,
     });
-
+    return recipe;
+  }
+  
+  public async getAllRecipesByUserId(userId: number) {
+    const recipes = this._getAllRecipes({ condition: { userId }, userId });
     return recipes;
   }
-
-  public async getAllLikeRecipesByUserId(userId: number) {
-    // const likeRecipes = await Like.findAll({
-    //   where: { userId },
-    //   attributes: ["id", "recipeId"],
-    // });
-    // //TODO 수정
-    // const recipes = await Recipe.findAll({
-    //   where: { id: likeRecipes.map((recipe) => recipe.recipeId) },
-    //   attributes: [
-    //     ["id", "recipeId"],
-    //     "title",
-    //     "category",
-    //     "tags",
-    //     "difficulty",
-    //     "cookingTime",
-    //     "createdAt",
-    //   ],
-    //   include: [
-    //     {
-    //       model: Like,
-    //       attributes: ["id"],
-    //     },
-    //     {
-    //       model: Review,
-    //       attributes: ["id"],
-    //     },
-    //   ],
-    //   raw: true,
-    // });
-    //
-    // return recipes;
-  }
-
-  /*
-  public async getAllPosts(userId?: number) {
-    const posts = await Recipe.findAll({
-      where: { deletedAt: null, ...(userId ? { userId } : {}) },
-      include: [{ model: User, attributes: [] }],
-      attributes: [
-        ["id", "postId"],
-        "userId",
-        "title",
-        "distributionTokenAmount",
-        "status",
-        "createdAt",
-        "User.nickname",
-      ],
-      raw: true,
-      order: [["createdAt", "DESC"]],
-    });
-    return posts;
-  }
-
-  public async getPostById(postId: number) {
-    const post = (await Recipe.findOne({
-      where: { id: postId, deletedAt: null },
-      attributes: [
-        "id",
-        "userId",
-        "title",
-        "content",
-        "distributionTokenAmount",
-        "certificationStartDate",
-        "certificationEndDate",
-        "certificationCycle",
-        "certificationTime",
-        "status",
-        "createdAt",
-        "User.nickname",
-      ],
-      raw: true,
-      include: { model: User, attributes: [] },
-    })) as Recipe & { nickname: string };
-    if (!post) throw new Error("존재하지 않는 게시글입니다.");
-    const [comments, certiPosts] = await Promise.all([
-      this.reviewRepository.getCommentsOfPostId(postId),
-      this.certiPostRepository.getCertiPostsOfPostId(postId),
-    ]);
-
-    return {
-      postId: post.id,
-      userId: post.userId,
-      nickname: post.nickname,
-      title: post.title,
-      content: post.content,
-      distributionTokenAmount: post.distributionTokenAmount,
-      certificationStartDate: post.certificationStartDate,
-      certificationEndDate: post.certificationEndDate,
-      certificationCycle: post.certificationCycle,
-      certificationTime: post.certificationTime,
-      status: post.status,
-      createdAt: post.createdAt,
-      comments,
-      certiPosts,
-    };
-  }
-
-  public async getAllCommentingPosts(userId: number) {
-    const commentingPosts = await Review.findAll({
-      where: { userId, deletedAt: null },
-      attributes: ["postId"],
-    });
-    const commentingPostIds = commentingPosts.map((comment) => comment.postId);
-
-    const posts = await Recipe.findAll({
-      where: { id: { [Op.in]: commentingPostIds }, deletedAt: null },
-      attributes: [
-        ["id", "postId"],
-        "userId",
-        "title",
-        "distributionTokenAmount",
-        "status",
-        "createdAt",
-        "User.nickname",
-      ],
-      raw: true,
-      include: [{ model: User, attributes: [] }],
-    });
-    return posts;
-  }
-
-  public async getCheckablePosts(certificationTime: number) {
-    const checkablePosts = await Recipe.findAll({
-      where: {
-        status: PostStatus.IN_PROGRESS,
-        certificationTime,
-        deletedAt: null,
-      },
-      attributes: { exclude: ["deletedAt"] },
-    });
-    return checkablePosts.filter((post) => {
-      const nowDate = new Date().setHours(0, 0, 0, 0);
-      const postStartDate = new Date(post.certificationStartDate).setHours(
-        0,
-        0,
-        0,
-        0,
-      );
-      const termFromStartDate =
-        (nowDate - postStartDate) / MillisecondsToDateOffset;
-      if (termFromStartDate % post.certificationCycle === 0) {
-        return true;
-      }
-      return false;
-    });
-  }
-  */
 }

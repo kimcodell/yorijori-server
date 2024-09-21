@@ -46,7 +46,7 @@ class Like extends Model<LikeAttributes> {
       },
       {
         sequelize,
-        tableName: "like",
+        tableName: "likes",
       },
     );
   }

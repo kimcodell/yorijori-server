@@ -5,7 +5,7 @@ export interface CookingStepAttributes {
   id: number;
   recipeId: number;
   stepNumber: number;
-  image: string;
+  imageUrl: string;
   content: string;
 }
 
@@ -13,7 +13,7 @@ class CookingStep extends Model<CookingStepAttributes> {
   id: number;
   recipeId: number;
   stepNumber: number;
-  image: string;
+  imageUrl: string;
   content: string;
 
   static initModel(sequelize: Sequelize) {
@@ -33,7 +33,7 @@ class CookingStep extends Model<CookingStepAttributes> {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-        image: {
+        imageUrl: {
           type: DataTypes.STRING,
           allowNull: false,
         },

@@ -5,6 +5,7 @@ import { Difficulty } from "../types";
 export interface RecipeAttributes {
   id: number;
   userId: number;
+  imageUrl: string;
   title: string;
   category: string;
   tags: string[];
@@ -14,12 +15,12 @@ export interface RecipeAttributes {
   views: number;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: string;
 }
 
 class Recipe extends Model<RecipeAttributes> {
   id: number;
   userId: number;
+  imageUrl: string;
   title: string;
   category: string;
   tags: string[];
@@ -29,7 +30,6 @@ class Recipe extends Model<RecipeAttributes> {
   views: number;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: string;
 
   static initModel(sequelize: Sequelize) {
     return Recipe.init(
@@ -42,6 +42,10 @@ class Recipe extends Model<RecipeAttributes> {
         },
         userId: {
           type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+        imageUrl: {
+          type: DataTypes.STRING,
           allowNull: false,
         },
         title: {
@@ -83,17 +87,11 @@ class Recipe extends Model<RecipeAttributes> {
           allowNull: false,
           defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
         },
-        deletedAt: {
-          type: DataTypes.DATE,
-          allowNull: true,
-          defaultValue: null,
-        },
       },
       {
         sequelize,
         tableName: "recipe",
         modelName: "recipe",
-        paranoid: true,
       },
     );
   }

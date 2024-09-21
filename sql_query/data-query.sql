@@ -23,26 +23,27 @@ INSERT INTO `yorijori`.`review` (`content`, `userId`, `recipeId`) VALUES ('너�
 
 
 -- 재료
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('1', '쌀', '210', 'g', '1');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('1', '당근', '20', 'g', '0');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('1', '간 돼지고기', '80', 'g', '0');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('1', '참기름', '1', '작은 술', '1');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('1', '참치', '80', 'g', '0');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('1', '고추장', '1', '큰 술', '1');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('1', '상추', '3', '장', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '쌀', '0', '210', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '당근', '0', '20', 'g', '0', '0');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '간 돼지고기', '0', '80', 'g', '0', '0');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '참기름', '0', '1', '작은 술', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '참치', '0', '80', 'g', '0', '0');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '고추장', '0', '1', '큰 술', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '상추', '0', '3', '장', '0', '1');
 
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('2', '파스타 면', '200', 'g', '1');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('2', '토마토 소스', '200', 'g', '1');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('2', '간 돼지고기', '50', 'g', '0');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('2', '양파', '20', 'g', '1');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('2', '올리브오일', '1', '큰 술', '1');
-INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amount`, `unit`, `isNecessary`) VALUES ('2', '모짜렐라 치즈', '50', 'g', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('2', '파스타 면', '0', '200', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('2', '토마토 소스', '0', '200', 'g', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('2', '간 돼지고기', '0', '50', 'g', '0', '0');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('2', '양파', '0', '20', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('2', '올리브오일', '0', '1', '큰 술', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('2', '모짜렐라 치즈', '0', '50', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('2', '소금', '0', '1', '작은 술', '1', '1');
 
 
 -- 좋아요
-INSERT INTO `yorijori`.`like` (`userId`, `recipeId`) VALUES ('2', '1');
-INSERT INTO `yorijori`.`like` (`userId`, `recipeId`) VALUES ('3', '1');
-INSERT INTO `yorijori`.`like` (`userId`, `recipeId`) VALUES ('4', '1');
-INSERT INTO `yorijori`.`like` (`userId`, `recipeId`) VALUES ('2', '2');
+INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('2', '1');
+INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('3', '1');
+INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('4', '1');
+INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('2', '2');
 
 -- 요리방법
