@@ -25,6 +25,6 @@ export default class RecipeService {
   }
   
   public async getAllRecipes(params: {}) {
-    return await this.recipeRepository.getAllRecipesByUserId(1);
+    return await this.recipeRepository.getAllRecipesByCondition({}, 2);
   }
 }

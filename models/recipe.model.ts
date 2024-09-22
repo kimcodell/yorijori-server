@@ -8,8 +8,8 @@ export interface RecipeAttributes {
   imageUrl: string;
   title: string;
   category: string;
-  tags: string[];
-  tips: string[]; //수정 가능
+  tags: string;
+  tips: string; //수정 가능
   cookingTime: number; //unit: 분
   difficulty: Difficulty; //0: 하, 1: 중, 2: 상
   views: number;
@@ -23,8 +23,8 @@ class Recipe extends Model<RecipeAttributes> {
   imageUrl: string;
   title: string;
   category: string;
-  tags: string[];
-  tips: string[]; //?
+  tags: string;
+  tips: string;
   cookingTime: number; //unit: 분
   difficulty: Difficulty; //0: 하, 1: 중, 2: 상
   views: number;

@@ -15,11 +15,13 @@ import RecipeService from "../services/recipe.service";
 import UserRepository from "../repositories/user.repository";
 import RecipeRepository from "../repositories/recipe.repository";
 import ReviewRepository from "../repositories/review.repository";
+import LikeRepository from "../repositories/like.repository";
 
 const createRootRouter = (sequelize: Sequelize) => {
   const userRepository = new UserRepository();
   const reviewRepository = new ReviewRepository();
-  const recipeRepository = new RecipeRepository(sequelize, reviewRepository);
+  const likeRepository = new LikeRepository(sequelize);
+  const recipeRepository = new RecipeRepository(sequelize, reviewRepository, likeRepository);
 
   const authService = new AuthService(userRepository);
   const userService = new UserService(userRepository, recipeRepository);
