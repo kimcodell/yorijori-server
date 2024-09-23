@@ -1,11 +1,16 @@
+import { Op } from "sequelize";
 import { ErrorWithCode } from "./../interfaces/ErrorWithCode";
-import _ from "lodash";
 import Review from "../models/review.model";
 import Recipe from "../models/recipe.model";
 import RecipeRepository from "../repositories/recipe.repository";
+import LikeRepository from '../repositories/like.repository';
+import { RecipeOrderType } from '../types';
 
 export default class RecipeService {
-  constructor(private recipeRepository: RecipeRepository) {}
+  constructor(
+    private recipeRepository: RecipeRepository,
+    private likeRepository: LikeRepository,  
+  ) {}
 
   public async create(params: {}) {}
   
@@ -24,7 +29,67 @@ export default class RecipeService {
     await this.recipeRepository.delete(recipeId);
   }
   
-  public async getAllRecipes(params: {}) {
-    return await this.recipeRepository.getAllRecipesByCondition({}, 2);
+  public async getAllRecipesByUserId(userId: number) {
+    return await this.recipeRepository.getAllRecipesByUserId(userId);
+  }
+  
+  public async getAllLikedRecipesByUserId({ condition, userId }: { condition: { keyword?: string; category?: string }; userId: number }) {
+    const likedRecipes = await this.likeRepository.getAllLikedRecipeIdsByUserId(userId);
+    
+    const likedRecipeIds = likedRecipes.map(recipe => recipe.recipeId);
+    
+    if (likedRecipeIds.length === 0) return [];
+    
+    const { keyword, category } = condition;
+    
+    const targetRecipeIds = [];
+    
+    if (keyword) {
+      const recipeIds = await this.recipeRepository.getAllRecipeIdsByKeyword({ keyword, condition: { id: { [Op.in]: likedRecipeIds } } });
+      targetRecipeIds.push(...recipeIds);
+    } else {
+      targetRecipeIds.push(...likedRecipeIds);
+    }
+    
+    const whereOption = {
+      [Op.and]: {
+        id: {
+          [Op.in]: targetRecipeIds,
+        },
+        ...(category ? { category } : {}),
+      }
+    };
+    
+    return await this.recipeRepository.getAllRecipes({ condition: whereOption, userId });
+  }
+  
+  public async getAllRecipesByCondition({ condition, order, userId }: {condition: { keyword?: string; category?: string; }; order?: RecipeOrderType; userId: number}) {
+    const { keyword, category } = condition;
+    
+    const targetRecipeIds = [];
+    
+    if (keyword) {
+      const recipeIds = await this.recipeRepository.getAllRecipeIdsByKeyword({ keyword });
+      targetRecipeIds.push(...recipeIds);
+    }
+    
+    const whereOption = {
+      [Op.and]: {
+        ...(category ? { category } : {}),
+        ...(
+          targetRecipeIds.length > 0 ? 
+            {
+              id: {
+                [Op.in]: targetRecipeIds,
+              }
+            } : {})
+      }
+    };
+    
+    return await this.recipeRepository.getAllRecipes({ condition: whereOption , userId, order });
+  }
+  
+  public async getDetailRecipeByRecipeId(params: { recipeId: number; userId: number }) {
+    return await this.recipeRepository.getDetailRecipeByRecipeId(params);
   }
 }

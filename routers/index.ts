@@ -21,17 +21,17 @@ const createRootRouter = (sequelize: Sequelize) => {
   const userRepository = new UserRepository();
   const reviewRepository = new ReviewRepository();
   const likeRepository = new LikeRepository(sequelize);
-  const recipeRepository = new RecipeRepository(sequelize, reviewRepository, likeRepository);
+  const recipeRepository = new RecipeRepository(sequelize, reviewRepository);
 
   const authService = new AuthService(userRepository);
   const userService = new UserService(userRepository, recipeRepository);
-  const recipeService = new RecipeService(recipeRepository);
+  const recipeService = new RecipeService(recipeRepository, likeRepository);
   const reviewService = new ReviewService(reviewRepository);
 
   const router = Router();
 
   router.get("", (req: Request, res: Response) => {
-    res.send("api server. 혀니 안녕??");
+    res.send("Yorijori API Server. 혀니 안녕??");
   });
 
   router.use("/v1/auth", authRouter(authService));

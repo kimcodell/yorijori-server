@@ -6,18 +6,20 @@ export default interface RecipeDto {
   imageUrl: string;
   title: string;
   category: string;
+  tips: string[];
   tags: string[];
   cookingTime: number; //unit: minute
   difficulty: DifficultyType;
   isLiked: boolean;
+  views: number;
   likeCount: number;
   reviewCount: number;
   reviews: Review[];
   cookingStep: CookingStep[];
   ingredients: {
-    '1인분': Ingredients,
-    '2-3인분': Ingredients,
-    '4-5인분': Ingredients,
+    'level1': Ingredients,
+    'level2': Ingredients,
+    'level3': Ingredients,
   };
   createdAt: string;
 }
@@ -28,13 +30,17 @@ interface Ingredients {
     name: string;
     amount: number;
     unit: string;
-    isNecessary: boolean;
   }[];
-  nonSauce: {
+  necessary: {
     ingredientId: number;
     name: string;
     amount: number;
     unit: string;
-    isNecessary: boolean;
+  },
+  notNecessary: {
+    ingredientId: number;
+    name: string;
+    amount: number;
+    unit: string;
   }[];
 }

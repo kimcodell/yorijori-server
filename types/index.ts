@@ -45,3 +45,18 @@ export interface CookingStep {
 }
 
 export type DifficultyType = '상' | '중' | '하';
+
+export const RecipeDifficulty = Object.freeze({
+  0: "하",
+  1: "중",
+  2: "상",
+});
+
+export type RecipeOrderType = 'likes' | 'recent' | 'views' | 'reviews';
+
+export const RecipeOrder = Object.freeze({
+  likes: 'likeCount',
+  reviews: 'reviewCount',
+  recent: 'recipe.createdAt',
+  views: 'recipe.views',
+});

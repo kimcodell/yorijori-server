@@ -7,14 +7,15 @@ import Like from "../models/like.model";
 import LikeOption from "../models/likeOption.model";
 import User from "../models/user.model";
 import ReviewRepository from "./review.repository";
-import LikeRepository from './like.repository';
 import CreateRecipeDto from '../types/dtos/CreateRecipe.dto';
+import RecipeDto from '../types/dtos/Recipe.dto';
+import { RecipeOrderType, RecipeOrder, RecipeDifficulty } from "../types";
+import { stringToArray } from "../utils/AppUtils";
 
 export default class RecipeRepository {
   constructor(
     private sequelize: Sequelize,
     private reviewRepository: ReviewRepository,
-    private likeRepository: LikeRepository,
   ) {}
 
   public async create(params: CreateRecipeDto) {}
@@ -54,9 +55,10 @@ export default class RecipeRepository {
       }
     });
     return recipe;
+    // return {...recipe.get({ plain: true }), tags: stringToArray(recipe.tags), difficulty: RecipeDifficulty[recipe.difficulty]};
   }
   
-  public async getAllRecipes({ condition, userId, order=["createdAt", "DESC"] }: {condition: WhereOptions<RecipeAttributes>, userId: number, order?: [string, string]}) {
+  public async getAllRecipes({ condition, userId, order = "recent" }: { condition: WhereOptions<RecipeAttributes>, userId: number, order?: RecipeOrderType }) {
     const recipes = await Recipe.findAll({
       where: condition,
       attributes: {
@@ -101,36 +103,230 @@ export default class RecipeRepository {
           ],
         ],
       },
-      order: [order],
+      order: [[this.sequelize.literal(RecipeOrder[order]), 'DESC']],
     });
-    return recipes;
+    
+    return recipes.map(r => ({...r.get({ plain: true }), tags: stringToArray(r.tags), difficulty: RecipeDifficulty[r.difficulty]}));
   }
-  
+
   public async getAllRecipesByUserId(userId: number) {
-    const recipes = this.getAllRecipes({ condition: { userId }, userId });
+    const recipes = await this.getAllRecipes({ condition: { userId }, userId });
     return recipes;
   }
   
-  public async getAllLikedRecipesByUserId(userId: number) {
-    const likedRecipes = await this.likeRepository.getAllLikedRecipeIdsByUserId(userId);
+  public async getAllRecipeIdsByKeyword({ keyword, condition }: { keyword: string; condition?: object }) {
+    const resultFromRecipeTable = await Recipe.findAll({
+      where: {
+        [Op.and]: {
+          [Op.or]: {
+            title: {
+              [Op.like]: `%${keyword}%`,
+            },
+            category: {
+              [Op.like]: `%${keyword}%`,
+            },
+            tags: {
+              [Op.like]: `%${keyword}%`,
+            },
+            tips: {
+              [Op.like]: `%${keyword}%`,
+            }
+          },
+          ...condition,
+        },
+      },
+      attributes: ['id'],
+    });
     
-    const likedRecipeIds = likedRecipes.map(recipe => recipe.recipeId);
+    const resultFromIngredientsTable = await Ingredients.findAll({
+      where: {
+        [Op.and]: {
+          name: {
+            [Op.like]: `%${keyword}%`,
+          },
+          ...condition,
+        }
+      },
+      attributes: ['recipeId'],
+    });
     
-    const recipes = this.getAllRecipes({ condition: { id: { [Op.in]: likedRecipeIds } }, userId });
+    const resultFromCookingStepTable = await CookingStep.findAll({
+      where: {
+        [Op.and]: {
+          content: {
+            [Op.like]: `%${keyword}%`,
+          },
+          ...condition,
+        },
+      },
+      attributes: ['recipeId'],
+    });
     
-    return recipes;
+    const resultFromReviewTable = await Review.findAll({
+      where: {
+        [Op.and]: {
+          content: {
+            [Op.like]: `%${keyword}%`,
+          },
+          ...condition,
+        },
+      },
+      attributes: ['recipeId'],
+    });
+    
+    return [
+      ...resultFromRecipeTable.map(r => r.id),
+      ...resultFromIngredientsTable.map(r => r.recipeId),
+      ...resultFromCookingStepTable.map(r => r.recipeId),
+      ...resultFromReviewTable.map(r => r.recipeId),
+    ];
   }
   
-  //TODO 작업 중
-  public async getAllRecipesByCondition(condition: { keyword?: string; category?: string }, userId: number) {
-    const { keyword, category } = condition;
-    const recipes = this.getAllRecipes({ condition: { ...(category ? {category} : {}) } , userId });
-    return recipes;
-  }
   
-  public async getDetailRecipeByRecipeId(recipeId: number) {
+  public async getDetailRecipeByRecipeId({ recipeId, userId }: { recipeId: number; userId: number }) {
+    const recipe = await Recipe.findOne({
+      where: {
+        id: recipeId,
+      },
+      attributes: {
+        include: [
+          "id",
+          "userId",
+          "imageUrl",
+          "title",
+          "category",
+          "tips",
+          "tags",
+          "difficulty",
+          "cookingTime",
+          "views",
+          "createdAt",
+          [
+            this.sequelize.literal(`(
+              SELECT COUNT(*)
+              FROM likes l
+              WHERE
+                l.recipeId = recipe.id
+                AND
+                l.userId = ${userId}
+            )`), 
+            'isLiked',
+          ],
+          [
+            this.sequelize.literal(`(
+              SELECT COUNT(*)  
+              FROM review r
+              WHERE
+                r.recipeId = recipe.id
+            )`),
+            'reviewCount',
+          ],
+          [
+            this.sequelize.literal(`(
+              SELECT COUNT(*)  
+              FROM likes l
+              WHERE
+                l.recipeId = recipe.id
+            )`),
+            'likeCount',
+          ],
+        ],
+      },
+    });
     
+    const reviews = await this.reviewRepository.getReviewsOfRecipe({recipeId});
+    
+    const cookingStep = await CookingStep.findAll({
+      where: {
+        recipeId,
+      },
+      attributes: ['stepNumber', 'imageUrl', 'content'],
+      order: [['stepNumber', 'ASC']],
+    });
+    
+    const ingredients = await Ingredients.findAll({
+      where: {
+        recipeId,
+      },
+      attributes: ['id', 'name', 'amount', 'unit', 'amountLevel', 'isSauce', 'isNecessary'],
+    });
+    const amountLevel1 = ingredients.filter(i => i.amountLevel === 0);
+    const amountLevel2 = ingredients.filter(i => i.amountLevel === 1);
+    const amountLevel3 = ingredients.filter(i => i.amountLevel === 2);
+    
+    const formedIngredients = {
+      level1: {
+        necessary:[],
+        notNecessary: [],
+        sauce: [],
+      },
+      level2: {
+        necessary:[],
+        notNecessary: [],
+        sauce: [],
+      },
+      level3: {
+        necessary:[],
+        notNecessary: [],
+        sauce: [],
+      },
+    }
+    
+    amountLevel1.forEach(i => {
+      if (i.isSauce === 1) {
+        formedIngredients.level1.sauce.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+      } else {
+        if (i.isNecessary === 1) {
+          formedIngredients.level1.necessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+        } else {
+          formedIngredients.level1.notNecessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+        }
+      }
+    });
+    amountLevel2.forEach(i => {
+      if (i.isSauce === 1) {
+        formedIngredients.level2.sauce.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+      } else {
+        if (i.isNecessary === 1) {
+          formedIngredients.level2.necessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+        } else {
+          formedIngredients.level2.notNecessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+        }
+      }
+    });
+    amountLevel3.forEach(i => {
+      if (i.isSauce === 1) {
+        formedIngredients.level3.sauce.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+      } else {
+        if (i.isNecessary === 1) {
+          formedIngredients.level3.necessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+        } else {
+          formedIngredients.level3.notNecessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+        }
+      }
+    });
+    
+    return {
+      recipeId: recipe.id,
+      userId: recipe.userId,
+      imageUrl: recipe.imageUrl,
+      title: recipe.title,
+      category: recipe.category,
+      tips: stringToArray(recipe.tips),
+      tags: stringToArray(recipe.tags),
+      difficulty: RecipeDifficulty[recipe.difficulty],
+      cookingTime: recipe.cookingTime,
+      views: recipe.views,
+      createdAt: recipe.createdAt,
+      // @ts-ignore
+      isLiked: recipe.isLiked,
+      // @ts-ignore
+      likeCount: recipe.likeCount,
+      // @ts-ignore
+      reviewCount: recipe.reviewCount,
+      reviews,
+      cookingStep,
+      ingredients: formedIngredients,
+    }
   }
-  
-  //TODO 나중에 서비스와 레포지토리 구분
 }

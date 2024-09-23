@@ -45,5 +45,7 @@ INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('2', '1');
 INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('3', '1');
 INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('4', '1');
 INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('2', '2');
+INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('1', '1');
+INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('1', '2');
 
 -- 요리방법

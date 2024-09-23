@@ -8,8 +8,8 @@ export interface IngredientsAttributes {
   amountLevel: number; //0: 1인분, 1: 2~3인분, 2: 4~5인분
   amount: number;
   unit: string;
-  isSauce: boolean;
-  isNecessary: boolean;
+  isSauce: number;
+  isNecessary: number;
 }
 
 class Ingredients extends Model<IngredientsAttributes> {
@@ -19,8 +19,8 @@ class Ingredients extends Model<IngredientsAttributes> {
   amountLevel: number; //0: 1인분, 1: 2~3인분, 2: 4~5인분
   amount: number;
   unit: string;
-  isSauce: boolean;
-  isNecessary: boolean;
+  isSauce: number;
+  isNecessary: number;
 
   static initModel(sequelize: Sequelize) {
     return Ingredients.init(
