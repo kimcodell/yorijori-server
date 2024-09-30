@@ -8,19 +8,63 @@ import LikeOption from "../models/likeOption.model";
 import User from "../models/user.model";
 import ReviewRepository from "./review.repository";
 import CreateRecipeDto from '../types/dtos/CreateRecipe.dto';
+import UpdateRecipeDto from '../types/dtos/UpdateRecipe.dto';
 import RecipeDto from '../types/dtos/Recipe.dto';
-import { RecipeOrderType, RecipeOrder, RecipeDifficulty } from "../types";
-import { stringToArray } from "../utils/AppUtils";
+import { RecipeOrderType, RecipeOrder, RecipeDifficulty, DifficultyTypeToNumber } from "../types";
+import { stringToArray, arrayToString } from "../utils/AppUtils";
 
 export default class RecipeRepository {
   constructor(
     private sequelize: Sequelize,
     private reviewRepository: ReviewRepository,
   ) {}
-
-  public async create(params: CreateRecipeDto) {}
   
-  public async update() {}
+  public async create(params: CreateRecipeDto) {
+    const { title, imageUrl, category, tags, tips, cookingTime, difficulty, userId, cookingStep, ingredients } = params;
+    
+    const recipe = await Recipe.create({
+      title,
+      userId,
+      imageUrl,
+      category,
+      tags: arrayToString(tags),
+      cookingTime,
+      difficulty: DifficultyTypeToNumber[difficulty],
+      ...(tips ? { tips: arrayToString(tips) } : {}),
+    });
+    
+    await CookingStep.bulkCreate(cookingStep.map(s => ({...s, recipeId: recipe.id})));
+    
+    await Ingredients.bulkCreate(ingredients.map(i => ({...i, recipeId: recipe.id})));
+    
+    return recipe;
+  }
+  
+  public async update(params: UpdateRecipeDto) {
+    const { recipeId, title, imageUrl, category, tags, tips, cookingTime, difficulty, cookingStep, ingredients } = params;
+    
+    const recipe = await Recipe.update({
+      ...(title ? { title } : {}),
+      ...(imageUrl ? { imageUrl } : {}),
+      ...(category ? { category } : {}),
+      ...(tags ? { tags: arrayToString(tags) } : {}),
+      ...(tips ? { tips: arrayToString(tips) } : {}),
+      ...(cookingTime ? { cookingTime } : {}),
+      ...(difficulty ? { difficulty: DifficultyTypeToNumber[difficulty] } : {}),    
+    }, {
+      where: {
+        id: recipeId,
+      }
+    });
+    
+    if (cookingStep) {
+      //TODO
+    }
+    
+    if (ingredients) {
+      //TODO
+    }
+  }
   
   public async delete(recipeId: number) {
     const transaction = await this.sequelize.transaction();

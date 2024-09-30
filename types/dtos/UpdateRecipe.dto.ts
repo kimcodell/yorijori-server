@@ -1,16 +1,16 @@
 import { DifficultyType, CookingStep } from "../index";
 
 export default interface CreateRecipeDto {
-  title: string;
-  imageUrl: string;
-  category: string;
-  tags: string[];
+  recipeId: number;
+  title?: string;
+  imageUrl?: string;
+  category?: string;
+  tags?: string[];
   tips?: string[];
-  cookingTime: number;
-  difficulty: DifficultyType;
-  ingredients: Ingredients[];
-  cookingStep: CookingStep[];
-  userId: number;
+  cookingTime?: number;
+  difficulty?: DifficultyType;
+  ingredients?: Ingredients[];
+  cookingStep?: CookingStep[];
 }
 
 interface Ingredients {

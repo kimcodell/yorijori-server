@@ -5,9 +5,9 @@ import { SalinityLevel } from "../types/index";
 export interface LikeOptionAttributes {
   id: number;
   likeId: number;
-  selectedIngredients: string[];
+  selectedIngredients: string;
   salinityLevel: SalinityLevel; // 매우싱겁게: 1, 싱겁게: 2, 보통: 3, 짜게: 4, 매우짜게: 5
-  numOfPeople: number;
+  amountLevel: number; //0: 1인분, 1: 2~3인분, 2: 4~5인분
   createdAt: string;
   updatedAt: string;
 }
@@ -15,9 +15,9 @@ export interface LikeOptionAttributes {
 class LikeOption extends Model<LikeOptionAttributes> {
   id: number;
   likeId: number;
-  selectedIngredients: string[];
+  selectedIngredients: string;
   salinityLevel: SalinityLevel;
-  numOfPeople: number;
+  amountLevel: number;
   createdAt: string;
   updatedAt: string;
 
@@ -42,7 +42,7 @@ class LikeOption extends Model<LikeOptionAttributes> {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-        numOfPeople: {
+        amountLevel: {
           type: DataTypes.INTEGER,
           allowNull: false,
         },

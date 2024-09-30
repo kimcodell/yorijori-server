@@ -52,6 +52,12 @@ export const RecipeDifficulty = Object.freeze({
   2: "상",
 });
 
+export const DifficultyTypeToNumber = Object.freeze({
+  하: 0,
+  중: 1,
+  상: 2,
+}) 
+
 export type RecipeOrderType = 'likes' | 'recent' | 'views' | 'reviews';
 
 export const RecipeOrder = Object.freeze({

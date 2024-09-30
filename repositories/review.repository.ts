@@ -1,8 +1,14 @@
 import Review from "../models/review.model";
 import User from "../models/user.model";
 import Recipe from "../models/recipe.model";
+import { Sequelize } from "sequelize";
 
 export default class ReviewRepository {
+  constructor(
+    private sequelize: Sequelize,
+  ) {}
+
+  
   public async create(params: {
     recipeId: number;
     userId: number;
@@ -38,7 +44,7 @@ export default class ReviewRepository {
         "recipeId",
         "content",
         "createdAt",
-        ["User.nickname", "nickname"],
+        [this.sequelize.col("user.nickname"), "nickname"],
       ],
       include: { model: User, attributes: [] },
       raw: true,
@@ -49,13 +55,15 @@ export default class ReviewRepository {
   public async getReviewsOfRecipe({ recipeId }: { recipeId: number }) {
     const reviews = await Review.findAll({
       where: { recipeId, deletedAt: null },
-      attributes: [
-        ["id", "reviewId"],
-        "userId",
-        "content",
-        "createdAt",
-        ["User.nickname", "nickname"],
-      ],
+      attributes: {
+        include: [
+          ["id", "reviewId"],
+          "userId",
+          "content",
+          "createdAt",
+          [this.sequelize.col("user.nickname"), "nickname"],
+        ],
+      },
       include: { model: User, attributes: [] },
       raw: true,
     });

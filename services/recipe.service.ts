@@ -2,6 +2,8 @@ import { Op } from "sequelize";
 import { ErrorWithCode } from "./../interfaces/ErrorWithCode";
 import Review from "../models/review.model";
 import Recipe from "../models/recipe.model";
+import CreateRecipeDto from '../types/dtos/CreateRecipe.dto';
+import UpdateRecipeDto from '../types/dtos/UpdateRecipe.dto';
 import RecipeRepository from "../repositories/recipe.repository";
 import LikeRepository from '../repositories/like.repository';
 import { RecipeOrderType } from '../types';
@@ -12,9 +14,16 @@ export default class RecipeService {
     private likeRepository: LikeRepository,  
   ) {}
 
-  public async create(params: {}) {}
+  public async create(params: CreateRecipeDto) {
+    return await this.recipeRepository.create(params);
+  }
   
-  public async update(params: {}) {}
+  public async update(params: UpdateRecipeDto) {
+    const { title, imageUrl, category, tags, tips, cookingTime, difficulty, cookingStep, ingredients } = params;
+    if (title || imageUrl || category || tags || tips || cookingTime || difficulty || cookingStep || ingredients) {
+      await this.recipeRepository.update(params);
+    };
+  }
 
   public async delete({ recipeId, userId }: { recipeId: number; userId: number }) {
     const recipe = await this.recipeRepository.getSimpleRecipeByRecipeId(recipeId);
@@ -91,5 +100,14 @@ export default class RecipeService {
   
   public async getDetailRecipeByRecipeId(params: { recipeId: number; userId: number }) {
     return await this.recipeRepository.getDetailRecipeByRecipeId(params);
+  }
+  
+  public async likeRecipe(params: { recipeId: number; userId: number; salinityLevel?: number; amountLevel?: number; selectedIngredients?: string[] }) {
+    await this.likeRepository.create(params);
+  }
+  
+  public async unlikeRecipe({ recipeId, userId }: { recipeId: number; userId: number }) {
+    const like = await this.likeRepository.getLikeByRecipeIdAndUserId({ recipeId, userId });
+    await this.likeRepository.delete(like.id);
   }
 }

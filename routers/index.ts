@@ -19,7 +19,7 @@ import LikeRepository from "../repositories/like.repository";
 
 const createRootRouter = (sequelize: Sequelize) => {
   const userRepository = new UserRepository();
-  const reviewRepository = new ReviewRepository();
+  const reviewRepository = new ReviewRepository(sequelize);
   const likeRepository = new LikeRepository(sequelize);
   const recipeRepository = new RecipeRepository(sequelize, reviewRepository);
 

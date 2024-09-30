@@ -6,20 +6,6 @@ import Joi from "joi";
 
 class RouteHandler {
   constructor(private recipeService: RecipeService) {}
-	
-  public async test(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
-    try {
-      // const recipes = await this.recipeService.getAllRecipes({});
-      successResponse(res, {});
-    } catch (error) {
-      next(error);
-    } 
-  }
   
   @authGuard
   public async create(
@@ -32,16 +18,16 @@ class RouteHandler {
       const { error, value } = Joi.object({
         title: Joi.string().required(),
         category: Joi.string().required(),
-        tags: Joi.string().required(),
-        tips: Joi.string(),
+        tags: Joi.array().items(Joi.string().required()).required(),
+        tips: Joi.array().items(Joi.string().required()),
         cookingTime: Joi.number().required(),
         difficulty: Joi.number().required(),
         ingredients: Joi.array().items(Joi.string().required()).required(),
-        cookingStep: Joi.array().items(Joi.string().required()).required(),      
+        cookingStep: Joi.array().items(Joi.string().required()).required(),
       }).validate(req.body);
       
       const recipe = await this.recipeService.create({...value, userId: data.id});
-      successResponse(res, { recipe });
+      successResponse(res, { recipeId: recipe.id });
     } catch (error) {
       next(error);
     }
@@ -56,10 +42,11 @@ class RouteHandler {
   ) {
     try {
       const { error, value } = Joi.object({
+        recipeId: Joi.number().required(),
         title: Joi.string(),
         category: Joi.string(),
-        tags: Joi.string(),
-        tips: Joi.string(),
+        tags: Joi.array().items(Joi.string().required()),
+        tips: Joi.array().items(Joi.string().required()),
         cookingTime: Joi.number(),
         difficulty: Joi.number(),
         ingredients: Joi.array().items(Joi.string().required()),
@@ -166,7 +153,44 @@ class RouteHandler {
     }
   }
   
+  @authGuard
+  public async likeRecipe(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+    data: any,
+  ) {
+    try {
+      const { error, value } = Joi.object({
+        recipeId: Joi.number().required(),
+        amountLevel: Joi.number(),
+        salinityLevel: Joi.number(),
+        selectedIngredients: Joi.array().items(Joi.string().required()),
+      }).validate(req.body);
+      await this.recipeService.likeRecipe({...value, userId: data.id});
+      successResponse(res, {}); 
+    } catch (error) {
+      next(error);
+    }
+  }
   
+  @authGuard
+  public async unlikeRecipe(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+    data: any,
+  ) {
+    try {
+      const { error, value } = Joi.object({
+        recipeId: Joi.number().required(),
+      }).validate(req.params);
+      await this.recipeService.unlikeRecipe({recipeId: value.recipeId, userId: data.id});
+      successResponse(res, {});
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 function recipeRouter(...params: [RecipeService]) {
@@ -180,6 +204,10 @@ function recipeRouter(...params: [RecipeService]) {
   router.get("/", wrap(handler.getSearchResult.bind(handler)));
   router.get("/like", wrap(handler.getLikedRecipes.bind(handler)));
   router.get("/:recipeId", wrap(handler.getDetailRecipe.bind(handler)));
+  
+  router.post('/like', wrap(handler.likeRecipe.bind(handler)));
+  router.delete('/like/:recipeId', wrap(handler.unlikeRecipe.bind(handler)));
+  // router.put('/like', wrap(handler..bind(handler)));
 
   return router;
 }
