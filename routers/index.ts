@@ -5,6 +5,7 @@ import authRouter from "./auth.router";
 import userRouter from "./user.router";
 import recipeRouter from "./recipe.router";
 import reviewRouter from "./review.router";
+import uploadRouter from './upload.router';
 import keywordRouter from "./keyword.router";
 
 import AuthService from "../services/auth.service";
@@ -27,7 +28,7 @@ const createRootRouter = (sequelize: Sequelize) => {
   const userService = new UserService(userRepository, recipeRepository);
   const recipeService = new RecipeService(recipeRepository, likeRepository);
   const reviewService = new ReviewService(reviewRepository);
-
+  
   const router = Router();
 
   router.get("", (req: Request, res: Response) => {
@@ -38,6 +39,7 @@ const createRootRouter = (sequelize: Sequelize) => {
   router.use("/v1/user", userRouter(userService));
   router.use("/v1/review", reviewRouter(reviewService));
   router.use("/v1/recipe", recipeRouter(recipeService));
+  router.use("/v1/upload", uploadRouter());
   router.use("/v1/keyword", keywordRouter());
 
   return router;
