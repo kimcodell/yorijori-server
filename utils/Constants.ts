@@ -4,3 +4,5 @@ export const HttpStatus = Object.freeze({
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
 });
+
+export const AWS_REGION = 'ap-northeast-2';

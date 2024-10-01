@@ -108,6 +108,7 @@ export default class RecipeService {
   
   public async unlikeRecipe({ recipeId, userId }: { recipeId: number; userId: number }) {
     const like = await this.likeRepository.getLikeByRecipeIdAndUserId({ recipeId, userId });
+    if (!like) return;
     await this.likeRepository.delete(like.id);
   }
 }

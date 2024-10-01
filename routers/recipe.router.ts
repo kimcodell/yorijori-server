@@ -22,8 +22,8 @@ class RouteHandler {
         tips: Joi.array().items(Joi.string().required()),
         cookingTime: Joi.number().required(),
         difficulty: Joi.number().required(),
-        ingredients: Joi.array().items(Joi.string().required()).required(),
-        cookingStep: Joi.array().items(Joi.string().required()).required(),
+        ingredients: Joi.array().items(Joi.object().required()).required(),
+        cookingStep: Joi.array().items(Joi.object().required()).required(),
       }).validate(req.body);
       
       const recipe = await this.recipeService.create({...value, userId: data.id});
@@ -49,8 +49,8 @@ class RouteHandler {
         tips: Joi.array().items(Joi.string().required()),
         cookingTime: Joi.number(),
         difficulty: Joi.number(),
-        ingredients: Joi.array().items(Joi.string().required()),
-        cookingStep: Joi.array().items(Joi.string().required()),      
+        ingredients: Joi.array().items(Joi.object().required()),
+        cookingStep: Joi.array().items(Joi.object().required()),      
       }).validate(req.body);
       
       await this.recipeService.update({...value, userId: data.id});

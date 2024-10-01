@@ -12,10 +12,19 @@ export default class LikeRepository {
 
   public async create(params: { recipeId: number; userId: number; salinityLevel?: number; amountLevel?: number; selectedIngredients?: string[] }) {
     const { recipeId, userId, salinityLevel, amountLevel, selectedIngredients } = params;
-    const like = await Like.create({
-      recipeId,
-      userId,
+    
+    const [like, isCreated] = await Like.findOrCreate({
+      where: {
+        recipeId,
+        userId,
+      },
+      defaults: {
+        recipeId,
+        userId,
+      },
     });
+    
+    if (!isCreated) return;
     
     if (salinityLevel || amountLevel || selectedIngredients) {
       await LikeOption.create({
