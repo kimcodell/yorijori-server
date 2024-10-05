@@ -33,26 +33,6 @@ export default class App {
 
     app.use("/v1/api-docs", serve, setup(swaggerDocument));
 
-    /*
-    const commentRepository = new CommentRepository();
-    const certiPostRepository = new CertiPostRepository();
-    const postRepository = new PostRepository(
-      db.sequelize,
-      commentRepository,
-      certiPostRepository,
-    );*/
-    /*
-    interval(MillisecondsToHourOffset).subscribe(async () => {
-      //TODO / 600 제거
-      const now = new Date().getHours();
-      console.log("현재 시간", now);
-      const result = await transactionService.checkCertification(now);
-      console.log("next - result :", JSON.stringify(result)); //TODO 제거
-      if (!result) return;
-      await transactionService.rewardAchievement(result.success);
-      await transactionService.distributeToken(result.fail);
-    });
-    */
     const router = createRootRouter(db.sequelize);
     app.use("/", router);
 

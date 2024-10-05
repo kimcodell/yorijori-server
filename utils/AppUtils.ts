@@ -5,9 +5,9 @@ export function isEmail(email: string) {
 };
 
 export function stringToArray(str: string) {
-  return str.slice(1,-1).split(',');
+  return JSON.parse(str);
 };
 
-export function arrayToString(arr: string[]) {
-  return `[${arr}]`;
+export function arrayToString(arr: any[]) {
+  return JSON.stringify(arr);
 };

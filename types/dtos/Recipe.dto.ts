@@ -11,6 +11,15 @@ export default interface RecipeDto {
   cookingTime: number; //unit: minute
   difficulty: DifficultyType;
   isLiked: boolean;
+  likeData?: {
+    id: number;
+    userId: number;
+    recipeId: number;
+    optionId: number;
+    selectedIngredients: string[];
+    salinityLevel: number;
+    amountLevel: number;
+  };
   views: number;
   likeCount: number;
   reviewCount: number;

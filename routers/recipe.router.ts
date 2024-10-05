@@ -165,10 +165,31 @@ class RouteHandler {
         recipeId: Joi.number().required(),
         amountLevel: Joi.number(),
         salinityLevel: Joi.number(),
-        selectedIngredients: Joi.array().items(Joi.string().required()),
+        selectedIngredients: Joi.array().items(Joi.object().required()),
       }).validate(req.body);
       await this.recipeService.likeRecipe({...value, userId: data.id});
       successResponse(res, {}); 
+    } catch (error) {
+      next(error);
+    }
+  }
+  
+  @authGuard
+  public async updateLike(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+    data: any,
+  ) {
+    try {
+      const { error, value } = Joi.object({
+        recipeId: Joi.number().required(),
+        amountLevel: Joi.number(),
+        salinityLevel: Joi.number(),
+        selectedIngredients: Joi.array().items(Joi.object().required()),
+      }).validate(req.body);
+      await this.recipeService.updateLike({...value, userId: data.id});
+      successResponse(res, {});
     } catch (error) {
       next(error);
     }
@@ -207,7 +228,7 @@ function recipeRouter(...params: [RecipeService]) {
   
   router.post('/like', wrap(handler.likeRecipe.bind(handler)));
   router.delete('/like/:recipeId', wrap(handler.unlikeRecipe.bind(handler)));
-  // router.put('/like', wrap(handler..bind(handler)));
+  router.put('/like', wrap(handler.updateLike.bind(handler)));
 
   return router;
 }

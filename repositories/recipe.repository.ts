@@ -7,62 +7,88 @@ import Like from "../models/like.model";
 import LikeOption from "../models/likeOption.model";
 import User from "../models/user.model";
 import ReviewRepository from "./review.repository";
+import LikeRepository from "./like.repository";
 import CreateRecipeDto from '../types/dtos/CreateRecipe.dto';
 import UpdateRecipeDto from '../types/dtos/UpdateRecipe.dto';
 import RecipeDto from '../types/dtos/Recipe.dto';
 import { RecipeOrderType, RecipeOrder, RecipeDifficulty, DifficultyTypeToNumber } from "../types";
 import { stringToArray, arrayToString } from "../utils/AppUtils";
+import { ErrorWithCode } from '../interfaces/ErrorWithCode';
 
 export default class RecipeRepository {
   constructor(
     private sequelize: Sequelize,
     private reviewRepository: ReviewRepository,
+    private likeRepository: LikeRepository,
   ) {}
   
   public async create(params: CreateRecipeDto) {
     const { title, imageUrl, category, tags, tips, cookingTime, difficulty, userId, cookingStep, ingredients } = params;
     
-    const recipe = await Recipe.create({
-      title,
-      userId,
-      imageUrl,
-      category,
-      tags: arrayToString(tags),
-      cookingTime,
-      difficulty: DifficultyTypeToNumber[difficulty],
-      ...(tips ? { tips: arrayToString(tips) } : {}),
-    });
+    const transaction = await this.sequelize.transaction();
+  
+    try {
+      const recipe = await Recipe.create({
+        title,
+        userId,
+        imageUrl,
+        category,
+        tags: arrayToString(tags),
+        cookingTime,
+        difficulty: DifficultyTypeToNumber[difficulty],
+        ...(tips ? { tips: arrayToString(tips) } : {}),
+      }, {
+        transaction,
+      });
     
-    await CookingStep.bulkCreate(cookingStep.map(s => ({...s, recipeId: recipe.id})));
+      await CookingStep.bulkCreate(cookingStep.map(s => ({ ...s, recipeId: recipe.id })), { transaction });
     
-    await Ingredients.bulkCreate(ingredients.map(i => ({...i, recipeId: recipe.id})));
-    
-    return recipe;
+      await Ingredients.bulkCreate(ingredients.map(i => ({ ...i, recipeId: recipe.id })), { transaction });
+      
+      await transaction.commit();
+      
+      return recipe;
+    } catch(error) {
+      await transaction.rollback();
+      throw new ErrorWithCode('SQL ERROR IN RUNNING', "SQL 쿼리 실행에 실패했습니다.");
+    }
   }
   
   public async update(params: UpdateRecipeDto) {
     const { recipeId, title, imageUrl, category, tags, tips, cookingTime, difficulty, cookingStep, ingredients } = params;
     
-    const recipe = await Recipe.update({
-      ...(title ? { title } : {}),
-      ...(imageUrl ? { imageUrl } : {}),
-      ...(category ? { category } : {}),
-      ...(tags ? { tags: arrayToString(tags) } : {}),
-      ...(tips ? { tips: arrayToString(tips) } : {}),
-      ...(cookingTime ? { cookingTime } : {}),
-      ...(difficulty ? { difficulty: DifficultyTypeToNumber[difficulty] } : {}),    
-    }, {
-      where: {
-        id: recipeId,
+    const transaction = await this.sequelize.transaction();
+    
+    try {
+      const recipe = await Recipe.update({
+        ...(title ? { title } : {}),
+        ...(imageUrl ? { imageUrl } : {}),
+        ...(category ? { category } : {}),
+        ...(tags ? { tags: arrayToString(tags) } : {}),
+        ...(tips ? { tips: arrayToString(tips) } : {}),
+        ...(cookingTime ? { cookingTime } : {}),
+        ...(difficulty ? { difficulty: DifficultyTypeToNumber[difficulty] } : {}),    
+      }, {
+        where: {
+          id: recipeId,
+        },
+        transaction,
+      });
+      
+      if (cookingStep) {
+        await CookingStep.destroy({ where: { recipeId },  transaction });
+        await CookingStep.bulkCreate(cookingStep.map(s => ({ ...s, recipeId })), { transaction });
       }
-    });
-    
-    if (cookingStep) {
-      //TODO
-    }
-    
-    if (ingredients) {
-      //TODO
+
+      if (ingredients) {
+        await Ingredients.destroy({ where: { recipeId },  transaction });
+        await Ingredients.bulkCreate(ingredients.map(i => ({ ...i, recipeId })), { transaction });
+      }
+      
+      await transaction.commit();
+    } catch(error) {
+      await transaction.rollback();
+      throw new ErrorWithCode('SQL ERROR IN RUNNING', "SQL 쿼리 실행에 실패했습니다.");
     }
   }
   
@@ -77,6 +103,7 @@ export default class RecipeRepository {
       await transaction.commit();
     } catch(error) {
       await transaction.rollback();
+      throw new ErrorWithCode('SQL ERROR IN RUNNING', "SQL 쿼리 실행에 실패했습니다.");
     }
   }
   
@@ -245,17 +272,17 @@ export default class RecipeRepository {
           "cookingTime",
           "views",
           "createdAt",
-          [
-            this.sequelize.literal(`(
-              SELECT COUNT(*)
-              FROM likes l
-              WHERE
-                l.recipeId = recipe.id
-                AND
-                l.userId = ${userId}
-            )`), 
-            'isLiked',
-          ],
+          // [
+          //   this.sequelize.literal(`(
+          //     SELECT COUNT(*)
+          //     FROM likes l
+          //     WHERE
+          //       l.recipeId = recipe.id
+          //       AND
+          //       l.userId = ${userId}
+          //   )`), 
+          //   'isLiked',
+          // ],
           [
             this.sequelize.literal(`(
               SELECT COUNT(*)  
@@ -277,6 +304,8 @@ export default class RecipeRepository {
         ],
       },
     });
+    
+    const likeData = await this.likeRepository.getLikeByRecipeIdAndUserId({ recipeId, userId });
     
     const reviews = await this.reviewRepository.getReviewsOfRecipe({recipeId});
     
@@ -363,7 +392,8 @@ export default class RecipeRepository {
       views: recipe.views,
       createdAt: recipe.createdAt,
       // @ts-ignore
-      isLiked: recipe.isLiked,
+      isLiked: likeData ? 1 : 0,
+      likeData,
       // @ts-ignore
       likeCount: recipe.likeCount,
       // @ts-ignore

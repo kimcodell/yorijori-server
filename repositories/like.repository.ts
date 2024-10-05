@@ -3,7 +3,8 @@ import Recipe, { RecipeAttributes } from "../models/recipe.model";
 import Like from "../models/like.model";
 import LikeOption from "../models/likeOption.model";
 import User from "../models/user.model";
-import { arrayToString } from '../utils/AppUtils';
+import { arrayToString, stringToArray } from '../utils/AppUtils';
+import { ErrorWithCode } from "./../interfaces/ErrorWithCode";
 
 export default class LikeRepository {
   constructor(
@@ -34,19 +35,31 @@ export default class LikeRepository {
         ...(selectedIngredients ? { selectedIngredients: arrayToString(selectedIngredients) } : {}),
       });
     }
-    
   }
   
-  //수정 기능 여부 회의 후 결정
   public async update(params: { recipeId: number; userId: number; salinityLevel?: number; amountLevel?: number; selectedIngredients?: string[] }) {
     const { recipeId, userId, salinityLevel, amountLevel, selectedIngredients } = params;
+    
     const like = await Like.findOne({
       where: {
         userId,
         recipeId,
       },
     });
-    // TODO
+    
+    if (!like) throw new ErrorWithCode('NOT EXISTED LIKE', '좋아요가 존재하지 않습니다.')
+    
+    if (salinityLevel || amountLevel || selectedIngredients) {
+      await LikeOption.update({
+        ...(salinityLevel ? { salinityLevel } : {}),
+        ...(amountLevel ? { amountLevel } : {}),
+        ...(selectedIngredients ? { selectedIngredients: arrayToString(selectedIngredients) } : {}),
+      }, {
+        where: {
+          likeId: like.id,
+        },
+      });
+    }
   }
   
   public async delete(likeId: number) {
@@ -59,6 +72,7 @@ export default class LikeRepository {
       await transaction.commit();
     } catch(error) {
       await transaction.rollback();
+      throw new ErrorWithCode('SQL ERROR IN RUNNING', "SQL 쿼리 실행에 실패했습니다.")
     }
   }
   
@@ -82,6 +96,8 @@ export default class LikeRepository {
       include: { model: LikeOption, attributes: [] },
       raw: true,
     });
+    //@ts-ignore
+    like.selectedIngredients = stringToArray(like.selectedIngredients);
     return like;
   }
   

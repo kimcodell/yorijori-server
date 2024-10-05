@@ -106,6 +106,10 @@ export default class RecipeService {
     await this.likeRepository.create(params);
   }
   
+  public async updateLike(params: { recipeId: number; userId: number; salinityLevel?: number; amountLevel?: number; selectedIngredients?: string[] }) {
+    await this.likeRepository.update(params);
+  }
+  
   public async unlikeRecipe({ recipeId, userId }: { recipeId: number; userId: number }) {
     const like = await this.likeRepository.getLikeByRecipeIdAndUserId({ recipeId, userId });
     if (!like) return;
