@@ -42,14 +42,15 @@ class RouteHandler {
     try {
       const { error, value } = Joi.object({
         email: Joi.string().email().required(),
-		    name: Joi.string().required(),
+        name: Joi.string().required(),
       }).validate(req.query);
       if (error) throw error;
-      
-	  this.authService.checkIsUser({ email: value.email, name: value.name })
-		.then((userId: number) => successResponse(res, {isValid: true, userId}))
-		.catch(error => successResponse(res, { isValid: false, message: error.message }));
-    } catch(error) {
+
+      this.authService
+        .checkIsUser({ email: value.email, name: value.name })
+        .then((userId: number) => successResponse(res, { isValid: true, userId }))
+        .catch((error) => successResponse(res, { isValid: false, message: error.message }));
+    } catch (error) {
       next(error);
     }
   }
@@ -57,31 +58,27 @@ class RouteHandler {
   public async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { error, value } = Joi.object({
-		userId: Joi.number().required(),
-		password: Joi.string().min(8).max(30).required(),
+        userId: Joi.number().required(),
+        password: Joi.string().min(8).max(30).required(),
       }).validate(req.body);
       if (error) throw error;
 
       await this.authService.update(value);
-	  successResponse(res, {});
+      successResponse(res, {});
     } catch (error) {
       next(error);
     }
   }
 
-  public async checkNicknameDuplication(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public async checkNicknameDuplication(req: Request, res: Response, next: NextFunction) {
     try {
       const { error, value } = Joi.object({
         nickname: Joi.string().required(),
       }).validate(req.body);
       if (error) throw error;
-      
+
       this.authService
-        .checkNicknameDuplication({nickname: value.nickname})
+        .checkNicknameDuplication({ nickname: value.nickname })
         .then(() => successResponse(res, { isValid: true, message: "사용 가능한 닉네임입니다." }))
         .catch((error) => {
           if (error?.code === "DUPLICATED NICKNAME") {
@@ -95,19 +92,15 @@ class RouteHandler {
     }
   }
 
-  public async checkEmailDuplication(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public async checkEmailDuplication(req: Request, res: Response, next: NextFunction) {
     try {
       const { error, value } = Joi.object({
         email: Joi.string().email().required(),
       }).validate(req.body);
       if (error) throw error;
-      
+
       this.authService
-        .checkEmailDuplication({email: value.email})
+        .checkEmailDuplication({ email: value.email })
         .then(() => successResponse(res, { isValid: true, message: "사용 가능한 아이디입니다." }))
         .catch((error) => {
           if (error?.code === "DUPLICATED EMAIL") {

@@ -9,12 +9,7 @@ class RouteHandler {
   constructor(private userService: UserService) {}
 
   @authGuard
-  public async getMyInfo(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async getMyInfo(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const myInfo = await this.userService.getUserById({ userId: data.id });
       successResponse(res, myInfo);
@@ -24,12 +19,7 @@ class RouteHandler {
   }
 
   @authGuard
-  public async withdraw(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async withdraw(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         userId: Joi.number().required(),
@@ -37,10 +27,7 @@ class RouteHandler {
       if (error) throw error;
 
       if (value.userId !== data.id) {
-        throw new ErrorWithCode(
-          "REQUESTOR AND TARGET MISMATCH",
-          "본인의 계정이 아닙니다.",
-        );
+        throw new ErrorWithCode("REQUESTOR AND TARGET MISMATCH", "본인의 계정이 아닙니다.");
       }
 
       await this.userService.delete({ userId: value.userId });
@@ -51,12 +38,7 @@ class RouteHandler {
   }
 
   @authGuard
-  public async updateNickname(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async updateNickname(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         nickname: Joi.string().max(12).required(),
@@ -71,12 +53,7 @@ class RouteHandler {
   }
 
   @authGuard
-  public async updatePassword(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async updatePassword(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         password: Joi.string().min(8).max(16).required(),

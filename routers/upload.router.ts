@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response, Router } from "express";
-import Joi from "joi";
 import multer from "multer";
 import { S3Client } from "@aws-sdk/client-s3";
-import multerS3 from 'multer-s3';
-import { v4 as uuidv4 } from 'uuid';
+import multerS3 from "multer-s3";
+import { v4 as uuidv4 } from "uuid";
 import { successResponse, wrap } from "../utils/ExpressUtils";
-import { AWS_REGION } from '../utils/Constants';
+import { AWS_REGION } from "../utils/Constants";
 
 interface MulterRequest extends Request {
   file: any;
@@ -19,9 +18,9 @@ class RouteHandler {
     },
     region: AWS_REGION,
   });
-  
+
   awsBucket = process.env.AWS_S3_BUCKET;
-  
+
   public upload = multer({
     storage: multerS3({
       s3: this.s3,
@@ -35,15 +34,14 @@ class RouteHandler {
       },
     }),
   });
-  
+
   constructor() {}
 
   public async createImage(req: MulterRequest, res: Response, next: NextFunction, data) {
     const { file } = req;
-    successResponse(res, {imageUrl: file.location});
+    successResponse(res, { imageUrl: file.location });
   }
 }
-
 
 function uploadRouter(...params: []) {
   const router = Router();

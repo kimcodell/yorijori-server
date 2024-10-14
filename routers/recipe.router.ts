@@ -6,14 +6,9 @@ import Joi from "joi";
 
 class RouteHandler {
   constructor(private recipeService: RecipeService) {}
-  
+
   @authGuard
-  public async create(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async create(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         title: Joi.string().required(),
@@ -25,21 +20,16 @@ class RouteHandler {
         ingredients: Joi.array().items(Joi.object().required()).required(),
         cookingStep: Joi.array().items(Joi.object().required()).required(),
       }).validate(req.body);
-      
-      const recipe = await this.recipeService.create({...value, userId: data.id});
+
+      const recipe = await this.recipeService.create({ ...value, userId: data.id });
       successResponse(res, { recipeId: recipe.id });
     } catch (error) {
       next(error);
     }
   }
-  
+
   @authGuard
-  public async update(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async update(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
@@ -50,47 +40,37 @@ class RouteHandler {
         cookingTime: Joi.number(),
         difficulty: Joi.number(),
         ingredients: Joi.array().items(Joi.object().required()),
-        cookingStep: Joi.array().items(Joi.object().required()),      
+        cookingStep: Joi.array().items(Joi.object().required()),
       }).validate(req.body);
-      
-      await this.recipeService.update({...value, userId: data.id});
+
+      await this.recipeService.update({ ...value, userId: data.id });
       successResponse(res, {});
     } catch (error) {
       next(error);
     }
   }
-  
+
   @authGuard
-  public async delete(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async delete(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
       }).validate(req.params);
-      
-      await this.recipeService.delete({recipeId: value.recipeId, userId: data.id});
+
+      await this.recipeService.delete({ recipeId: value.recipeId, userId: data.id });
       successResponse(res, {});
     } catch (error) {
       next(error);
     }
   }
-  
+
   @authGuard
-  public async getSearchResult(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async getSearchResult(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         keyword: Joi.string(),
         category: Joi.string(),
-        order: Joi.string().valid('views', 'reviews', 'likes', 'recent'), //views: 조회 수, reviews: 리뷰 수, likes: 찜 수
+        order: Joi.string().valid("views", "reviews", "likes", "recent"), //views: 조회 수, reviews: 리뷰 수, likes: 찜 수
       }).validate(req.query);
       const { keyword, category, order } = value;
 
@@ -98,7 +78,7 @@ class RouteHandler {
         condition: {
           keyword,
           category,
-        }, 
+        },
         order,
         userId: data.id,
       });
@@ -107,14 +87,9 @@ class RouteHandler {
       next(error);
     }
   }
-  
+
   @authGuard
-  public async getLikedRecipes(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async getLikedRecipes(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         keyword: Joi.string(),
@@ -134,14 +109,9 @@ class RouteHandler {
       next(error);
     }
   }
-  
+
   @authGuard
-  public async getDetailRecipe(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async getDetailRecipe(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
@@ -152,14 +122,9 @@ class RouteHandler {
       next(error);
     }
   }
-  
+
   @authGuard
-  public async likeRecipe(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async likeRecipe(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
@@ -167,46 +132,36 @@ class RouteHandler {
         salinityLevel: Joi.number(),
         selectedIngredients: Joi.array().items(Joi.object().required()),
       }).validate(req.body);
-      await this.recipeService.likeRecipe({...value, userId: data.id});
-      successResponse(res, {}); 
-    } catch (error) {
-      next(error);
-    }
-  }
-  
-  @authGuard
-  public async updateLike(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
-    try {
-      const { error, value } = Joi.object({
-        recipeId: Joi.number().required(),
-        amountLevel: Joi.number(),
-        salinityLevel: Joi.number(),
-        selectedIngredients: Joi.array().items(Joi.object().required()),
-      }).validate(req.body);
-      await this.recipeService.updateLike({...value, userId: data.id});
+      await this.recipeService.likeRecipe({ ...value, userId: data.id });
       successResponse(res, {});
     } catch (error) {
       next(error);
     }
   }
-  
+
   @authGuard
-  public async unlikeRecipe(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async updateLike(req: Request, res: Response, next: NextFunction, data: any) {
+    try {
+      const { error, value } = Joi.object({
+        recipeId: Joi.number().required(),
+        amountLevel: Joi.number(),
+        salinityLevel: Joi.number(),
+        selectedIngredients: Joi.array().items(Joi.object().required()),
+      }).validate(req.body);
+      await this.recipeService.updateLike({ ...value, userId: data.id });
+      successResponse(res, {});
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  @authGuard
+  public async unlikeRecipe(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
       }).validate(req.params);
-      await this.recipeService.unlikeRecipe({recipeId: value.recipeId, userId: data.id});
+      await this.recipeService.unlikeRecipe({ recipeId: value.recipeId, userId: data.id });
       successResponse(res, {});
     } catch (error) {
       next(error);
@@ -221,14 +176,14 @@ function recipeRouter(...params: [RecipeService]) {
   router.post("/", wrap(handler.create.bind(handler)));
   router.put("/", wrap(handler.update.bind(handler)));
   router.delete("/:recipeId", wrap(handler.delete.bind(handler)));
-  
+
   router.get("/", wrap(handler.getSearchResult.bind(handler)));
   router.get("/like", wrap(handler.getLikedRecipes.bind(handler)));
   router.get("/:recipeId", wrap(handler.getDetailRecipe.bind(handler)));
-  
-  router.post('/like', wrap(handler.likeRecipe.bind(handler)));
-  router.delete('/like/:recipeId', wrap(handler.unlikeRecipe.bind(handler)));
-  router.put('/like', wrap(handler.updateLike.bind(handler)));
+
+  router.post("/like", wrap(handler.likeRecipe.bind(handler)));
+  router.delete("/like/:recipeId", wrap(handler.unlikeRecipe.bind(handler)));
+  router.put("/like", wrap(handler.updateLike.bind(handler)));
 
   return router;
 }

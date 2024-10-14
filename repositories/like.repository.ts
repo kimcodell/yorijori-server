@@ -1,19 +1,15 @@
 import { Sequelize } from "sequelize";
-import Recipe, { RecipeAttributes } from "../models/recipe.model";
 import Like from "../models/like.model";
 import LikeOption from "../models/likeOption.model";
-import User from "../models/user.model";
-import { arrayToString, stringToArray } from '../utils/AppUtils';
+import { arrayToString, stringToArray } from "../utils/AppUtils";
 import { ErrorWithCode } from "./../interfaces/ErrorWithCode";
 
 export default class LikeRepository {
-  constructor(
-    private sequelize: Sequelize,
-  ) {}
+  constructor(private sequelize: Sequelize) {}
 
   public async create(params: { recipeId: number; userId: number; salinityLevel?: number; amountLevel?: number; selectedIngredients?: string[] }) {
     const { recipeId, userId, salinityLevel, amountLevel, selectedIngredients } = params;
-    
+
     const [like, isCreated] = await Like.findOrCreate({
       where: {
         recipeId,
@@ -24,9 +20,9 @@ export default class LikeRepository {
         userId,
       },
     });
-    
+
     if (!isCreated) return;
-    
+
     if (salinityLevel || amountLevel || selectedIngredients) {
       await LikeOption.create({
         likeId: like.id,
@@ -36,46 +32,49 @@ export default class LikeRepository {
       });
     }
   }
-  
+
   public async update(params: { recipeId: number; userId: number; salinityLevel?: number; amountLevel?: number; selectedIngredients?: string[] }) {
     const { recipeId, userId, salinityLevel, amountLevel, selectedIngredients } = params;
-    
+
     const like = await Like.findOne({
       where: {
         userId,
         recipeId,
       },
     });
-    
-    if (!like) throw new ErrorWithCode('NOT EXISTED LIKE', '좋아요가 존재하지 않습니다.')
-    
+
+    if (!like) throw new ErrorWithCode("NOT EXISTED LIKE", "좋아요가 존재하지 않습니다.");
+
     if (salinityLevel || amountLevel || selectedIngredients) {
-      await LikeOption.update({
-        ...(salinityLevel ? { salinityLevel } : {}),
-        ...(amountLevel ? { amountLevel } : {}),
-        ...(selectedIngredients ? { selectedIngredients: arrayToString(selectedIngredients) } : {}),
-      }, {
-        where: {
-          likeId: like.id,
+      await LikeOption.update(
+        {
+          ...(salinityLevel ? { salinityLevel } : {}),
+          ...(amountLevel ? { amountLevel } : {}),
+          ...(selectedIngredients ? { selectedIngredients: arrayToString(selectedIngredients) } : {}),
         },
-      });
+        {
+          where: {
+            likeId: like.id,
+          },
+        }
+      );
     }
   }
-  
+
   public async delete(likeId: number) {
     const transaction = await this.sequelize.transaction();
-    
+
     try {
       await LikeOption.destroy({ where: { likeId }, transaction });
       await Like.destroy({ where: { id: likeId }, transaction });
-      
+
       await transaction.commit();
-    } catch(error) {
+    } catch (error) {
       await transaction.rollback();
-      throw new ErrorWithCode('SQL ERROR IN RUNNING', "SQL 쿼리 실행에 실패했습니다.")
+      throw new ErrorWithCode("SQL ERROR IN RUNNING", "SQL 쿼리 실행에 실패했습니다.");
     }
   }
-  
+
   public async getLikeByRecipeIdAndUserId({ recipeId, userId }: { recipeId: number; userId: number }) {
     const like = await Like.findOne({
       where: {
@@ -100,15 +99,14 @@ export default class LikeRepository {
     like.selectedIngredients = stringToArray(like.selectedIngredients);
     return like;
   }
-  
+
   public async getAllLikedRecipeIdsByUserId(userId: number) {
     const recipeIds = await Like.findAll({
       where: { userId },
       attributes: {
-        include: ['recipeId'],
+        include: ["recipeId"],
       },
     });
     return recipeIds;
   }
-  
 }

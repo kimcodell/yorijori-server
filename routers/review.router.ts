@@ -8,12 +8,7 @@ class RouteHandler {
   constructor(private reviewService: ReviewService) {}
 
   @authGuard
-  public async create(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async create(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
@@ -31,12 +26,7 @@ class RouteHandler {
   }
 
   @authGuard
-  public async update(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async update(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         reviewId: Joi.number().required(),
@@ -51,12 +41,7 @@ class RouteHandler {
   }
 
   @authGuard
-  public async delete(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    data: any,
-  ) {
+  public async delete(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         reviewId: Joi.number().required(),

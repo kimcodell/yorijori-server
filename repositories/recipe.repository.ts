@@ -3,133 +3,142 @@ import Recipe, { RecipeAttributes } from "../models/recipe.model";
 import CookingStep from "../models/cookingStep.model";
 import Ingredients from "../models/ingredients.model";
 import Review from "../models/review.model";
-import Like from "../models/like.model";
-import LikeOption from "../models/likeOption.model";
-import User from "../models/user.model";
 import ReviewRepository from "./review.repository";
 import LikeRepository from "./like.repository";
-import CreateRecipeDto from '../types/dtos/CreateRecipe.dto';
-import UpdateRecipeDto from '../types/dtos/UpdateRecipe.dto';
-import RecipeDto from '../types/dtos/Recipe.dto';
+import CreateRecipeDto from "../types/dtos/CreateRecipe.dto";
+import UpdateRecipeDto from "../types/dtos/UpdateRecipe.dto";
 import { RecipeOrderType, RecipeOrder, RecipeDifficulty, DifficultyTypeToNumber } from "../types";
 import { stringToArray, arrayToString } from "../utils/AppUtils";
-import { ErrorWithCode } from '../interfaces/ErrorWithCode';
+import { ErrorWithCode } from "../interfaces/ErrorWithCode";
 
 export default class RecipeRepository {
-  constructor(
-    private sequelize: Sequelize,
-    private reviewRepository: ReviewRepository,
-    private likeRepository: LikeRepository,
-  ) {}
-  
+  constructor(private sequelize: Sequelize, private reviewRepository: ReviewRepository, private likeRepository: LikeRepository) {}
+
   public async create(params: CreateRecipeDto) {
     const { title, imageUrl, category, tags, tips, cookingTime, difficulty, userId, cookingStep, ingredients } = params;
-    
+
     const transaction = await this.sequelize.transaction();
-  
+
     try {
-      const recipe = await Recipe.create({
-        title,
-        userId,
-        imageUrl,
-        category,
-        tags: arrayToString(tags),
-        cookingTime,
-        difficulty: DifficultyTypeToNumber[difficulty],
-        ...(tips ? { tips: arrayToString(tips) } : {}),
-      }, {
-        transaction,
-      });
-    
-      await CookingStep.bulkCreate(cookingStep.map(s => ({ ...s, recipeId: recipe.id })), { transaction });
-    
-      await Ingredients.bulkCreate(ingredients.map(i => ({ ...i, recipeId: recipe.id })), { transaction });
-      
+      const recipe = await Recipe.create(
+        {
+          title,
+          userId,
+          imageUrl,
+          category,
+          tags: arrayToString(tags),
+          cookingTime,
+          difficulty: DifficultyTypeToNumber[difficulty],
+          ...(tips ? { tips: arrayToString(tips) } : {}),
+        },
+        {
+          transaction,
+        }
+      );
+
+      await CookingStep.bulkCreate(
+        cookingStep.map((s) => ({ ...s, recipeId: recipe.id })),
+        { transaction }
+      );
+
+      await Ingredients.bulkCreate(
+        ingredients.map((i) => ({ ...i, recipeId: recipe.id })),
+        { transaction }
+      );
+
       await transaction.commit();
-      
+
       return recipe;
-    } catch(error) {
+    } catch (error) {
       await transaction.rollback();
-      throw new ErrorWithCode('SQL ERROR IN RUNNING', "SQL 쿼리 실행에 실패했습니다.");
+      throw new ErrorWithCode("SQL ERROR IN RUNNING", "SQL 쿼리 실행에 실패했습니다.");
     }
   }
-  
+
   public async update(params: UpdateRecipeDto) {
     const { recipeId, title, imageUrl, category, tags, tips, cookingTime, difficulty, cookingStep, ingredients } = params;
-    
+
     const transaction = await this.sequelize.transaction();
-    
+
     try {
-      const recipe = await Recipe.update({
-        ...(title ? { title } : {}),
-        ...(imageUrl ? { imageUrl } : {}),
-        ...(category ? { category } : {}),
-        ...(tags ? { tags: arrayToString(tags) } : {}),
-        ...(tips ? { tips: arrayToString(tips) } : {}),
-        ...(cookingTime ? { cookingTime } : {}),
-        ...(difficulty ? { difficulty: DifficultyTypeToNumber[difficulty] } : {}),    
-      }, {
-        where: {
-          id: recipeId,
+      const recipe = await Recipe.update(
+        {
+          ...(title ? { title } : {}),
+          ...(imageUrl ? { imageUrl } : {}),
+          ...(category ? { category } : {}),
+          ...(tags ? { tags: arrayToString(tags) } : {}),
+          ...(tips ? { tips: arrayToString(tips) } : {}),
+          ...(cookingTime ? { cookingTime } : {}),
+          ...(difficulty ? { difficulty: DifficultyTypeToNumber[difficulty] } : {}),
         },
-        transaction,
-      });
-      
+        {
+          where: {
+            id: recipeId,
+          },
+          transaction,
+        }
+      );
+
       if (cookingStep) {
-        await CookingStep.destroy({ where: { recipeId },  transaction });
-        await CookingStep.bulkCreate(cookingStep.map(s => ({ ...s, recipeId })), { transaction });
+        await CookingStep.destroy({ where: { recipeId }, transaction });
+        await CookingStep.bulkCreate(
+          cookingStep.map((s) => ({ ...s, recipeId })),
+          { transaction }
+        );
       }
 
       if (ingredients) {
-        await Ingredients.destroy({ where: { recipeId },  transaction });
-        await Ingredients.bulkCreate(ingredients.map(i => ({ ...i, recipeId })), { transaction });
+        await Ingredients.destroy({ where: { recipeId }, transaction });
+        await Ingredients.bulkCreate(
+          ingredients.map((i) => ({ ...i, recipeId })),
+          { transaction }
+        );
       }
-      
+
       await transaction.commit();
-    } catch(error) {
+
+      return recipe;
+    } catch (error) {
       await transaction.rollback();
-      throw new ErrorWithCode('SQL ERROR IN RUNNING', "SQL 쿼리 실행에 실패했습니다.");
+      throw new ErrorWithCode("SQL ERROR IN RUNNING", "SQL 쿼리 실행에 실패했습니다.");
     }
   }
-  
+
   public async delete(recipeId: number) {
     const transaction = await this.sequelize.transaction();
-    
+
     try {
-      await CookingStep.destroy({ where: { recipeId },  transaction });
-      await Ingredients.destroy({ where: { recipeId },  transaction });
-      await Recipe.destroy({ where: { id: recipeId}, transaction });
-      
+      await CookingStep.destroy({ where: { recipeId }, transaction });
+      await Ingredients.destroy({ where: { recipeId }, transaction });
+      await Recipe.destroy({ where: { id: recipeId }, transaction });
+
       await transaction.commit();
-    } catch(error) {
+    } catch (error) {
       await transaction.rollback();
-      throw new ErrorWithCode('SQL ERROR IN RUNNING', "SQL 쿼리 실행에 실패했습니다.");
+      throw new ErrorWithCode("SQL ERROR IN RUNNING", "SQL 쿼리 실행에 실패했습니다.");
     }
   }
-  
+
   public async getSimpleRecipeByRecipeId(recipeId: number) {
     const recipe = await Recipe.findOne({
       where: { id: recipeId },
       attributes: {
-        include: [
-          ["id", "recipeId"],
-          "imageUrl",
-          "title",
-          "userId",
-          "category",
-          "tags",
-          "difficulty",
-          "cookingTime",
-          "views",
-          "createdAt",
-        ],
-      }
+        include: [["id", "recipeId"], "imageUrl", "title", "userId", "category", "tags", "difficulty", "cookingTime", "views", "createdAt"],
+      },
     });
     return recipe;
     // return {...recipe.get({ plain: true }), tags: stringToArray(recipe.tags), difficulty: RecipeDifficulty[recipe.difficulty]};
   }
-  
-  public async getAllRecipes({ condition, userId, order = "recent" }: { condition: WhereOptions<RecipeAttributes>, userId: number, order?: RecipeOrderType }) {
+
+  public async getAllRecipes({
+    condition,
+    userId,
+    order = "recent",
+  }: {
+    condition: WhereOptions<RecipeAttributes>;
+    userId: number;
+    order?: RecipeOrderType;
+  }) {
     const recipes = await Recipe.findAll({
       where: condition,
       attributes: {
@@ -151,8 +160,8 @@ export default class RecipeRepository {
                 l.recipeId = recipe.id
                 AND
                 l.userId = ${userId}
-            )`), 
-            'isLiked',
+            )`),
+            "isLiked",
           ],
           [
             this.sequelize.literal(`(
@@ -161,7 +170,7 @@ export default class RecipeRepository {
               WHERE
                 r.recipeId = recipe.id
             )`),
-            'reviewCount',
+            "reviewCount",
           ],
           [
             this.sequelize.literal(`(
@@ -170,21 +179,21 @@ export default class RecipeRepository {
               WHERE
                 l.recipeId = recipe.id
             )`),
-            'likeCount',
+            "likeCount",
           ],
         ],
       },
-      order: [[this.sequelize.literal(RecipeOrder[order]), 'DESC']],
+      order: [[this.sequelize.literal(RecipeOrder[order]), "DESC"]],
     });
-    
-    return recipes.map(r => ({...r.get({ plain: true }), tags: stringToArray(r.tags), difficulty: RecipeDifficulty[r.difficulty]}));
+
+    return recipes.map((r) => ({ ...r.get({ plain: true }), tags: stringToArray(r.tags), difficulty: RecipeDifficulty[r.difficulty] }));
   }
 
   public async getAllRecipesByUserId(userId: number) {
     const recipes = await this.getAllRecipes({ condition: { userId }, userId });
     return recipes;
   }
-  
+
   public async getAllRecipeIdsByKeyword({ keyword, condition }: { keyword: string; condition?: object }) {
     const resultFromRecipeTable = await Recipe.findAll({
       where: {
@@ -201,14 +210,14 @@ export default class RecipeRepository {
             },
             tips: {
               [Op.like]: `%${keyword}%`,
-            }
+            },
           },
           ...condition,
         },
       },
-      attributes: ['id'],
+      attributes: ["id"],
     });
-    
+
     const resultFromIngredientsTable = await Ingredients.findAll({
       where: {
         [Op.and]: {
@@ -216,11 +225,11 @@ export default class RecipeRepository {
             [Op.like]: `%${keyword}%`,
           },
           ...condition,
-        }
+        },
       },
-      attributes: ['recipeId'],
+      attributes: ["recipeId"],
     });
-    
+
     const resultFromCookingStepTable = await CookingStep.findAll({
       where: {
         [Op.and]: {
@@ -230,9 +239,9 @@ export default class RecipeRepository {
           ...condition,
         },
       },
-      attributes: ['recipeId'],
+      attributes: ["recipeId"],
     });
-    
+
     const resultFromReviewTable = await Review.findAll({
       where: {
         [Op.and]: {
@@ -242,18 +251,17 @@ export default class RecipeRepository {
           ...condition,
         },
       },
-      attributes: ['recipeId'],
+      attributes: ["recipeId"],
     });
-    
+
     return [
-      ...resultFromRecipeTable.map(r => r.id),
-      ...resultFromIngredientsTable.map(r => r.recipeId),
-      ...resultFromCookingStepTable.map(r => r.recipeId),
-      ...resultFromReviewTable.map(r => r.recipeId),
+      ...resultFromRecipeTable.map((r) => r.id),
+      ...resultFromIngredientsTable.map((r) => r.recipeId),
+      ...resultFromCookingStepTable.map((r) => r.recipeId),
+      ...resultFromReviewTable.map((r) => r.recipeId),
     ];
   }
-  
-  
+
   public async getDetailRecipeByRecipeId({ recipeId, userId }: { recipeId: number; userId: number }) {
     const recipe = await Recipe.findOne({
       where: {
@@ -280,7 +288,7 @@ export default class RecipeRepository {
           //       l.recipeId = recipe.id
           //       AND
           //       l.userId = ${userId}
-          //   )`), 
+          //   )`),
           //   'isLiked',
           // ],
           [
@@ -290,7 +298,7 @@ export default class RecipeRepository {
               WHERE
                 r.recipeId = recipe.id
             )`),
-            'reviewCount',
+            "reviewCount",
           ],
           [
             this.sequelize.literal(`(
@@ -299,86 +307,86 @@ export default class RecipeRepository {
               WHERE
                 l.recipeId = recipe.id
             )`),
-            'likeCount',
+            "likeCount",
           ],
         ],
       },
     });
-    
+
     const likeData = await this.likeRepository.getLikeByRecipeIdAndUserId({ recipeId, userId });
-    
-    const reviews = await this.reviewRepository.getReviewsOfRecipe({recipeId});
-    
+
+    const reviews = await this.reviewRepository.getReviewsOfRecipe({ recipeId });
+
     const cookingStep = await CookingStep.findAll({
       where: {
         recipeId,
       },
-      attributes: ['stepNumber', 'imageUrl', 'content'],
-      order: [['stepNumber', 'ASC']],
+      attributes: ["stepNumber", "imageUrl", "content"],
+      order: [["stepNumber", "ASC"]],
     });
-    
+
     const ingredients = await Ingredients.findAll({
       where: {
         recipeId,
       },
-      attributes: ['id', 'name', 'amount', 'unit', 'amountLevel', 'isSauce', 'isNecessary'],
+      attributes: ["id", "name", "amount", "unit", "amountLevel", "isSauce", "isNecessary"],
     });
-    const amountLevel1 = ingredients.filter(i => i.amountLevel === 0);
-    const amountLevel2 = ingredients.filter(i => i.amountLevel === 1);
-    const amountLevel3 = ingredients.filter(i => i.amountLevel === 2);
-    
+    const amountLevel1 = ingredients.filter((i) => i.amountLevel === 0);
+    const amountLevel2 = ingredients.filter((i) => i.amountLevel === 1);
+    const amountLevel3 = ingredients.filter((i) => i.amountLevel === 2);
+
     const formedIngredients = {
       level1: {
-        necessary:[],
+        necessary: [],
         notNecessary: [],
         sauce: [],
       },
       level2: {
-        necessary:[],
+        necessary: [],
         notNecessary: [],
         sauce: [],
       },
       level3: {
-        necessary:[],
+        necessary: [],
         notNecessary: [],
         sauce: [],
       },
-    }
-    
-    amountLevel1.forEach(i => {
+    };
+
+    amountLevel1.forEach((i) => {
       if (i.isSauce === 1) {
-        formedIngredients.level1.sauce.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+        formedIngredients.level1.sauce.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
       } else {
         if (i.isNecessary === 1) {
-          formedIngredients.level1.necessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+          formedIngredients.level1.necessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
         } else {
-          formedIngredients.level1.notNecessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+          formedIngredients.level1.notNecessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
         }
       }
     });
-    amountLevel2.forEach(i => {
+    amountLevel2.forEach((i) => {
       if (i.isSauce === 1) {
-        formedIngredients.level2.sauce.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+        formedIngredients.level2.sauce.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
       } else {
         if (i.isNecessary === 1) {
-          formedIngredients.level2.necessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+          formedIngredients.level2.necessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
         } else {
-          formedIngredients.level2.notNecessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+          formedIngredients.level2.notNecessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
         }
       }
     });
-    amountLevel3.forEach(i => {
+    amountLevel3.forEach((i) => {
       if (i.isSauce === 1) {
-        formedIngredients.level3.sauce.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+        formedIngredients.level3.sauce.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
       } else {
         if (i.isNecessary === 1) {
-          formedIngredients.level3.necessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+          formedIngredients.level3.necessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
         } else {
-          formedIngredients.level3.notNecessary.push({ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit});
+          formedIngredients.level3.notNecessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
         }
       }
     });
-    
+
     return {
       recipeId: recipe.id,
       userId: recipe.userId,
@@ -401,6 +409,6 @@ export default class RecipeRepository {
       reviews,
       cookingStep,
       ingredients: formedIngredients,
-    }
+    };
   }
 }
