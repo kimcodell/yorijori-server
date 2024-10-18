@@ -20,6 +20,7 @@ class RouteHandler {
         ingredients: Joi.array().items(Joi.object().required()).required(),
         cookingStep: Joi.array().items(Joi.object().required()).required(),
       }).validate(req.body);
+      if (error) throw error;
 
       const recipe = await this.recipeService.create({ ...value, userId: data.id });
       successResponse(res, { recipeId: recipe.id });
@@ -42,6 +43,7 @@ class RouteHandler {
         ingredients: Joi.array().items(Joi.object().required()),
         cookingStep: Joi.array().items(Joi.object().required()),
       }).validate(req.body);
+      if (error) throw error;
 
       await this.recipeService.update({ ...value, userId: data.id });
       successResponse(res, {});
@@ -56,6 +58,7 @@ class RouteHandler {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
       }).validate(req.params);
+      if (error) throw error;
 
       await this.recipeService.delete({ recipeId: value.recipeId, userId: data.id });
       successResponse(res, {});
@@ -72,6 +75,7 @@ class RouteHandler {
         category: Joi.string(),
         order: Joi.string().valid("views", "reviews", "likes", "recent"), //views: 조회 수, reviews: 리뷰 수, likes: 찜 수
       }).validate(req.query);
+      if (error) throw error;
       const { keyword, category, order } = value;
 
       const recipes = await this.recipeService.getAllRecipesByCondition({
@@ -95,6 +99,7 @@ class RouteHandler {
         keyword: Joi.string(),
         category: Joi.string(),
       }).validate(req.query);
+      if (error) throw error;
       const { keyword, category } = value;
 
       const recipes = await this.recipeService.getAllLikedRecipesByUserId({
@@ -116,7 +121,11 @@ class RouteHandler {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
       }).validate(req.params);
-      const recipe = await this.recipeService.getDetailRecipeByRecipeId({ recipeId: value.recipeId, userId: data.id });
+      if (error) throw error;
+      const recipe = await this.recipeService.getDetailRecipeByRecipeId({
+        recipeId: value.recipeId,
+        userId: data.id,
+      });
       successResponse(res, { recipe });
     } catch (error) {
       next(error);
@@ -132,6 +141,7 @@ class RouteHandler {
         salinityLevel: Joi.number(),
         selectedIngredients: Joi.array().items(Joi.object().required()),
       }).validate(req.body);
+      if (error) throw error;
       await this.recipeService.likeRecipe({ ...value, userId: data.id });
       successResponse(res, {});
     } catch (error) {
@@ -148,6 +158,7 @@ class RouteHandler {
         salinityLevel: Joi.number(),
         selectedIngredients: Joi.array().items(Joi.object().required()),
       }).validate(req.body);
+      if (error) throw error;
       await this.recipeService.updateLike({ ...value, userId: data.id });
       successResponse(res, {});
     } catch (error) {
@@ -161,6 +172,7 @@ class RouteHandler {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
       }).validate(req.params);
+      if (error) throw error;
       await this.recipeService.unlikeRecipe({ recipeId: value.recipeId, userId: data.id });
       successResponse(res, {});
     } catch (error) {

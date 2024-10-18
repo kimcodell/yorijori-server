@@ -19,7 +19,7 @@ class RouteHandler {
         ...value,
         userId: data.id,
       });
-      successResponse(res, newReview);
+      successResponse(res, { review: newReview });
     } catch (error) {
       next(error);
     }
@@ -45,7 +45,7 @@ class RouteHandler {
     try {
       const { error, value } = Joi.object({
         reviewId: Joi.number().required(),
-      }).validate(req.body);
+      }).validate(req.params);
       if (error) throw error;
       await this.reviewService.delete({ ...value, userId: data.id });
       successResponse(res, {});
@@ -61,7 +61,7 @@ function reviewRouter(...params: [ReviewService]) {
 
   router.post("/", wrap(handler.create.bind(handler)));
   router.put("/", wrap(handler.update.bind(handler)));
-  router.delete("/", wrap(handler.delete.bind(handler)));
+  router.delete("/:reviewId", wrap(handler.delete.bind(handler)));
 
   return router;
 }
