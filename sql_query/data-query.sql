@@ -13,8 +13,8 @@ INSERT INTO
 INSERT INTO 
     `yorijori`.`recipe` (`userId`, `title`, `category`, `tags`, `tips`, `cookingTime`, `difficulty`) 
     VALUES 
-        ('1', '비빔밥', '한식', '[한식, 비빔밥, 간단한, 고추장, 계란, 밥]', '', '15', '하'),
-        ('1', '토마토 파스타', '양식', '[양식, 연인, 토마토]', '', '20', '중');
+        ('1', '비빔밥', '한식', '["한식", "비빔밥", "간단한", "고추장", "계란", "밥"]', '', '15', '하'),
+        ('1', '토마토 파스타', '양식', '["양식", "연인", "토마토"]', '', '20', '중');
 
 -- 재료
 INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '쌀', '0', '210', 'g', '0', '1');

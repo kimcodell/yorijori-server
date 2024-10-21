@@ -23,10 +23,15 @@ export default class App {
     app.use(cookieParser());
     app.use(
       cors({
-        origin: ["http://localhost:8080", "http://localhost:3000", "https://yorijori-server-higwi.run.goorm.site"],
+        origin: [
+          "http://localhost:8080",
+          "http://localhost:8081",
+          "http://localhost:3000",
+          "https://yorijori-server-higwi.run.goorm.site",
+        ],
         optionsSuccessStatus: HttpStatus.OK,
         credentials: true,
-      }),
+      })
     );
     app.use(this._allowCookie);
     this._setCryptoHelper();
@@ -48,7 +53,7 @@ export default class App {
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
     res.header(
       "Access-Control-Allow-Headers",
-      "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept",
+      "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
     );
     next();
   }

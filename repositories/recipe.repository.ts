@@ -12,10 +12,25 @@ import { stringToArray, arrayToString } from "../utils/AppUtils";
 import { ErrorWithCode } from "../interfaces/ErrorWithCode";
 
 export default class RecipeRepository {
-  constructor(private sequelize: Sequelize, private reviewRepository: ReviewRepository, private likeRepository: LikeRepository) {}
+  constructor(
+    private sequelize: Sequelize,
+    private reviewRepository: ReviewRepository,
+    private likeRepository: LikeRepository
+  ) {}
 
   public async create(params: CreateRecipeDto) {
-    const { title, imageUrl, category, tags, tips, cookingTime, difficulty, userId, cookingStep, ingredients } = params;
+    const {
+      title,
+      imageUrl,
+      category,
+      tags,
+      tips,
+      cookingTime,
+      difficulty,
+      userId,
+      cookingStep,
+      ingredients,
+    } = params;
 
     const transaction = await this.sequelize.transaction();
 
@@ -56,7 +71,18 @@ export default class RecipeRepository {
   }
 
   public async update(params: UpdateRecipeDto) {
-    const { recipeId, title, imageUrl, category, tags, tips, cookingTime, difficulty, cookingStep, ingredients } = params;
+    const {
+      recipeId,
+      title,
+      imageUrl,
+      category,
+      tags,
+      tips,
+      cookingTime,
+      difficulty,
+      cookingStep,
+      ingredients,
+    } = params;
 
     const transaction = await this.sequelize.transaction();
 
@@ -123,7 +149,18 @@ export default class RecipeRepository {
     const recipe = await Recipe.findOne({
       where: { id: recipeId },
       attributes: {
-        include: [["id", "recipeId"], "imageUrl", "title", "userId", "category", "tags", "difficulty", "cookingTime", "views", "createdAt"],
+        include: [
+          ["id", "recipeId"],
+          "imageUrl",
+          "title",
+          "userId",
+          "category",
+          "tags",
+          "difficulty",
+          "cookingTime",
+          "views",
+          "createdAt",
+        ],
       },
     });
     return recipe;
@@ -186,7 +223,11 @@ export default class RecipeRepository {
       order: [[this.sequelize.literal(RecipeOrder[order]), "DESC"]],
     });
 
-    return recipes.map((r) => ({ ...r.get({ plain: true }), tags: stringToArray(r.tags), difficulty: RecipeDifficulty[r.difficulty] }));
+    return recipes.map((r) => ({
+      ...r.get({ plain: true }),
+      tags: stringToArray(r.tags),
+      difficulty: RecipeDifficulty[r.difficulty],
+    }));
   }
 
   public async getAllRecipesByUserId(userId: number) {
@@ -355,34 +396,79 @@ export default class RecipeRepository {
 
     amountLevel1.forEach((i) => {
       if (i.isSauce === 1) {
-        formedIngredients.level1.sauce.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
+        formedIngredients.level1.sauce.push({
+          ingredientsId: i.id,
+          name: i.name,
+          amount: i.amount,
+          unit: i.unit,
+        });
       } else {
         if (i.isNecessary === 1) {
-          formedIngredients.level1.necessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
+          formedIngredients.level1.necessary.push({
+            ingredientsId: i.id,
+            name: i.name,
+            amount: i.amount,
+            unit: i.unit,
+          });
         } else {
-          formedIngredients.level1.notNecessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
+          formedIngredients.level1.notNecessary.push({
+            ingredientsId: i.id,
+            name: i.name,
+            amount: i.amount,
+            unit: i.unit,
+          });
         }
       }
     });
     amountLevel2.forEach((i) => {
       if (i.isSauce === 1) {
-        formedIngredients.level2.sauce.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
+        formedIngredients.level2.sauce.push({
+          ingredientsId: i.id,
+          name: i.name,
+          amount: i.amount,
+          unit: i.unit,
+        });
       } else {
         if (i.isNecessary === 1) {
-          formedIngredients.level2.necessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
+          formedIngredients.level2.necessary.push({
+            ingredientsId: i.id,
+            name: i.name,
+            amount: i.amount,
+            unit: i.unit,
+          });
         } else {
-          formedIngredients.level2.notNecessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
+          formedIngredients.level2.notNecessary.push({
+            ingredientsId: i.id,
+            name: i.name,
+            amount: i.amount,
+            unit: i.unit,
+          });
         }
       }
     });
     amountLevel3.forEach((i) => {
       if (i.isSauce === 1) {
-        formedIngredients.level3.sauce.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
+        formedIngredients.level3.sauce.push({
+          ingredientsId: i.id,
+          name: i.name,
+          amount: i.amount,
+          unit: i.unit,
+        });
       } else {
         if (i.isNecessary === 1) {
-          formedIngredients.level3.necessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
+          formedIngredients.level3.necessary.push({
+            ingredientsId: i.id,
+            name: i.name,
+            amount: i.amount,
+            unit: i.unit,
+          });
         } else {
-          formedIngredients.level3.notNecessary.push({ ingredientsId: i.id, name: i.name, amount: i.amount, unit: i.unit });
+          formedIngredients.level3.notNecessary.push({
+            ingredientsId: i.id,
+            name: i.name,
+            amount: i.amount,
+            unit: i.unit,
+          });
         }
       }
     });
