@@ -91,7 +91,7 @@ export default class RecipeService {
   }: {
     condition: { keyword?: string; category?: string };
     order?: RecipeOrderType;
-    userId: number;
+    userId?: number;
   }) {
     const { keyword, category } = condition;
 

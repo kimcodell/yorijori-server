@@ -67,7 +67,6 @@ class RouteHandler {
     }
   }
 
-  @authGuard
   public async getSearchResult(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
@@ -84,7 +83,7 @@ class RouteHandler {
           category,
         },
         order,
-        userId: data.id,
+        userId: data ? data.id : null,
       });
       successResponse(res, { recipes });
     } catch (error) {

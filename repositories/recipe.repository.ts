@@ -173,7 +173,7 @@ export default class RecipeRepository {
     order = "recent",
   }: {
     condition: WhereOptions<RecipeAttributes>;
-    userId: number;
+    userId?: number;
     order?: RecipeOrderType;
   }) {
     const recipes = await Recipe.findAll({
@@ -185,12 +185,13 @@ export default class RecipeRepository {
           "imageUrl",
           "title",
           "category",
-          "tags",
+          // "tags",
           "difficulty",
           "views",
           "createdAt",
-          [
-            this.sequelize.literal(`(
+          userId
+            ? [
+                this.sequelize.literal(`(
               SELECT COUNT(*)
               FROM likes l
               WHERE
@@ -198,8 +199,9 @@ export default class RecipeRepository {
                 AND
                 l.userId = ${userId}
             )`),
-            "isLiked",
-          ],
+                "isLiked",
+              ]
+            : [this.sequelize.literal(`0`), "isLiked"],
           [
             this.sequelize.literal(`(
               SELECT COUNT(*)  
@@ -225,7 +227,7 @@ export default class RecipeRepository {
 
     return recipes.map((r) => ({
       ...r.get({ plain: true }),
-      tags: stringToArray(r.tags),
+      // tags: stringToArray(r.tags),
       difficulty: RecipeDifficulty[r.difficulty],
     }));
   }

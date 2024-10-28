@@ -107,6 +107,8 @@ export default class LikeRepository {
       include: { model: LikeOption, attributes: [] },
       raw: true,
     });
+
+    if (!like) return null;
     //@ts-ignore
     like.selectedIngredients = stringToArray(like.selectedIngredients);
     return like;
