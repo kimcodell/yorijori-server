@@ -10,11 +10,6 @@ INSERT INTO
         ("정은빈", "테스트계정", "test3@gmail.com", "$2a$10$20oYpzjgJy3OuVZ.awapxeKcb7ABNuYCbxYVkA6ErbQhyRPa6sNbK");
 
 -- 레시피
-INSERT INTO 
-    `yorijori`.`recipe` (`userId`, `title`, `category`, `tags`, `tips`, `cookingTime`, `difficulty`) 
-    VALUES 
-        ('1', '비빔밥', '한식', '["한식", "비빔밥", "간단한", "고추장", "계란", "밥"]', '', '15', '하'),
-        ('1', '토마토 파스타', '양식', '["양식", "연인", "토마토"]', '', '20', '중');
 
 -- 재료
 INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '쌀', '0', '210', 'g', '0', '1');
@@ -53,3 +48,4 @@ INSERT INTO `yorijori`.`likes` (`userId`, `recipeId`) VALUES ('1', '2');
 INSERT INTO `yorijori`.`review` (`content`, `userId`, `recipeId`) VALUES ('정말 간단하게 맛있게 먹을 수 있어요! 감사합니다 :)', '2', '1');
 INSERT INTO `yorijori`.`review` (`content`, `userId`, `recipeId`) VALUES ('좋아요!!', '3', '1');
 INSERT INTO `yorijori`.`review` (`content`, `userId`, `recipeId`) VALUES ('너무너무 좋아요!!', '3', '2');
+INSERT INTO `yorijori`.`review` (`content`, `userId`, `recipeId`) VALUES ('감사합니다!!', '1', '1');

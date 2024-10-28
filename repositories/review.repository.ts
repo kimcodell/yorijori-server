@@ -22,7 +22,14 @@ export default class ReviewRepository {
   public async getReviewByReviewId(reviewId: number) {
     const review = await Review.findOne({
       where: { id: reviewId, deletedAt: null },
-      attributes: [["id", "reviewId"], "userId", "recipeId", "content", "createdAt", [this.sequelize.col("user.nickname"), "nickname"]],
+      attributes: [
+        ["id", "reviewId"],
+        "userId",
+        "recipeId",
+        "content",
+        "createdAt",
+        [this.sequelize.col("user.nickname"), "nickname"],
+      ],
       include: { model: User, attributes: [] },
       raw: true,
     });
@@ -33,7 +40,13 @@ export default class ReviewRepository {
     const reviews = await Review.findAll({
       where: { recipeId, deletedAt: null },
       attributes: {
-        include: [["id", "reviewId"], "userId", "content", "createdAt", [this.sequelize.col("user.nickname"), "nickname"]],
+        include: [
+          ["id", "reviewId"],
+          "userId",
+          "content",
+          "createdAt",
+          [this.sequelize.col("user.nickname"), "nickname"],
+        ],
       },
       include: { model: User, attributes: [] },
       raw: true,
@@ -44,7 +57,14 @@ export default class ReviewRepository {
   public async getReviewsOfUser({ userId }: { userId: number }) {
     const reviews = await Review.findAll({
       where: { userId, deletedAt: null },
-      attributes: [["id", "reviewId"], "recipeId", "content", "createdAt"], //TODO 수정
+      attributes: [
+        ["id", "reviewId"],
+        "recipeId",
+        "content",
+        "createdAt",
+        [this.sequelize.col("recipe.title"), "title"],
+        [this.sequelize.col("recipe.imageUrl"), "imageUrl"],
+      ],
       include: { model: Recipe, attributes: [] },
       raw: true,
     });

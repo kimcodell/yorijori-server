@@ -12,28 +12,67 @@ export default class UserRepository {
     await User.update({ deletedAt: new Date().toISOString() }, { where: { id: userId } });
   }
 
-  public async getUserByUserId({ userId, includePasswordHash = false }: { userId: number; includePasswordHash?: boolean }) {
-    const attributes = ["id", "nickname", "name", "createdAt", ...(includePasswordHash ? ["passwordHash"] : [])];
+  public async getUserByUserId({
+    userId,
+    includePasswordHash = false,
+  }: {
+    userId: number;
+    includePasswordHash?: boolean;
+  }) {
+    const attributes = [
+      "id",
+      "nickname",
+      "name",
+      "profileImageUrl",
+      "createdAt",
+      ...(includePasswordHash ? ["passwordHash"] : []),
+    ];
     const user = await User.findOne({
-      where: { id: userId, deletedAt: null },
+      where: { id: userId },
       attributes,
     });
     return user;
   }
 
-  public async getUserByEmail({ email, includePasswordHash = false }: { email: string; includePasswordHash?: boolean }) {
-    const attributes = ["id", "nickname", "name", "createdAt", ...(includePasswordHash ? ["passwordHash"] : [])];
+  public async getUserByEmail({
+    email,
+    includePasswordHash = false,
+  }: {
+    email: string;
+    includePasswordHash?: boolean;
+  }) {
+    const attributes = [
+      "id",
+      "nickname",
+      "name",
+      "profileImageUrl",
+      "createdAt",
+      ...(includePasswordHash ? ["passwordHash"] : []),
+    ];
     const user = await User.findOne({
-      where: { email, deletedAt: null },
+      where: { email },
       attributes,
     });
     return user;
   }
 
-  public async getUserByNickname({ nickname, includePasswordHash = false }: { nickname: string; includePasswordHash?: boolean }) {
-    const attributes = ["id", "nickname", "name", "createdAt", ...(includePasswordHash ? ["passwordHash"] : [])];
+  public async getUserByNickname({
+    nickname,
+    includePasswordHash = false,
+  }: {
+    nickname: string;
+    includePasswordHash?: boolean;
+  }) {
+    const attributes = [
+      "id",
+      "nickname",
+      "name",
+      "profileImageUrl",
+      "createdAt",
+      ...(includePasswordHash ? ["passwordHash"] : []),
+    ];
     const user = await User.findOne({
-      where: { nickname, deletedAt: null },
+      where: { nickname },
       attributes,
     });
     return user;
@@ -57,7 +96,7 @@ export default class UserRepository {
 
   public async getPasswordHashByUserId({ userId }: { userId: number }) {
     const user = await User.findOne({
-      where: { id: userId, deletedAt: null },
+      where: { id: userId },
       attributes: ["passwordHash"],
     });
     return user.passwordHash ?? "";

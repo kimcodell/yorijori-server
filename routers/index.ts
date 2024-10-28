@@ -28,7 +28,13 @@ const createRootRouter = (sequelize: Sequelize) => {
   const keywordRepository = new KeywordRepository();
 
   const authService = new AuthService(userRepository);
-  const userService = new UserService(userRepository, recipeRepository, reviewRepository, likeRepository);
+  const userService = new UserService(
+    userRepository,
+    recipeRepository,
+    reviewRepository,
+    likeRepository,
+    authService
+  );
   const recipeService = new RecipeService(recipeRepository, likeRepository);
   const reviewService = new ReviewService(reviewRepository);
   const keywordService = new KeywordService(keywordRepository);

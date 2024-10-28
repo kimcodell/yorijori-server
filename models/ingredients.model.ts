@@ -6,7 +6,7 @@ export interface IngredientsAttributes {
   recipeId: number;
   name: string;
   amountLevel: number; //0: 1인분, 1: 2~3인분, 2: 4~5인분
-  amount: number;
+  amount: string;
   unit: string;
   isSauce: number;
   isNecessary: number;
@@ -17,7 +17,7 @@ class Ingredients extends Model<IngredientsAttributes> {
   recipeId: number;
   name: string;
   amountLevel: number; //0: 1인분, 1: 2~3인분, 2: 4~5인분
-  amount: number;
+  amount: string;
   unit: string;
   isSauce: number;
   isNecessary: number;
@@ -45,7 +45,7 @@ class Ingredients extends Model<IngredientsAttributes> {
           defaultValue: 0,
         },
         amount: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.STRING(100),
           allowNull: true,
         },
         unit: {
@@ -66,7 +66,8 @@ class Ingredients extends Model<IngredientsAttributes> {
         sequelize,
         tableName: "ingredients",
         modelName: "ingredients",
-      },
+        timestamps: false,
+      }
     );
   }
 

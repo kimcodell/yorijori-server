@@ -53,6 +53,16 @@ class RouteHandler {
       next(error);
     }
   }
+
+  @authGuard
+  public async getMyReview(req: Request, res: Response, next: NextFunction, data: any) {
+    try {
+      const reviews = await this.reviewService.getMyReviews({ userId: data.id });
+      successResponse(res, { reviews });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 function reviewRouter(...params: [ReviewService]) {
@@ -62,6 +72,7 @@ function reviewRouter(...params: [ReviewService]) {
   router.post("/", wrap(handler.create.bind(handler)));
   router.put("/", wrap(handler.update.bind(handler)));
   router.delete("/:reviewId", wrap(handler.delete.bind(handler)));
+  router.get("/my", wrap(handler.getMyReview.bind(handler)));
 
   return router;
 }

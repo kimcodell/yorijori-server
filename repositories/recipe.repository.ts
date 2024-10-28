@@ -1,4 +1,4 @@
-import { Op, Sequelize, WhereOptions } from "sequelize";
+import { Op, Sequelize, where, WhereOptions } from "sequelize";
 import Recipe, { RecipeAttributes } from "../models/recipe.model";
 import CookingStep from "../models/cookingStep.model";
 import Ingredients from "../models/ingredients.model";
@@ -303,6 +303,19 @@ export default class RecipeRepository {
     ];
   }
 
+  public async updateRecipeViewsByRecipeId({ recipeId }: { recipeId: number }) {
+    await Recipe.update(
+      {
+        views: this.sequelize.literal("views + 1"),
+      },
+      {
+        where: {
+          id: recipeId,
+        },
+      }
+    );
+  }
+
   public async getDetailRecipeByRecipeId({ recipeId, userId }: { recipeId: number; userId: number }) {
     const recipe = await Recipe.findOne({
       where: {
@@ -372,9 +385,9 @@ export default class RecipeRepository {
       },
       attributes: ["id", "name", "amount", "unit", "amountLevel", "isSauce", "isNecessary"],
     });
-    const amountLevel1 = ingredients.filter((i) => i.amountLevel === 0);
-    const amountLevel2 = ingredients.filter((i) => i.amountLevel === 1);
-    const amountLevel3 = ingredients.filter((i) => i.amountLevel === 2);
+    const amountLevel1 = ingredients.filter((i) => Number(i.amountLevel) === 0);
+    const amountLevel2 = ingredients.filter((i) => Number(i.amountLevel) === 1);
+    const amountLevel3 = ingredients.filter((i) => Number(i.amountLevel) === 2);
 
     const formedIngredients = {
       level1: {
@@ -395,7 +408,7 @@ export default class RecipeRepository {
     };
 
     amountLevel1.forEach((i) => {
-      if (i.isSauce === 1) {
+      if (Number(i.isSauce) === 1) {
         formedIngredients.level1.sauce.push({
           ingredientsId: i.id,
           name: i.name,
@@ -403,7 +416,7 @@ export default class RecipeRepository {
           unit: i.unit,
         });
       } else {
-        if (i.isNecessary === 1) {
+        if (Number(i.isNecessary) === 1) {
           formedIngredients.level1.necessary.push({
             ingredientsId: i.id,
             name: i.name,
@@ -421,7 +434,7 @@ export default class RecipeRepository {
       }
     });
     amountLevel2.forEach((i) => {
-      if (i.isSauce === 1) {
+      if (Number(i.isSauce) === 1) {
         formedIngredients.level2.sauce.push({
           ingredientsId: i.id,
           name: i.name,
@@ -429,7 +442,7 @@ export default class RecipeRepository {
           unit: i.unit,
         });
       } else {
-        if (i.isNecessary === 1) {
+        if (Number(i.isNecessary) === 1) {
           formedIngredients.level2.necessary.push({
             ingredientsId: i.id,
             name: i.name,
@@ -447,7 +460,7 @@ export default class RecipeRepository {
       }
     });
     amountLevel3.forEach((i) => {
-      if (i.isSauce === 1) {
+      if (Number(i.isSauce) === 1) {
         formedIngredients.level3.sauce.push({
           ingredientsId: i.id,
           name: i.name,
@@ -455,7 +468,7 @@ export default class RecipeRepository {
           unit: i.unit,
         });
       } else {
-        if (i.isNecessary === 1) {
+        if (Number(i.isNecessary) === 1) {
           formedIngredients.level3.necessary.push({
             ingredientsId: i.id,
             name: i.name,

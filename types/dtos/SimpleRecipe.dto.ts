@@ -8,7 +8,7 @@ export default interface SimpleRecipeDto {
   category: string;
   tags: string[];
   difficulty: DifficultyType;
-  isLiked: boolean;
+  isLiked: 0 | 1;
   likeCount: number;
   reviewCount: number;
   views: number;

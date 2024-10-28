@@ -46,7 +46,8 @@ class CookingStep extends Model<CookingStepAttributes> {
         sequelize,
         tableName: "cookingStep",
         modelName: "cookingStep",
-      },
+        timestamps: false,
+      }
     );
   }
 

@@ -27,7 +27,8 @@ class Keyword extends Model<KeywordAttributes> {
       {
         sequelize,
         tableName: "keyword",
-      },
+        timestamps: false,
+      }
     );
   }
 

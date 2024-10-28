@@ -7,7 +7,13 @@ import { ErrorWithCode } from "./../interfaces/ErrorWithCode";
 export default class LikeRepository {
   constructor(private sequelize: Sequelize) {}
 
-  public async create(params: { recipeId: number; userId: number; salinityLevel?: number; amountLevel?: number; selectedIngredients?: string[] }) {
+  public async create(params: {
+    recipeId: number;
+    userId: number;
+    salinityLevel?: number;
+    amountLevel?: number;
+    selectedIngredients?: string[];
+  }) {
     const { recipeId, userId, salinityLevel, amountLevel, selectedIngredients } = params;
 
     const [like, isCreated] = await Like.findOrCreate({
@@ -33,7 +39,13 @@ export default class LikeRepository {
     }
   }
 
-  public async update(params: { recipeId: number; userId: number; salinityLevel?: number; amountLevel?: number; selectedIngredients?: string[] }) {
+  public async update(params: {
+    recipeId: number;
+    userId: number;
+    salinityLevel?: number;
+    amountLevel?: number;
+    selectedIngredients?: string[];
+  }) {
     const { recipeId, userId, salinityLevel, amountLevel, selectedIngredients } = params;
 
     const like = await Like.findOne({
@@ -86,10 +98,10 @@ export default class LikeRepository {
           "id",
           "userId",
           "recipeId",
-          [this.sequelize.col("likeOption.id"), "optionId"],
-          [this.sequelize.col("likeOption.selectedIngredients"), "selectedIngredients"],
-          [this.sequelize.col("likeOption.salinityLevel"), "salinityLevel"],
-          [this.sequelize.col("likeOption.amountLevel"), "amountLevel"],
+          [this.sequelize.col("LikeOption.id"), "optionId"],
+          [this.sequelize.col("LikeOption.selectedIngredients"), "selectedIngredients"],
+          [this.sequelize.col("LikeOption.salinityLevel"), "salinityLevel"],
+          [this.sequelize.col("LikeOption.amountLevel"), "amountLevel"],
         ],
       },
       include: { model: LikeOption, attributes: [] },

@@ -16,7 +16,7 @@ export default interface CreateRecipeDto {
 interface Ingredients {
   name: string;
   amountLevel: 0 | 1 | 2;
-  amount: number;
+  amount: string;
   unit: string;
   isSauce: 0 | 1;
   isNecessary: 0 | 1;

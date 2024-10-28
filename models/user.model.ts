@@ -1,5 +1,6 @@
 import { DataTypes, Sequelize, Model } from "sequelize";
 import { Database } from ".";
+import { defaultProfileImageUrl } from "../utils/Constants";
 
 export interface UserAttributes {
   id: number;
@@ -7,6 +8,7 @@ export interface UserAttributes {
   name: string;
   passwordHash: string;
   nickname: string;
+  profileImageUrl: string;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -18,6 +20,7 @@ class User extends Model<UserAttributes> {
   name: string;
   passwordHash: string;
   nickname: string;
+  profileImageUrl: string;
   createdAt!: string;
   updatedAt!: string;
   deletedAt?: string;
@@ -47,6 +50,11 @@ class User extends Model<UserAttributes> {
           type: DataTypes.STRING(100),
           allowNull: false,
         },
+        profileImageUrl: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          defaultValue: defaultProfileImageUrl,
+        },
         createdAt: {
           type: DataTypes.DATE,
           allowNull: false,
@@ -68,7 +76,7 @@ class User extends Model<UserAttributes> {
         tableName: "user",
         modelName: "user",
         paranoid: true,
-      },
+      }
     );
   }
 

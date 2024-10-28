@@ -4,13 +4,15 @@ import UserRepository from "../repositories/user.repository";
 import { cryptoHelper } from "../utils/CryptoHelper";
 import LikeRepository from "../repositories/like.repository";
 import ReviewRepository from "../repositories/review.repository";
+import AuthService from "./auth.service";
 
 export default class UserService {
   constructor(
     private userRepository: UserRepository,
     private recipeRepository: RecipeRepository,
     private reviewRepository: ReviewRepository,
-    private likeRepository: LikeRepository
+    private likeRepository: LikeRepository,
+    private authService: AuthService
   ) {}
 
   public async getUserById(params: { userId: number }) {
@@ -22,17 +24,19 @@ export default class UserService {
     }
 
     const userRecipes = await this.recipeRepository.getAllRecipesByUserId(userId);
-    const reviewsCount = (await this.reviewRepository.getReviewsOfUser({ userId })).length;
-    const likesCount = (await this.likeRepository.getAllLikedRecipeIdsByUserId(userId)).length;
+    const reviews = await this.reviewRepository.getReviewsOfUser({ userId });
+    const likeCount = (await this.likeRepository.getAllLikedRecipeIdsByUserId(userId)).length;
 
     return {
       userId: user.id,
       name: user.name,
       nickname: user.nickname,
+      profileImageUrl: user.profileImageUrl,
       createdAt: user.createdAt,
       recipes: userRecipes,
-      likesCount,
-      reviewsCount,
+      likeCount,
+      reviewCount: reviews.length,
+      reviews,
     };
   }
 
@@ -47,6 +51,8 @@ export default class UserService {
 
     await this._checkIsUserExist({ userId });
 
+    await this.authService.checkNicknameDuplication({ nickname });
+
     await this.userRepository.update({ userId, nickname });
   }
 
@@ -55,9 +61,9 @@ export default class UserService {
 
     const originPasswordHash = await this.userRepository.getPasswordHashByUserId({ userId });
 
-    const passwordHash = cryptoHelper.bcryptHash(password);
+    const isValid = cryptoHelper.compareBcryptHash(password, originPasswordHash);
 
-    if (originPasswordHash !== passwordHash) {
+    if (!isValid) {
       throw new ErrorWithCode("INVALID PASSWORD", "잘못된 비밀번호입니다.");
     }
 

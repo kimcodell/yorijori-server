@@ -14,8 +14,19 @@ export default class RecipeService {
   }
 
   public async update(params: UpdateRecipeDto) {
-    const { title, imageUrl, category, tags, tips, cookingTime, difficulty, cookingStep, ingredients } = params;
-    if (title || imageUrl || category || tags || tips || cookingTime || difficulty || cookingStep || ingredients) {
+    const { title, imageUrl, category, tags, tips, cookingTime, difficulty, cookingStep, ingredients } =
+      params;
+    if (
+      title ||
+      imageUrl ||
+      category ||
+      tags ||
+      tips ||
+      cookingTime ||
+      difficulty ||
+      cookingStep ||
+      ingredients
+    ) {
       await this.recipeRepository.update(params);
     }
   }
@@ -34,7 +45,13 @@ export default class RecipeService {
     return await this.recipeRepository.getAllRecipesByUserId(userId);
   }
 
-  public async getAllLikedRecipesByUserId({ condition, userId }: { condition: { keyword?: string; category?: string }; userId: number }) {
+  public async getAllLikedRecipesByUserId({
+    condition,
+    userId,
+  }: {
+    condition: { keyword?: string; category?: string };
+    userId: number;
+  }) {
     const likedRecipes = await this.likeRepository.getAllLikedRecipeIdsByUserId(userId);
 
     const likedRecipeIds = likedRecipes.map((recipe) => recipe.recipeId);
@@ -46,7 +63,10 @@ export default class RecipeService {
     const targetRecipeIds = [];
 
     if (keyword) {
-      const recipeIds = await this.recipeRepository.getAllRecipeIdsByKeyword({ keyword, condition: { id: { [Op.in]: likedRecipeIds } } });
+      const recipeIds = await this.recipeRepository.getAllRecipeIdsByKeyword({
+        keyword,
+        condition: { id: { [Op.in]: likedRecipeIds } },
+      });
       targetRecipeIds.push(...recipeIds);
     } else {
       targetRecipeIds.push(...likedRecipeIds);
@@ -99,7 +119,9 @@ export default class RecipeService {
   }
 
   public async getDetailRecipeByRecipeId(params: { recipeId: number; userId: number }) {
-    return await this.recipeRepository.getDetailRecipeByRecipeId(params);
+    const result = await this.recipeRepository.getDetailRecipeByRecipeId(params);
+    await this.recipeRepository.updateRecipeViewsByRecipeId({ recipeId: params.recipeId });
+    return result;
   }
 
   public async likeRecipe(params: {

@@ -10,7 +10,7 @@ export default interface RecipeDto {
   tags: string[];
   cookingTime: number; //unit: minute
   difficulty: DifficultyType;
-  isLiked: boolean;
+  isLiked: 0 | 1;
   likeData?: {
     id: number;
     userId: number;
@@ -26,9 +26,9 @@ export default interface RecipeDto {
   reviews: Review[];
   cookingStep: CookingStep[];
   ingredients: {
-    'level1': Ingredients,
-    'level2': Ingredients,
-    'level3': Ingredients,
+    level1: Ingredients;
+    level2: Ingredients;
+    level3: Ingredients;
   };
   createdAt: string;
 }
@@ -37,19 +37,19 @@ interface Ingredients {
   sauce: {
     ingredientId: number;
     name: string;
-    amount: number;
+    amount: string;
     unit: string;
   }[];
   necessary: {
     ingredientId: number;
     name: string;
-    amount: number;
+    amount: string;
     unit: string;
-  },
+  }[];
   notNecessary: {
     ingredientId: number;
     name: string;
-    amount: number;
+    amount: string;
     unit: string;
   }[];
 }

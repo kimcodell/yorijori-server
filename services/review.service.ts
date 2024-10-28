@@ -28,6 +28,10 @@ export default class ReviewService {
     await this.reviewRepository.delete({ reviewId });
   }
 
+  public async getMyReviews(params: { userId: number }) {
+    return await this.reviewRepository.getReviewsOfUser(params);
+  }
+
   private async _checkIsAuthor({ userId, reviewId }: { userId: number; reviewId: number }) {
     const review = await this.reviewRepository.getReviewByReviewId(reviewId);
 
