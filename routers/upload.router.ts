@@ -56,7 +56,7 @@ function uploadRouter(...params: []) {
   const handler = new RouteHandler(...params);
 
   router.post("/", handler.upload.single("file"), wrap(handler.createImage.bind(handler)));
-  router.post("/multiple", handler.upload.array("file"), wrap(handler.createImages.bind(handler)));
+  router.post("/multiple", handler.upload.array("file", 10), wrap(handler.createImages.bind(handler)));
 
   return router;
 }
