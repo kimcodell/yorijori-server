@@ -49,3 +49,13 @@ INSERT INTO `yorijori`.`review` (`content`, `userId`, `recipeId`) VALUES ('정�
 INSERT INTO `yorijori`.`review` (`content`, `userId`, `recipeId`) VALUES ('좋아요!!', '3', '1');
 INSERT INTO `yorijori`.`review` (`content`, `userId`, `recipeId`) VALUES ('너무너무 좋아요!!', '3', '2');
 INSERT INTO `yorijori`.`review` (`content`, `userId`, `recipeId`) VALUES ('감사합니다!!', '1', '1');
+
+
+-- 키워드
+INSERT INTO `yorijori`.`keyword` (`keyword`) VALUES ('야식');
+INSERT INTO `yorijori`.`keyword` (`keyword`) VALUES ('집들이');
+INSERT INTO `yorijori`.`keyword` (`keyword`) VALUES ('국물');
+INSERT INTO `yorijori`.`keyword` (`keyword`) VALUES ('닭고기');
+INSERT INTO `yorijori`.`keyword` (`keyword`) VALUES ('돼지고기');
+INSERT INTO `yorijori`.`keyword` (`keyword`) VALUES ('영양');
+INSERT INTO `yorijori`.`keyword` (`keyword`) VALUES ('한식');

@@ -5,6 +5,7 @@ import multerS3 from "multer-s3";
 import { v4 as uuidv4 } from "uuid";
 import { successResponse, wrap } from "../utils/ExpressUtils";
 import { AWS_REGION } from "../utils/Constants";
+import { ErrorWithCode } from "../interfaces/ErrorWithCode";
 
 interface MulterRequest extends Request {
   file: any;
@@ -41,6 +42,13 @@ class RouteHandler {
     const { file } = req;
     successResponse(res, { imageUrl: file.location });
   }
+
+  public async createImages(req: MulterRequest, res: Response, next: NextFunction, data) {
+    const { files } = req;
+    if (!files) throw new ErrorWithCode("NOT FOUND FILES", "파일이 업로드 되지 않았습니다.");
+    // @ts-ignore
+    successResponse(res, { imageUrls: files.map((f) => f.location) });
+  }
 }
 
 function uploadRouter(...params: []) {
@@ -48,6 +56,7 @@ function uploadRouter(...params: []) {
   const handler = new RouteHandler(...params);
 
   router.post("/", handler.upload.single("file"), wrap(handler.createImage.bind(handler)));
+  router.post("/multiple", handler.upload.array("file"), wrap(handler.createImages.bind(handler)));
 
   return router;
 }
