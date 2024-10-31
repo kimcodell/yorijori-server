@@ -105,7 +105,7 @@ export default class RecipeService {
     const whereOption = {
       [Op.and]: {
         ...(category ? { category } : {}),
-        ...(targetRecipeIds.length > 0
+        ...(keyword
           ? {
               id: {
                 [Op.in]: targetRecipeIds,
@@ -118,7 +118,7 @@ export default class RecipeService {
     return await this.recipeRepository.getAllRecipes({ condition: whereOption, userId, order });
   }
 
-  public async getDetailRecipeByRecipeId(params: { recipeId: number; userId: number }) {
+  public async getDetailRecipeByRecipeId(params: { recipeId: number; userId?: number }) {
     const result = await this.recipeRepository.getDetailRecipeByRecipeId(params);
     await this.recipeRepository.updateRecipeViewsByRecipeId({ recipeId: params.recipeId });
     return result;

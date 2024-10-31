@@ -16,7 +16,7 @@ export default class LikeRepository {
   }) {
     const { recipeId, userId, salinityLevel, amountLevel, selectedIngredients } = params;
 
-    const [like, isCreated] = await Like.findOrCreate({
+    const [like] = await Like.findOrCreate({
       where: {
         recipeId,
         userId,
@@ -27,15 +27,39 @@ export default class LikeRepository {
       },
     });
 
-    if (!isCreated) return;
-
-    if (salinityLevel || amountLevel || selectedIngredients) {
-      await LikeOption.create({
-        likeId: like.id,
-        ...(salinityLevel ? { salinityLevel } : {}),
-        ...(amountLevel ? { amountLevel } : {}),
-        ...(selectedIngredients ? { selectedIngredients: arrayToString(selectedIngredients) } : {}),
+    if (
+      salinityLevel ||
+      amountLevel !== undefined ||
+      (selectedIngredients && selectedIngredients.length > 0)
+    ) {
+      const hasOption = await LikeOption.findOne({
+        where: {
+          likeId: like.id,
+        },
+        attributes: ["id"],
       });
+
+      if (hasOption) {
+        await LikeOption.update(
+          {
+            ...(salinityLevel ? { salinityLevel } : {}),
+            ...(amountLevel !== undefined ? { amountLevel } : {}),
+            ...(selectedIngredients ? { selectedIngredients: arrayToString(selectedIngredients) } : {}),
+          },
+          {
+            where: {
+              likeId: like.id,
+            },
+          }
+        );
+      } else {
+        await LikeOption.create({
+          likeId: like.id,
+          ...(salinityLevel ? { salinityLevel } : {}),
+          ...(amountLevel ? { amountLevel } : {}),
+          ...(selectedIngredients ? { selectedIngredients: arrayToString(selectedIngredients) } : {}),
+        });
+      }
     }
   }
 
@@ -87,7 +111,18 @@ export default class LikeRepository {
     }
   }
 
-  public async getLikeByRecipeIdAndUserId({ recipeId, userId }: { recipeId: number; userId: number }) {
+  public async getLikeCountByRecipeId({ recipeId }: { recipeId: number }) {
+    const likes = await Like.findAll({
+      where: {
+        recipeId,
+      },
+      attributes: ["id"],
+    });
+    return likes.length;
+  }
+
+  public async getLikeByRecipeIdAndUserId({ recipeId, userId }: { recipeId: number; userId?: number }) {
+    if (!userId) return;
     const like = await Like.findOne({
       where: {
         userId,

@@ -26,9 +26,9 @@ export default interface RecipeDto {
   reviews: Review[];
   cookingStep: CookingStep[];
   ingredients: {
+    level0: Ingredients;
     level1: Ingredients;
     level2: Ingredients;
-    level3: Ingredients;
   };
   createdAt: string;
 }

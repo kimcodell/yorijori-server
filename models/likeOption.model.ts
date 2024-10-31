@@ -36,15 +36,15 @@ class LikeOption extends Model<LikeOptionAttributes> {
         },
         selectedIngredients: {
           type: DataTypes.TEXT,
-          allowNull: false,
+          allowNull: true,
         },
         salinityLevel: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
         },
         amountLevel: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
         },
         createdAt: {
           type: DataTypes.DATE,
@@ -60,7 +60,7 @@ class LikeOption extends Model<LikeOptionAttributes> {
       {
         sequelize,
         tableName: "likeOption",
-      },
+      }
     );
   }
 

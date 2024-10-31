@@ -318,7 +318,7 @@ export default class RecipeRepository {
     );
   }
 
-  public async getDetailRecipeByRecipeId({ recipeId, userId }: { recipeId: number; userId: number }) {
+  public async getDetailRecipeByRecipeId({ recipeId, userId }: { recipeId: number; userId?: number }) {
     const recipe = await Recipe.findOne({
       where: {
         id: recipeId,
@@ -356,20 +356,12 @@ export default class RecipeRepository {
             )`),
             "reviewCount",
           ],
-          [
-            this.sequelize.literal(`(
-              SELECT COUNT(*)  
-              FROM likes l
-              WHERE
-                l.recipeId = recipe.id
-            )`),
-            "likeCount",
-          ],
         ],
       },
     });
 
     const likeData = await this.likeRepository.getLikeByRecipeIdAndUserId({ recipeId, userId });
+    const likeCount = await this.likeRepository.getLikeCountByRecipeId({ recipeId });
 
     const reviews = await this.reviewRepository.getReviewsOfRecipe({ recipeId });
 
@@ -387,11 +379,16 @@ export default class RecipeRepository {
       },
       attributes: ["id", "name", "amount", "unit", "amountLevel", "isSauce", "isNecessary"],
     });
-    const amountLevel1 = ingredients.filter((i) => Number(i.amountLevel) === 0);
-    const amountLevel2 = ingredients.filter((i) => Number(i.amountLevel) === 1);
-    const amountLevel3 = ingredients.filter((i) => Number(i.amountLevel) === 2);
+    const amountLevel0 = ingredients.filter((i) => Number(i.amountLevel) === 0);
+    const amountLevel1 = ingredients.filter((i) => Number(i.amountLevel) === 1);
+    const amountLevel2 = ingredients.filter((i) => Number(i.amountLevel) === 2);
 
     const formedIngredients = {
+      level0: {
+        necessary: [],
+        notNecessary: [],
+        sauce: [],
+      },
       level1: {
         necessary: [],
         notNecessary: [],
@@ -402,13 +399,34 @@ export default class RecipeRepository {
         notNecessary: [],
         sauce: [],
       },
-      level3: {
-        necessary: [],
-        notNecessary: [],
-        sauce: [],
-      },
     };
 
+    amountLevel0.forEach((i) => {
+      if (Number(i.isSauce) === 1) {
+        formedIngredients.level0.sauce.push({
+          ingredientsId: i.id,
+          name: i.name,
+          amount: i.amount,
+          unit: i.unit,
+        });
+      } else {
+        if (Number(i.isNecessary) === 1) {
+          formedIngredients.level0.necessary.push({
+            ingredientsId: i.id,
+            name: i.name,
+            amount: i.amount,
+            unit: i.unit,
+          });
+        } else {
+          formedIngredients.level0.notNecessary.push({
+            ingredientsId: i.id,
+            name: i.name,
+            amount: i.amount,
+            unit: i.unit,
+          });
+        }
+      }
+    });
     amountLevel1.forEach((i) => {
       if (Number(i.isSauce) === 1) {
         formedIngredients.level1.sauce.push({
@@ -461,32 +479,6 @@ export default class RecipeRepository {
         }
       }
     });
-    amountLevel3.forEach((i) => {
-      if (Number(i.isSauce) === 1) {
-        formedIngredients.level3.sauce.push({
-          ingredientsId: i.id,
-          name: i.name,
-          amount: i.amount,
-          unit: i.unit,
-        });
-      } else {
-        if (Number(i.isNecessary) === 1) {
-          formedIngredients.level3.necessary.push({
-            ingredientsId: i.id,
-            name: i.name,
-            amount: i.amount,
-            unit: i.unit,
-          });
-        } else {
-          formedIngredients.level3.notNecessary.push({
-            ingredientsId: i.id,
-            name: i.name,
-            amount: i.amount,
-            unit: i.unit,
-          });
-        }
-      }
-    });
 
     return {
       recipeId: recipe.id,
@@ -504,7 +496,7 @@ export default class RecipeRepository {
       isLiked: likeData ? 1 : 0,
       likeData,
       // @ts-ignore
-      likeCount: recipe.likeCount,
+      likeCount,
       // @ts-ignore
       reviewCount: recipe.reviewCount,
       reviews,

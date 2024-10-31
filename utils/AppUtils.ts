@@ -6,6 +6,7 @@ export function isEmail(email: string) {
 }
 
 export function stringToArray(str: string) {
+  if (!str) return [];
   return JSON.parse(str);
 }
 

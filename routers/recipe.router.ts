@@ -115,16 +115,19 @@ class RouteHandler {
     }
   }
 
-  @authGuard
   public async getDetailRecipe(req: Request, res: Response, next: NextFunction, data: any) {
     try {
       const { error, value } = Joi.object({
         recipeId: Joi.number().required(),
       }).validate(req.params);
+      const { error: e, value: v } = Joi.object({
+        userId: Joi.number(),
+      }).validate(req.query);
       if (error) throw error;
+      if (e) throw e;
       const recipe = await this.recipeService.getDetailRecipeByRecipeId({
         recipeId: value.recipeId,
-        userId: data.id,
+        userId: v.userId,
       });
       successResponse(res, { recipe });
     } catch (error) {
