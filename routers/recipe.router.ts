@@ -73,10 +73,11 @@ class RouteHandler {
         keyword: Joi.string(),
         category: Joi.string(),
         order: Joi.string().valid("views", "reviews", "likes", "recent"), //views: 조회 수, reviews: 리뷰 수, likes: 찜 수
+        limit: Joi.number(),
         userId: Joi.number(),
       }).validate(req.query);
       if (error) throw error;
-      const { keyword, category, order, userId } = value;
+      const { keyword, category, order, limit, userId } = value;
 
       const recipes = await this.recipeService.getAllRecipesByCondition({
         condition: {
@@ -84,6 +85,7 @@ class RouteHandler {
           category,
         },
         order,
+        limit,
         userId,
       });
       successResponse(res, { recipes });

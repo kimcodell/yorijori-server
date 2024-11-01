@@ -171,10 +171,12 @@ export default class RecipeRepository {
     condition,
     userId,
     order = "recent",
+    limit,
   }: {
     condition: WhereOptions<RecipeAttributes>;
     userId?: number;
     order?: RecipeOrderType;
+    limit?: number;
   }) {
     const recipes = await Recipe.findAll({
       where: condition,
@@ -223,6 +225,7 @@ export default class RecipeRepository {
         ],
       },
       order: [[this.sequelize.literal(RecipeOrder[order]), "DESC"]],
+      ...(limit ? { limit } : {}),
     });
 
     return recipes.map((r) => ({

@@ -88,9 +88,11 @@ export default class RecipeService {
     condition,
     order,
     userId,
+    limit,
   }: {
     condition: { keyword?: string; category?: string };
     order?: RecipeOrderType;
+    limit?: number;
     userId?: number;
   }) {
     const { keyword, category } = condition;
@@ -115,7 +117,7 @@ export default class RecipeService {
       },
     };
 
-    return await this.recipeRepository.getAllRecipes({ condition: whereOption, userId, order });
+    return await this.recipeRepository.getAllRecipes({ condition: whereOption, userId, order, limit });
   }
 
   public async getDetailRecipeByRecipeId(params: { recipeId: number; userId?: number }) {

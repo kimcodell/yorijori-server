@@ -40,6 +40,8 @@ class RouteHandler {
 
   public async createImage(req: MulterRequest, res: Response, next: NextFunction, data) {
     const { file } = req;
+    console.log(file);
+    if (!file) throw new ErrorWithCode("NOT FOUND FILES", "파일이 업로드 되지 않았습니다.");
     successResponse(res, { imageUrl: file.location });
   }
 
