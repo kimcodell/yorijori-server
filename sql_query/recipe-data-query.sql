@@ -30,6 +30,19 @@ VALUES('1', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/
 ('28', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730048312633_a6611621-feaf-469e-85ee-68bc41bc2824', '아침에 먹으면 점심까지 든든한 달걀죽', '한식', '["한식", "간단한", "영양", "아침", "든든한", "속편한"]', '', '30', '0'),
 ('29', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730032827622_7ac2a286-32ec-4d25-a76f-b36f0f400daa', '이것만 있으면 밥 한 공기 뚝딱! 달걀장조림', '한식', '["한식", "야식", "밥반찬", "도시락 반찬", "밥도둑"]', '["완숙은 10~15분, 반숙은 7분 정도 삶아주세요.", "마지막에 간을 봤을 때 좀 싱거우면 좀 더 졸여주시면 돼요."]', '30', '0');
 
+INSERT INTO `yorijori`.`recipe` (`id`, `userId`, `imageUrl`, `title`, `category`, `tags`, `tips`, `cookingTime`, `difficulty`)
+VALUES('60', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730960796391_966b095c-7f42-4c94-be15-0e1bb3d5b984', '전자레인지에 넣고 돌리기만 하면 끝! 장조림버터밥', '한식', '["한식", "간편한", "아이식사", "단짠단짠", "아침요리", "자취생"]', '', '15', '0'),
+('61', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730980988864_e726d64a-6324-4546-825b-020bff663ac2', '점심 단골 메뉴 든든한 혼밥, 돈까스김치나베', '한식', '["한식", "든든한", "점심요리", "매콤한", "혼밥", "자취생"]', '', '20', '0'),
+('62', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730980962430_1660e225-3e5f-4aa0-a692-34b5991d5ec6', '아이 입맛저격, 간단 치즈 오므라이스', '한식', '["한식", "유아식", "유아동", "간단한", "영양만점"]', '', '10', '0'),
+('63', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730980937502_5f8c6185-3db2-40ee-bbb3-a5ea7df2d0ce', '아이가 좋아하는, 소화에 좋은 고구마 스프', '한식', '["한식", "유아식", "유아동", "간단한", "영양만점", "든든한"]', '', '15', '0'),
+('64', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730980913694_633991ae-4416-4bd2-b5b5-8b3096413632', '아이 반찬으로 좋은 버섯볶음', '한식', '["한식", "유아식", "유아동", "간단한", "영양만점", "아이반찬"]', '', '15', '0'),
+('65', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730980886493_f6dd0097-34cf-4f5c-a285-7baf99ec1542', '만두 대신 영양만점 달걀만두', '한식', '["한식", "유아식", "유아동", "간단한", "영양만점", "아이반찬"]', '', '60', '0'),
+('66', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730980859989_2173306f-bf4b-457a-bf00-a08ced56d69c', '담백한 아이 반찬, 닭다리살소금구이', '한식', '["한식", "유아식", "유아동", "간단한", "아이반찬"]', '', '100', '0'),
+('67', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730980775696_fb6593d7-5411-48e0-8444-86bc1e6e99fc', '흑백요리사 밤티라미수', '양식', '["양식", "디저트", "달달한", "후식", "흑백요리사", "TV레시피"]', '', '60', '0'),
+('68', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730980732108_d249fe65-c0b0-4fe1-80c0-3908fef6e85f', '흑백요리사 링귀니 알리오 올리오', '양식', '["양식", "담백한", "핫한", "분위기있는", "흑백요리사", "TV레시피"]', '', '20', '1'),
+('69', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730980686327_1bd7d508-0456-4620-9ead-8270cf41bee1', '흑백요리사 통마늘라면', '한식', '["한식", "담백한", "핫한", "간단한", "흑백요리사", "TV레시피"]', '', '30', '0');
+
+
 
 -- 재료 ingredients
 INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('1', '닭', '0', '700-800', 'g', '0', '1');
@@ -978,6 +991,249 @@ INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount
 INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('29', '물', '2', '1.5', '컵', '0', '1');
 
 
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '밥', '0', '1', '공기', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '통조림장조림', '0', '1(100)', '캔(g)', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '스틱버터', '0', '1/3', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '대파', '0', '1/4', '대', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '달걀', '0', '2', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '식용유', '0', '적당량', '', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '통깨', '0', '약간', '', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '밥', '1', '2~3', '공기', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '통조림장조림', '1', '2~3(200~300)', '캔(g)', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '스틱버터', '1', '1/2', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '대파', '1', '1/3', '대', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '달걀', '1', '4~5', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '식용유', '1', '적당량', '', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '통깨', '1', '약간', '', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '밥', '2', '4~5', '공기', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '통조림장조림', '2', '4~5(400~500)', '캔', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '스틱버터', '2', '1', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '대파', '2', '1', '대', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '달걀', '2', '7~8', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '식용유', '2', '적당량', '', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('60', '통깨', '2', '약간', '', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '돈까스', '0', '1', '장', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '김치', '0', '1', '컵', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '김치국물', '0', '1/2', '컵', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '달걀', '0', '1~2', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '고춧가루', '0', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '다진 마늘', '0', '1/2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '국간장', '0', '1.5~2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '설탕', '0', '1~1.5', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '맛술', '0', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '물', '0', '1/2', '컵', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '돈까스', '1', '2~3', '장', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '김치', '1', '1', '컵', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '김치국물', '1', '2/3', '컵', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '달걀', '1', '2~3', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '고춧가루', '1', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '다진 마늘', '1', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '국간장', '1', '2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '설탕', '1', '2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '맛술', '1', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '물', '1', '1', '컵', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '돈까스', '2', '4', '장', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '김치', '2', '1.5', '컵', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '김치국물', '2', '1', '컵', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '달걀', '2', '4', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '고춧가루', '2', '3', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '다진 마늘', '2', '2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '국간장', '2', '2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '설탕', '2', '2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '맛술', '2', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('61', '물', '2', '1', '컵', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '밥', '0', '1', '주걱', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '달걀', '0', '1', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '카놀라유', '0', '1', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '모짜렐라 치즈', '0', '2', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '진간장', '0', '1/2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '들기름', '0', '1/2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '참깨', '0', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '토마토 케찹', '0', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '밥', '1', '2~3', '주걱', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '달걀', '1', '2~3', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '카놀라유', '1', '2', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '모짜렐라 치즈', '1', '3', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '진간장', '1', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '들기름', '1', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '참깨', '1', '2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '토마토 케찹', '1', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '밥', '2', '4~5', '주걱', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '달걀', '2', '4~5', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '카놀라유', '2', '1', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '모짜렐라 치즈', '2', '4', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '진간장', '2', '1.5', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '들기름', '2', '1.5', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '참깨', '2', '3', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('62', '토마토 케찹', '2', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '삶은 고구마', '0', '1', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '우유', '0', '300', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '소금', '0', '약간', '', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '후추', '0', '약간', '', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '파슬리', '0', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '삶은 고구마', '1', '2', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '우유', '1', '400', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '소금', '1', '1.5', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '후추', '1', '약간', '', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '파슬리', '1', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '삶은 고구마', '2', '3', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '우유', '2', '500', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '소금', '2', '1.5', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '후추', '2', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('63', '파슬리', '2', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아무 버섯', '0', '1/2', '팩', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아기 참기름', '0', '1', '바퀴', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아기 간장', '0', '1', 't', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아기 소금', '0', '1/2', 't', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '깨소금', '0', '약간', '', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '현미유', '0', '1', 'T', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아무 버섯', '1', '1', '팩', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아기 참기름', '1', '2', '바퀴', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아기 간장', '1', '2', 't', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아기 소금', '1', '1', 't', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '깨소금', '1', '약간', '', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '현미유', '1', '2', 'T', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아무 버섯', '2', '2', '팩', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아기 참기름', '2', '3', '바퀴', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아기 간장', '2', '4', 't', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '아기 소금', '2', '2', 't', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '깨소금', '2', '약간', '', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('64', '현미유', '2', '4', 'T', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '당면', '0', '20', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '양파', '0', '30', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '애호박', '0', '20', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '당근', '0', '20', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '팽이버섯', '0', '30', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '달걀', '0', '2', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '아기 간장', '0', '0.5', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '참기름', '0', '0.5', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '소금', '0', '약간', '', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '현미유', '0', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '당면', '1', '40', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '양파', '1', '50', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '애호박', '1', '30', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '당근', '1', '30', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '팽이버섯', '1', '40', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '달걀', '1', '4', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '아기 간장', '1', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '참기름', '1', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '소금', '1', '약간', '', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '현미유', '1', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '당면', '2', '70', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '양파', '2', '50', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '애호박', '2', '50', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '당근', '2', '50', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '팽이버섯', '2', '50', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '달걀', '2', '6', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '아기 간장', '2', '2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '참기름', '2', '2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '소금', '2', '약간', '', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('65', '현미유', '2', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '닭다리살', '0', '200', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '우유', '0', '200', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '오일', '0', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '다진 마늘', '0', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '소금', '0', '1', 't', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '후추', '0', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '닭다리살', '1', '500', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '우유', '1', '400', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '오일', '1', '2', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '다진 마늘', '1', '1', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '소금', '1', '2', 't', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '후추', '1', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '닭다리살', '2', '800', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '우유', '2', '600', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '오일', '2', '4', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '다진 마늘', '2', '3', 'T', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '소금', '2', '3', 't', '1', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('66', '후추', '2', '약간', '', '1', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '간식 밤', '0', '80', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '우유', '0', '80', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '크림치즈', '0', '125', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '생크림', '0', '100', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '다이제', '0', '3', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '가나초콜릿', '0', '0.5', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '토피넛라떼', '0', '0.5', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '그래놀라', '0', '1', 'T', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '간식 밤', '1', '80', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '우유', '1', '80', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '크림치즈', '1', '125', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '생크림', '1', '100', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '다이제', '1', '3', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '가나초콜릿', '1', '0.5', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '토피넛라떼', '1', '0.5', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '그래놀라', '1', '1', 'T', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '간식 밤', '2', '140', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '우유', '2', '150', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '크림치즈', '2', '125', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '생크림', '2', '200', 'ml', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '다이제', '2', '6', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '가나초콜릿', '2', '1', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '토피넛라떼', '2', '1', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('67', '그래놀라', '2', '3', 'T', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '링귀니 파스타', '0', '100', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '올리브오일', '0', '5', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '소금', '0', '1', '줌', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '마늘', '0', '4', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '건 페페론치노', '0', '2', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '파슬리', '0', '3', '줄기', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '그라나파다노치즈', '0', '약간', '', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '링귀니 파스타', '1', '200', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '올리브오일', '1', '5', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '소금', '1', '1', '줌', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '마늘', '1', '7', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '건 페페론치노', '1', '5', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '파슬리', '1', '7', '줄기', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '그라나파다노치즈', '1', '약간', '', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '링귀니 파스타', '2', '500', 'g', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '올리브오일', '2', '9', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '소금', '2', '1', '줌', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '마늘', '2', '15', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '건 페페론치노', '2', '8', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '파슬리', '2', '10', '줄기', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('68', '그라나파다노치즈', '2', '약간', '', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('69', '안성탕면 혹은 진라면 순한맛', '0', '1', '봉지', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('69', '통마늘', '0', '1', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('69', '파', '0', '1/2', 'T', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('69', '안성탕면 혹은 진라면 순한맛', '0', '2~3', '봉지', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('69', '통마늘', '0', '2', '개', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('69', '파', '0', '1', 'T', '0', '1');
+
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('69', '안성탕면 혹은 진라면 순한맛', '0', '4~5', '봉지', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('69', '통마늘', '0', '3', 'T', '0', '1');
+INSERT INTO `yorijori`.`ingredients` (`recipeId`, `name`, `amountLevel`, `amount`, `unit`, `isSauce`, `isNecessary`) VALUES ('69', '파', '0', '2', 'T', '0', '1');
+
+
+
 -- 요리방법 cookingStep
 INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('1', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1729921733709_70479a45-d591-4abf-8134-de3ff90f422e', '파, 청양고추는 어슷 썰고 당근, 감자는 큼직하게 썰어주세요.');
 INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('1', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1729923191214_47dd55a5-4856-4d3d-9078-fc028d1abcac', '양파는 반을 자른 후 사각으로 썰어주세요.');
@@ -1219,3 +1475,88 @@ INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `con
 INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('29', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1729946792888_caee8359-8a0e-43d3-acde-f657905f5097', '간장 양념이 끓으면 달걀을 넣어주세요.');
 INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('29', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1729946816045_5c378277-bcb5-464d-8982-0ab65694582c', '달걀의 겉면에 색이 입혀질 때쯤 청양고추도 듬성듬성 썰어 넣고, 중불로 끓여주세요.');
 INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('29', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1729946838408_974ab194-6393-47f4-a1f7-403119475cf0', '국물이 거의 졸아들고 달걀이 갈색이 되면 달걀 외 건더기는 건져주시면 완성입니다. 반씩 잘라 국물과 함께 먹으면 좋아요.');
+
+
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('60', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730960513058_f5642ccd-df05-498e-aee5-2159395ce455', '대파는 길게 반 잘라 송송 썰어 준비해 주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('60', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730960558383_c2b46205-d9de-455b-a725-0c18e536ccdf', '전자레인지 용기에 밥, 대파, 버터, 장조림, 달걀(달걀프라이용을 제외한 모든 달걀)을 넣고 달걀이 풀어질 정도까지 섞는다.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('60', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730960585942_88b61021-d49a-4406-aa4a-ba103b46af4b', '용기의 뚜껑을 덮지 않은 상태로 700w 기준 전자레인지에 넣고 3분 정도 돌린다.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('60', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730960615625_93f11658-9357-4116-b93d-5d65834e8a73', '프라이팬에 식용유를 두르고 강불에 예열한다.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('60', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730960650782_847c828c-f94c-4861-bd47-ec24018e0150', '인원에 맞게 달걀프라이를 한다.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('60', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730960678742_4103127d-82be-4992-b47b-b3f4ae493845', '장조림버터밥이 완성되면 재료가 잘 섞이도록 골고루 섞는다.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('60', '7', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730960703958_4d409f4f-dc74-4387-a650-083d267f21da', '모양 잡을 그릇에 버터밥을 옮겨 담고, 완성 그릇에 엎어 모양을 잡아 담는다.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('60', '8', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730960730669_12034b85-8876-4bcf-935a-150ac532ef72', '장조림버터밥 위에 만들어 둔 달걀프라이를 올리고 통깨를 뿌려 완성합니다.');
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('61', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982510362_bbefbd8f-14b3-4454-bcc9-a25deb961240', '돈까스를 튀겨서 먹기 좋은 크기로 잘라주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('61', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982535400_665439f6-f0c5-44af-8112-9aa73b64ea2f', '뚝배기에 기름을 두르고 대파, 양파를 볶아주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('61', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982552356_4ca1f984-b06e-485a-8d1b-abeb2f470243', '김치를 넣고 볶다가 김치국물을 부어주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('61', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982571584_b41b5ce4-88af-4e34-8248-4e26fc935ba8', '어느 정도 볶아졌으면 고춧가루, 다진 마늘, 국간장, 설탕, 물을 넣고 끓여주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('61', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982593675_5bb0396c-abc5-4b66-9170-81297a49e8ca', '국물이 자작자작해지면 돈까스를 올려주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('61', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982615528_17c73321-b0dd-49ec-b975-7b71e70589c7', '달걀을 풀어 가장자리에 빙빙 둘러주면 완성입니다.');
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('62', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982376612_c12a557b-45ae-4e73-908e-6c5b339d869a', '노른자와 흰자를 분리하여 노른자만 별도 그릇에 담고 잘 저어둔다.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('62', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982394875_034276d5-fee8-4111-a86f-a98becfcfb6d', '예열하지 않은 프라이팬에 카놀라유를 두르고 달걀 지단을 만들어 주세요.(가스불은 중불 유지)');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('62', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982413759_74e6f7a4-bbb6-4f48-865e-629593036a36', '밥에 진간장, 들기름, 참깨를 넣고 잘 섞어주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('62', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982444918_bd977773-ab4c-4d27-a17c-d9c0fd0cb0f4', '모짜렐라 치즈를 밥 위에 뿌려주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('62', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982464489_ae19d8a4-5add-47ce-add5-c25b977996a7', '치즈 위에 지단을 올려놓고 전자레인지에 3분간 돌려주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('62', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982483866_2329cb3c-951b-45c3-8211-5827e0fc3a9a', '모짜렐라 치즈가 잘 녹았으면 완성입니다. 토마토 케찹으로 귀엽게 데코하면 더 좋아요.');
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('63', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982197418_ddc581f8-bd2d-4fd9-99a7-400747e2f734', '삶은 고구마 껍질을 벗긴 뒤 팬에 겉면이 노릇노릇해질 때까지 구워주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('63', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982300731_8d9901d4-3dfe-49fc-8183-2ce6903a2d39', '믹서에 고구마와 우유를 넣고 부드럽게 갈아주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('63', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982324149_875aeca7-3f58-42aa-8002-6827b57bfc49', '다시 팬에 붓고 잘 저어가며 끓여주세요. 이때 소금과 후추로 간을 해주세요');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('63', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982347609_1396896b-b3d3-42f2-ade0-3a222ddd7565', '스프가 끓으면 불을 끄고 그릇에 담아내고, 파슬리로 마무리해 주세요.');
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('64', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982049255_75b71cc4-95a0-417e-9bc3-8e594a660309', '아이가 먹기 좋은 크기로 버섯을 썰어주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('64', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982085573_dfc83b8f-987f-453a-8190-f19938750564', '현미유를 두른 프라이팬에 2-3분 정도 버섯을 볶아주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('64', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982104067_5fcccd64-d42f-4da2-b97d-0a7cfa5601df', '참기름과 간장도 넣고 중불에서 달달 볶아주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('64', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982122105_1d9cb6a8-1a3d-4926-b630-41a8bcd69b06', '아이 입맛에 맞게 간장을 더 넣어주셔도 됩니다. 버섯이 익을 때쯤 소금을 넣어주세요');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('64', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982144055_1c203a40-59aa-477b-aa04-7f3335822f3a', '깨소금도 넣고 볶으며 잘 섞어주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('64', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982163336_06155673-2a8f-40a0-a064-d4e142981b9d', '버섯이 다 익으면 완성입니다.');
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('65', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981851407_e54e7371-f3a3-4ecb-8120-0d9230170624', '당면을 30분간 물에 불려주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('65', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981876891_8cda5299-dfb7-4416-b5c5-b60506006d5d', '준비한 채소를 잘게 다져주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('65', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981896984_7c77c62d-e442-4570-aef6-8e6d34358a6b', '달군 팬에 현미유를 두르고 다진 채소를 볶아주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('65', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981934679_18d9ca03-7288-44f9-b167-d53b9861ae96', '끓는 물에 4분간 당면을 삶아 찬물에 헹군 후 체에 받쳐 물기를 빼주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('65', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981955352_68342a1a-6930-4a0c-a1a1-886fec9b9e79', '익은 당면을 가위로 자르고, 아기 간장과 참기름으로 간을 해주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('65', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981976510_00abc245-ddd5-4688-85c1-fc01c875b469', '볼에 당면, 볶은 채소, 달걀을 넣고 섞어주세요. 소금간을 살짝 해주셔도 좋아요');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('65', '7', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981997990_2b161441-3514-4328-8f17-cf69d522e22b', '중약불로 달군 팬에 현미유를 두르고, 반죽을 얇게 펴 올려주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('65', '8', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730982019930_76d34ac3-3999-4d65-a749-8fac20ca1aef', '밑면이 익으면 반으로 접어 앞뒤 노릇하게 익혀주세요.');
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('66', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981708875_f5a2c30c-27cb-4b01-b743-7d97dbb35847', '닭다리살은 깨끗한 물에 헹궈 손질해 주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('66', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981729417_029ae55b-8cda-4989-9486-8fcd7203e186', '손질된 닭은 우유에 20분간 담가 잡내를 제거해 주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('66', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981755183_3a6324e8-0696-4a64-a422-38fb5c82502c', '20분 후 우유를 씻어내고 키친타월로 물기를 제거해 주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('66', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981778477_19f55bf9-7224-46ee-ba23-1449d5a65e2a', '닭고기, 오일, 다진 마늘, 소금, 후추로 밑간을 하고 냉장고에서 1시간 재워 둡니다.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('66', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981812116_9d585eaa-88a3-4331-a2e9-6e310059bc16', '숙성이 끝난 닭다리살을 에어프라이어에 겹치지 않게 올려주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('66', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981830309_8c2f359f-18c3-4074-bf21-97a0912b1b57', '에어프라이어 180도에서 15분, 뒤집어서 5분 구워주면 완성입니다.');
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981470199_45ce4c9e-c925-4736-b028-b3bf62166a6d', '밤과 우유를 냄비에 넣어 주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981497196_8e4cf463-40b6-4221-b5fa-10a451896412', '강불에 우유가 한번 끓어오를 때까지 끓인 후 불을 꺼주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981520141_dda4391d-3659-4763-82d8-0d843f6244e1', '10분 정도 식힌 후 믹서기에 곱게 갈아주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981543884_d5f66fd2-0a23-45a9-9986-51290b7c05bc', '갈아준 밤우유는 그릇에 담아 30분 이상 냉장고에서 충분히 식혀주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981566212_c9017486-8055-4b3e-903c-e7bed9a46344', '식힌 밤우유에 크림치즈를 섞어주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981585720_aaa93ee0-314e-442a-af47-4aff72701d28', '생크림까지 섞으면 밤퓨레 완성입니다. 냉장고에 넣어 보관해 주세요');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '7', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981604861_86e3bb44-b01d-4dd6-abc6-1450df747ead', '토피넛라떼를 그릇에 붓고 다이제를 적셔주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '8', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981625886_e36c772d-f335-40a1-b6b8-e593735e80f5', '라떼를 적신 다이제를 1층, 밤퓨레를 2층 순서로 깔아주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '9', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981646634_b69c0b0c-f306-4e81-bd6f-ea913ae4a1f9', '다이제 시트와 밤퓨레를 번갈아가며 쌓아주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '10', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981666747_52a25d61-9933-4e9f-a22f-a7855a21fbef', '윗면에 얼려 놓은 초콜렛을 갈아 올려주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('67', '11', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981684246_fe3beeb5-e02f-4b81-9007-5388e418f738', '그래놀라도 올려주면 완성입니다. 냉장고에 30분 정도 넣어둔 후 드시면 더 맛있어요');
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981180124_4d4aaafa-bb1a-4a55-83de-7eaf2d0bc483', '냄비에 물을 적당히 담고 소금을 넣고 끓이기 시작해 주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981202082_e37adb85-86fd-4359-b7b8-58da07c76636', '마늘, 파슬리를 다져주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981221934_93972846-1fa8-44e1-b464-60263ab8d0b4', '물이 끓어오르면 파스타를 3분간 삶아주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981243588_6625668d-511a-4b36-ad06-bfbff7e9c56d', '3분이 지나면 면을 건져서 올리브오일을 골고루 묻혀주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981262614_cbf1978c-c533-4d07-8edd-c0001516a0d6', '면을 트레이에 펼쳐주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981281862_303f15d2-6b38-4359-87ff-4cca9230b97d', '뚜껑을 닫고 5분 정도 숙성해 주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '7', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981310171_5e4e6fd5-ff3c-42c3-aa9f-991bd2a4df7d', '올리브오일을 팬 바닥에 깔리도록 뿌린 뒤, 마늘을 넣고 약불로 끓이고 2~3분 뒤 파슬리 줄기와 페페론치노를 넣어주세요. 2~3분이 지나면 파슬리 줄기는 제거해 주세요');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '8', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981331925_a8c33662-f6e6-47d3-99b0-6111b956758d', '마늘이 갈색이 되지 않게 조절하다가 면수를 한 국자 붓고 팬을 살살 흔들어 준 뒤 잠시 대기합니다.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '9', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981370767_3689e51c-0d28-4202-a5b1-a82139e936b9', '대기하던 팬에 파스타를 넣고 면수 반 국자 추가한 뒤 중약불로 끓여주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '10', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981392334_deefbf5b-1266-4c00-95a1-cec756681995', '1~2분 정도 끓여주는데, 소스의 양이 사진보다 줄어들지는 않게 면수를 추가하면서 끓여주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '11', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981415282_c5a837b4-df36-47fc-889d-67eea596841f', '다져놓은 파슬리를 넣고, 파스타와 재료가 잘 섞이도록 잘 흔들어 주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('68', '12', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981435759_23702e9a-47ba-431b-9afb-a39552023d1d', '그라나파다노치즈를 뿌려주면 완성입니다.');
+
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('69', '1', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981036896_6352fe10-3f26-43f7-863e-4c131ad505a9', '통마늘을 팬에 구워주세요. 오븐이나 에어프라이어 190도에 40분간 구워도 좋아요');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('69', '2', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981063410_956a3552-fe7f-435e-9087-8c1a08b54e3e', '구운 마늘을 준비된 라면물에 넣고 스프도 넣고 5분 가량 우려주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('69', '3', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981081035_e84506d5-d7fd-4b0a-934b-8732de6ca590', '통마늘과 마늘 껍질을 분리하고, 껍질은 버려주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('69', '4', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981104945_8c405bb3-70a7-4e2b-b98c-4e2527aa33d3', '통마늘을 으깨주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('69', '5', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981129009_7828d6b3-0d25-4e3b-9465-6b7faac3c9d3', '면을 넣고 끓여주세요.');
+INSERT INTO `yorijori`.`cookingStep` (`recipeId`, `stepNumber`, `imageUrl`, `content`) VALUES ('69', '6', 'https://yorijori-image-bucket.s3.ap-northeast-2.amazonaws.com/images/1730981152405_a3ee9846-e10e-4264-a058-f00edd37626a', '다 끓이기 30초 전에 대파를 넣어주면 완성입니다.');
