@@ -49,6 +49,7 @@ export default class ReviewRepository {
         ],
       },
       include: { model: User, attributes: [] },
+      order: [["createdAt", "DESC"]],
       raw: true,
     });
     return reviews;
