@@ -19,6 +19,7 @@ class RouteHandler {
         difficulty: Joi.number().required(),
         ingredients: Joi.array().items(Joi.object().required()).required(),
         cookingStep: Joi.array().items(Joi.object().required()).required(),
+        imageUrl: Joi.string().uri().required(),
       }).validate(req.body);
       if (error) throw error;
 
