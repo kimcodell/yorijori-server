@@ -16,7 +16,7 @@ class RouteHandler {
         tags: Joi.array().items(Joi.string().required()).required(),
         tips: Joi.array().items(Joi.string().required()),
         cookingTime: Joi.number().required(),
-        difficulty: Joi.number().required(),
+        difficulty: Joi.string().valid("하", "중", "상").required(),
         ingredients: Joi.array().items(Joi.object().required()).required(),
         cookingStep: Joi.array().items(Joi.object().required()).required(),
         imageUrl: Joi.string().uri().required(),
@@ -40,9 +40,10 @@ class RouteHandler {
         tags: Joi.array().items(Joi.string().required()),
         tips: Joi.array().items(Joi.string().required()),
         cookingTime: Joi.number(),
-        difficulty: Joi.number(),
+        difficulty: Joi.string().valid("하", "중", "상"),
         ingredients: Joi.array().items(Joi.object().required()),
         cookingStep: Joi.array().items(Joi.object().required()),
+        imageUrl: Joi.string().uri(),
       }).validate(req.body);
       if (error) throw error;
 

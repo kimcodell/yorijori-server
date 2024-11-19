@@ -11,5 +11,7 @@ export function stringToArray(str: string) {
 }
 
 export function arrayToString(arr: any[]) {
+  if (!arr) return "";
+  if (arr.length === 0) return "";
   return JSON.stringify(arr);
 }
