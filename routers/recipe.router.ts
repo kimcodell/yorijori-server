@@ -146,7 +146,7 @@ class RouteHandler {
         recipeId: Joi.number().required(),
         amountLevel: Joi.number(),
         salinityLevel: Joi.number(),
-        selectedIngredients: Joi.array().items(Joi.object().required()),
+        selectedIngredients: Joi.array().items(Joi.string().required()),
       }).validate(req.body);
       if (error) throw error;
       await this.recipeService.likeRecipe({ ...value, userId: data.id });
@@ -163,7 +163,7 @@ class RouteHandler {
         recipeId: Joi.number().required(),
         amountLevel: Joi.number(),
         salinityLevel: Joi.number(),
-        selectedIngredients: Joi.array().items(Joi.object().required()),
+        selectedIngredients: Joi.array().items(Joi.string().required()),
       }).validate(req.body);
       if (error) throw error;
       await this.recipeService.updateLike({ ...value, userId: data.id });
