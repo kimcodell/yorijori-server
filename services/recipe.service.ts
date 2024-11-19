@@ -151,4 +151,9 @@ export default class RecipeService {
     if (!like) return;
     await this.likeRepository.delete(like.id);
   }
+
+  public async getFamousRecipeKeywords() {
+    const targetRecipeIdList = [67, 68, 69, 66, 62, 28, 26];
+    return await this.recipeRepository.getRecipeTitleByCondition({ id: { [Op.in]: targetRecipeIdList } });
+  }
 }

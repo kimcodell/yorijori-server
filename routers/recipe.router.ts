@@ -186,11 +186,22 @@ class RouteHandler {
       next(error);
     }
   }
+
+  public async getFamousRecipeKeywords(req: Request, res: Response, next: NextFunction) {
+    try {
+      const keywords = await this.recipeService.getFamousRecipeKeywords();
+      successResponse(res, { keywords });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 function recipeRouter(...params: [RecipeService]) {
   const router = Router();
   const handler = new RouteHandler(...params);
+
+  router.get("/famous", wrap(handler.getFamousRecipeKeywords.bind(handler)));
 
   router.post("/", wrap(handler.create.bind(handler)));
   router.put("/", wrap(handler.update.bind(handler)));

@@ -167,6 +167,14 @@ export default class RecipeRepository {
     // return {...recipe.get({ plain: true }), tags: stringToArray(recipe.tags), difficulty: RecipeDifficulty[recipe.difficulty]};
   }
 
+  public async getRecipeTitleByCondition(condition: WhereOptions<RecipeAttributes>) {
+    const result = await Recipe.findAll({
+      where: condition,
+      attributes: ["id", "title"],
+    });
+    return result.map((r) => ({ recipeId: r.id, title: r.title }));
+  }
+
   public async getAllRecipes({
     condition,
     userId,
