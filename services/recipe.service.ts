@@ -152,6 +152,16 @@ export default class RecipeService {
     await this.likeRepository.delete(like.id);
   }
 
+  public async getTargetRecipes({ recipeIds, userId }: { recipeIds: number[]; userId: number }) {
+    const condition = {
+      id: {
+        [Op.in]: recipeIds,
+      },
+    };
+    const recipes = await this.recipeRepository.getAllRecipes({ condition, userId });
+    return recipes;
+  }
+
   public async getFamousRecipeKeywords() {
     const targetRecipeIdList = [67, 68, 69, 66, 62, 28, 26];
     return await this.recipeRepository.getRecipeTitleByCondition({ id: { [Op.in]: targetRecipeIdList } });

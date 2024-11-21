@@ -195,6 +195,23 @@ class RouteHandler {
       next(error);
     }
   }
+
+  @authGuard
+  public async getTargetRecipes(req: Request, res: Response, next: NextFunction, data: any) {
+    try {
+      const { error, value } = Joi.object({
+        recipeIds: Joi.array().items(Joi.number().required()).required(),
+      }).validate(req.query);
+      if (error) throw error;
+      const recipes = await this.recipeService.getTargetRecipes({
+        recipeIds: value.recipeIds,
+        userId: data.id,
+      });
+      successResponse(res, { recipes });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 function recipeRouter(...params: [RecipeService]) {
@@ -202,6 +219,7 @@ function recipeRouter(...params: [RecipeService]) {
   const handler = new RouteHandler(...params);
 
   router.get("/famous", wrap(handler.getFamousRecipeKeywords.bind(handler)));
+  router.get("/target", wrap(handler.getTargetRecipes.bind(handler)));
 
   router.post("/", wrap(handler.create.bind(handler)));
   router.put("/", wrap(handler.update.bind(handler)));
